@@ -1,0 +1,71 @@
+{
+  "name": "koa-boilerplate",
+  "version": "0.0.1",
+  "description": "Koa 项目模板",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon server/index.js --watch server --exec babel-node",
+    "start:prod": "cross-env NODE_ENV=production node build/server",
+    "clean": "rimraf build",
+    "copy:server": "copyfiles server/**/*.json server/**/*.html build",
+    "build:server": "cross-env NODE_ENV=production babel server -d build/server && npm run copy:server",
+    "build": "npm run clean && npm run build:client && npm run build:server",
+    "create-tables": "cross-env NODE_ENV=development babel-node server/createTables.js",
+    "recreate-tables": "cross-env NODE_ENV=development babel-node server/createTables.js --force",
+    "test:api": "",
+    "test": "npm run test:api"
+  },
+  "dependencies": {
+    "axios": "^0.15.3",
+    "babel-polyfill": "^6.14.0",
+    "debug": "^2.6.0",
+    "history": "^4.5.0",
+    "kcors": "^2.2.0",
+    "koa": "^2.0.0-alpha.7",
+    "koa-better-body": "^3.0.2",
+    "koa-compose": "^3.1.0",
+    "koa-compress": "^2.0.0",
+    "koa-convert": "^1.2.0",
+    "koa-favicon": "^2.0.0",
+    "koa-json": "^1.1.3",
+    "koa-logger": "^1.3.0",
+    "koa-nunjucks-2": "^2.2.0",
+    "koa-onerror": "^2.0.0",
+    "koa-router": "^7.1.0",
+    "koa-send": "^3.2.0",
+    "koa-static": "^2.0.0",
+    "koa-mount": "^2.0.0",
+    "mysql": "^2.12.0",
+    "sequelize": "^3.28.0",
+    "lodash": "^4.15.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.14.0",
+    "babel-core": "^6.14.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^12.0.0",
+    "eslint-plugin-jsx-a11y": "^2.1.0",
+    "eslint-plugin-prefer-object-spread": "^1.1.0",
+    "eslint-plugin-react": "^6.2.0",
+    "eslint-plugin-import": "^1.12.0",
+    "babel-plugin-transform-runtime": "^6.5.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "nodemon": "^1.11.0",
+    "cross-env": "^3.1.4",
+    "rimraf": "^2.5.4",
+    "copyfiles": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thoughtbit/node-web-starter/koa-boilerplate.git"
+  },
+  "author": {
+    "name": "moocss",
+    "email": "moocss@gmail.com"
+  },
+  "license": "MIT"
+}
