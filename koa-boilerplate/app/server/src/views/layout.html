@@ -2,9 +2,13 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>Koa2.0 Demo</title>
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/page.css">
+    <title>{% block title %}Home{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="{% block keywords %}{% endblock %}">
+    <meta name="description" content="{% block description %}{% endblock %}">
+    {% block baseCss %} {% endblock %}
+    {% block pageCss %} {% endblock %}
 </head>
 <body>
   {% block header %}
@@ -18,5 +22,8 @@
   {% block footer %}
   This is the default footer
   {% endblock %}
+
+  {% block baseJs %} {% endblock %}
+  {% block pageJs %} {% endblock %}
 </body>
 </html>

@@ -15,7 +15,7 @@ import cors from 'kcors'
 
 import config from './config'
 import routeMiddleware from './routes'
-import errorMiddleware from './middlewares/catcher'
+// import errorMiddleware from './middlewares/catcher'
 import KoaErrors from './helpers/errors/KoaErr'
 import DateFilter from './helpers/filters/DateFilter'
 
@@ -38,13 +38,12 @@ app.use(convert(logger()))
 app.use(compress())
 
 // static
-// app.use(convert(serve(path.join(__dirname, 'public'))))
+// app.use(convert(serve(path.join(__dirname, './../public'))))
 
 // Serve static files
 config.static.forEach((staticRoute) => {
   app.use(mount(staticRoute.url, convert(serve(staticRoute.path))))
 })
-
 
 // favicon
 app.use(favicon(config.favicon))
@@ -73,8 +72,8 @@ app.use(routeMiddleware())
 
 // 设置Header
 app.use(async (ctx, next) => {
-  await next()
   ctx.set('X-Powered-By', 'koa-boilerplate')
+  await next()
 })
 
 // 使用自定义错误
@@ -84,13 +83,13 @@ app.use(async (ctx, next) => {
 })
 
 // 全局错误处理
-app.use(errorMiddleware())
+// app.use(errorMiddleware)
 
 // 404
-app.use(async (ctx) => {
-  ctx.status = 404
-  await ctx.render('404')
-})
+// app.use(async (ctx) => {
+//   ctx.status = 404
+//   await ctx.render('404')
+// })
 
 // error logger
 app.on('error', async (err, ctx) => {

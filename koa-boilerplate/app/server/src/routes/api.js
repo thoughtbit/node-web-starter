@@ -4,7 +4,7 @@
 import Router from 'koa-router'
 import compose from 'koa-compose'
 
-import userCtrl from '../controllers/user'
+import userCtrl from './../controllers/user'
 
 import KoaErrors from './../helpers/errors/KoaErr'
 

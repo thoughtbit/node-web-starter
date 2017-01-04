@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <title>404</title>
-  <link rel="stylesheet" href="css/base.css">
-</head>
-<body>
-    <h1>404</h1>
-</body>
-</html>
+{#
+  404 Page
+#}
+
+{% extends 'layout.html' %}
+
+{% block baseCss %} 
+<link rel="stylesheet" href="css/base.css">
+{% endblock %}
+
+{% block content %}
+  <h1>404 Page!</h1>
+{% endblock %}

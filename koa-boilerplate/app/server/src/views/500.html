@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <title>500</title>
-  <link rel="stylesheet" href="css/base.css">
-</head>
-<body>
-    <h1>500</h1>
-</body>
-</html>
+{#
+  500 Page
+#}
+
+{% extends 'layout.html' %}
+
+{% block baseCss %} 
+<link rel="stylesheet" href="css/base.css">
+{% endblock %}
+
+{% block content %}
+  <h1>500 Page!</h1>
+{% endblock %}

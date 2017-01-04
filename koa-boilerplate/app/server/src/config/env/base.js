@@ -2,22 +2,22 @@ import path from 'path'
 
 export default {
   // 端口
-  port: process.env.PORT || 5000,
+  port: process.env.PORT || 12306,
   // 根目录
-  root: path.resolve(__dirname, '../../../../'),
-  favicon: path.join(__dirname, '../public/favicon.png'),
+  root: path.resolve(__dirname, './../../../'),
+  favicon: path.join(__dirname, './../public/favicon.png'),
   static: [
     {
       url: '/public',
-      path: path.join(__dirname, '../public'),
+      path: path.join(__dirname, './../pubilc'),
     },
     {
       url: '/assets',
-      path: path.join(__dirname, '../assets'),
+      path: path.join(__dirname, './../assets'),
     },
     {
       url: '/static',
-      path: path.join(__dirname, '../docs'),
+      path: path.join(__dirname, './../docs'),
     },
   ],
   // 数据库
