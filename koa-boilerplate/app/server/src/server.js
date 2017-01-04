@@ -1,7 +1,6 @@
 import path from 'path'
 import Koa from 'koa'
 import bodyParser from 'koa-better-body'
-import mount from 'koa-mount'
 import serve from 'koa-static'
 import favicon from 'koa-favicon'
 import nunjucks from 'koa-nunjucks-2'
@@ -23,9 +22,6 @@ const app = new Koa()
 
 app.keys = [config.session]
 
-// 500 error
-onerror(app)
-
 // middlewares
 app.use(convert(bodyParser({
   formLimit: '200kb',
@@ -38,15 +34,12 @@ app.use(convert(logger()))
 app.use(compress())
 
 // static
-// app.use(convert(serve(path.join(__dirname, './../public'))))
-
-// Serve static files
-config.static.forEach((staticRoute) => {
-  app.use(mount(staticRoute.url, convert(serve(staticRoute.path))))
-})
+app.use(convert(serve(path.join(__dirname, '../public'), {
+  pathPrefix: '',
+})))
 
 // favicon
-app.use(favicon(config.favicon))
+app.use(favicon(path.join(__dirname, '../public/favicon.ico')))
 
 // views
 app.use(nunjucks({
@@ -60,6 +53,11 @@ app.use(nunjucks({
     env.addFilter('dateFilter', DateFilter)
   },
 }))
+
+// 500 error
+onerror(app, {
+  template: path.join(__dirname, 'views/500.html'),
+})
 
 // 发送文件，如HTML
 app.use(async (ctx, next) => {

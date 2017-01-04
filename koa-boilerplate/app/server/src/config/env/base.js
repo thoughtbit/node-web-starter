@@ -4,22 +4,7 @@ export default {
   // 端口
   port: process.env.PORT || 12306,
   // 根目录
-  root: path.resolve(__dirname, './../../../'),
-  favicon: path.join(__dirname, './../public/favicon.png'),
-  static: [
-    {
-      url: '/public',
-      path: path.join(__dirname, './../pubilc'),
-    },
-    {
-      url: '/assets',
-      path: path.join(__dirname, './../assets'),
-    },
-    {
-      url: '/static',
-      path: path.join(__dirname, './../docs'),
-    },
-  ],
+  root: path.resolve(__dirname, '../../../'),
   // 数据库
   db: {
     name: 'darwin',

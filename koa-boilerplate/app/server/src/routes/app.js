@@ -11,12 +11,12 @@ const router = new Router({
   prefix: '/app',
 })
 
-// router.get('/', async (ctx, next) => {
-//   // 渲染HTML模板
-//   await ctx.send(ctx, path.join(__dirname, './../views/index.html'))
-// })
+router.get('/', async (ctx, next) => {
+  // 渲染HTML模板
+  // await ctx.send(ctx, path.join(__dirname, './../views/index.html'))
+  await ctx.render('index')
+})
 
-router.get('/', homeCtrl.home)
 router.get('/index', homeCtrl.home)
 router.get('/about', homeCtrl.about)
 

@@ -1,11 +1,23 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <title>关于</title>
-  <link rel="stylesheet" href="css/base.css">
-</head>
-<body>
-    <h1>关于我们</h1>
-</body>
-</html>
+{#
+  Nunjucks Templating!
+  Homepage: https://mozilla.github.io/nunjucks/
+  Docs: https://mozilla.github.io/nunjucks/api.html
+#}
+
+{% extends 'layout.html' %}
+
+{% block pageCss %} 
+<link rel="stylesheet" href="css/page.css">
+{% endblock %}
+
+{% block header %}
+头部
+{% endblock %}
+
+{% block content %}
+  {{name}}
+{% endblock %}
+
+{% block footer %}
+  底部
+{% endblock %}
