@@ -1,13 +1,17 @@
-{#
-  500 Page
-#}
-
-{% extends 'layout.html' %}
+{% extends 'layouts/default.html' %}
 
 {% block baseCss %} 
 <link rel="stylesheet" href="css/base.css">
 {% endblock %}
 
 {% block content %}
-  <h1>500 Page!</h1>
+<h1>Oops something went wrong</h1>
+<br>
+<span>500</span>
+<div id="error-message-box">
+  <pre>
+    <code>{{message}}</code>
+  </pre>
+</div>
 {% endblock %}
+

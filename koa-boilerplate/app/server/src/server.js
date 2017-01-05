@@ -8,13 +8,11 @@ import convert from 'koa-convert'
 import json from 'koa-json'
 import send from 'koa-send'
 import logger from 'koa-logger'
-import onerror from 'koa-onerror'
 import compress from 'koa-compress'
 import cors from 'kcors'
 
 import config from './config'
 import routeMiddleware from './routes'
-// import errorMiddleware from './middlewares/catcher'
 import KoaErrors from './helpers/errors/KoaErr'
 import DateFilter from './helpers/filters/DateFilter'
 
@@ -54,11 +52,6 @@ app.use(nunjucks({
   },
 }))
 
-// 500 error
-onerror(app, {
-  template: path.join(__dirname, 'views/500.html'),
-})
-
 // 发送文件，如HTML
 app.use(async (ctx, next) => {
   ctx.send = send
@@ -83,7 +76,7 @@ app.use(async (ctx, next) => {
 // 全局错误处理
 // app.use(errorMiddleware)
 
-// 404
+// // 404
 // app.use(async (ctx) => {
 //   ctx.status = 404
 //   await ctx.render('404')
@@ -91,8 +84,20 @@ app.use(async (ctx, next) => {
 
 // error logger
 app.on('error', async (err, ctx) => {
-  console.log('error occured:', err)
   logger.error('server error', err, ctx)
+})
+
+// 捕获promise reject错误
+process.on('unhandledRejection', (reason) => {
+  console.log('unhandledRejection:', reason)
+})
+
+// 捕获未知错误
+process.on('uncaughtException', (err) => {
+  console.log('uncaughtException:', err)
+  if (err.message.indexOf(' EADDRINUSE ') > -1) {
+    process.exit()
+  }
 })
 
 app.listen(config.port, (err) => {
