@@ -1,0 +1,7 @@
+{
+  "verbose": true,
+  "ignore": ["client/../assets", "public/images/"],
+  "execMap": {
+    "js": "node"
+  }
+}

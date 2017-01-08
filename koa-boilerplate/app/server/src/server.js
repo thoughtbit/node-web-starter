@@ -16,7 +16,7 @@ import routeMiddleware from './routes'
 import KoaErrors from './helpers/errors/KoaErr'
 import DateFilter from './helpers/filters/DateFilter'
 
-const app = new Koa()
+const app = global.app = new Koa()
 
 app.keys = [config.session]
 

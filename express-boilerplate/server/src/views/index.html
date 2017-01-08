@@ -1,0 +1,16 @@
+{#
+  Nunjucks Templating!
+  Homepage: https://mozilla.github.io/nunjucks/
+  Docs: https://mozilla.github.io/nunjucks/api.html
+#}
+
+{% extends 'layouts/default.html' %}
+
+{% block pageCss %}
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/page.css">
+{% endblock %}
+
+{% block content %}
+  {{name}}
+{% endblock %}

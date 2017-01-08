@@ -1,0 +1,16 @@
+{% extends 'layouts/default.html' %}
+
+{% block baseCss %} 
+<link rel="stylesheet" href="css/base.css">
+{% endblock %}
+
+{% block content %}
+<h1>Oops something went wrong</h1>
+<br>
+<span>404</span>
+<div id="error-message-box">
+  <pre>
+    <code>{{message}}</code>
+  </pre>
+</div>
+{% endblock %}
