@@ -1,7 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 import Sequelize from 'sequelize'
-import config from './config'
+import config from '../config'
+
+function resolveOwn(relativePath) {
+  return path.resolve(__dirname, relativePath)
+}
 
 let db = {}
 
@@ -34,7 +38,7 @@ db = {
   models: {},
 }
 
-const dir = path.join(__dirname, 'models')
+const dir = resolveOwn('../models')
 
 fs.readdirSync(dir)
   .filter(file => (file.indexOf('.') !== 0) && (file !== basename))

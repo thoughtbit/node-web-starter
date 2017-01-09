@@ -1,9 +1,8 @@
 import db from './../db'
-import NotFoundError from './../helpers/errors/NotFoundError'
 
 const UsersService = {
   // async createUser(user) {
-  //   return await db.execute(async (transaction) => {   
+  //   return await db.execute(async (transaction) => {
   //   })
   // },
   async getUser(userId) {
@@ -11,9 +10,7 @@ const UsersService = {
       attributes: ['id', 'name', 'email'],
     })
     if (!user) {
-      throw new NotFoundError(
-        ` 您查询的${userId}出错了！`
-      )
+      console.log(`您查询的${userId}出错了`)
     }
     return user
   },
@@ -21,9 +18,7 @@ const UsersService = {
   async getUsers() {
     const users = await db.models.Users.findAll({ where: { id: [1, 2, 3] } })
     if (!users) {
-      throw new NotFoundError(
-         ' 您查询的记录不存在！'
-      )
+      console.log('您查询的记录不存在')
     }
     return users
   },

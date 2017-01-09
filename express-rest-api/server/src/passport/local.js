@@ -1,12 +1,14 @@
-import { Strategy as LocalStrategy } from 'passport-local';
-import User from '../../user/user.model';
+import { Strategy as LocalStrategy } from 'passport-local'
 
 export default new LocalStrategy({
-    usernameField: 'email',
+    app, 
+    config, 
+    db,
+    emailField: 'email',
     passwordField: 'password'
-},  (email, password, done) => {
+},  (app, config, db, email, password, done) => {
 
-    User.findOne({email: email.toLowerCase()}, function (err, user) {
+    db.User.findOne({email: email.toLowerCase()}, function (err, user) {
 
         if (err) {
             return done(err);

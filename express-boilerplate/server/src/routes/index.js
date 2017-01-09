@@ -2,48 +2,35 @@
  * 路由入口
  */
 
-import { Router } from 'express';
+import { Router } from 'express'
 
 // Import all routes
-import facets from './facets';
 // import auth from './auth'
 import api from './api/index'
 import app from './app/index'
 
+const router = new Router()
+
 export default ({ config, db }) => {
-	let router = Router();
+  // api router
+  router.use('/api/admin', api.adminRouter({ config, db }))
+  router.use('/api/user', api.userRouter({ config, db }))
 
-	// mount the facets resource
-	router.use('/facets', facets({ config, db }));
+  // app router
+  router.use('/app/admin', app.adminRouter({ config, db }))
+  router.use('/app/user', app.userRouter({ config, db }))
 
-  // Protected resources
-  //router.get('/users/me', auth, users.showMe)
-
-	router.use('/api/admin', api.adminRouter({config, db}));
-	router.use('/api/user', api.userRouter({config, db}));
-	router.use('/app', app.userRouter);
-
-	// perhaps expose some API metadata at the root
-	router.get('/api', (req, res) => {
-		res.json("api");
-	});
-
-	// perhaps expose some APP metadata at the root
-	router.get('/app', (req, res) => {
-		res.json("app");
-	});
-
-	// perhaps expose some router metadata at the root
-	router.get('/', (req, res) => {
-		res.json({ version });
-	});
-
-  // catch 404 and forward to error handler
-  router.use(function(req, res, next) {
-    let err = new Error('Not Found')
-    err.status = 404
-    next(err)
+  router.get('/api', (req, res) => {
+    res.json('api')
   })
 
-	return router;
+  router.get('/app', (req, res) => {
+    res.json('app')
+  })
+
+  router.get('/', (req, res) => {
+    res.json({ version: config.version })
+  })
+
+  return router
 }

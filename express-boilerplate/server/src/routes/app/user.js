@@ -1,9 +1,14 @@
-import { Router } from 'express';
+import { Router } from 'express'
 
-const userRouter = new Router();
+const router = new Router()
 
-userRouter.get('/user*', async (req, res, next) => {
-	res.json({ "route": "user" });
-});
-
-export default userRouter;
+export default ({ config, db }) => {
+  router.route('/')
+    .get(async (req, res, next) => {
+      res.json({ route: 'GET / user' })
+    })
+    .post((req, res, next) => {
+      res.json({ route: 'POST / user' })
+    })
+  return router
+}

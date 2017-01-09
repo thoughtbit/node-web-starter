@@ -1,9 +1,14 @@
-import { Router } from 'express';
+import { Router } from 'express'
 
-const adminRouter = new Router();
+const router = new Router()
 
-adminRouter.get('/admin*', async (req, res, next) => {
-	res.json({ "route": "admin" });
-});
-
-export default adminRouter;
+export default ({ config, db }) => {
+  router.route('/')
+    .get(async (req, res, next) => {
+      res.json({ route: 'GET / admin' })
+    })
+    .post((req, res, next) => {
+      res.json({ route: 'POST / admin' })
+    })
+  return router
+}
