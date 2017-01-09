@@ -1,4 +1,4 @@
-import db from './db'
+import db from './helpers/db/mysql'
 
 const force = process.argv.slice(2).includes('--force')
 async function createTables() {

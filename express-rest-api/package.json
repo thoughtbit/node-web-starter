@@ -1,19 +1,19 @@
 {
-  "name": "express-boilerplate",
+  "name": "express-rest-api",
   "version": "0.0.1",
   "description": "Express 项目模板",
   "main": "src/server.js",
   "scripts": {
-    "start": "cross-env NODE_ENV=development nodemon app/server/start.js --watch server --exec babel-node",
+    "start": "cross-env NODE_ENV=development nodemon server/start.js --watch server --exec babel-node",
     "start:prod": "cross-env NODE_ENV=production node build/server",
     "clean": "rimraf build",
-    "copy:server": "copyfiles app/server/**/*.json app/server/**/*.html build",
-    "build:client": "cross-env NODE_ENV=production webpack -p --config app/webpack.config.js --progress",
-    "build:server": "cross-env NODE_ENV=production babel app/server -d build/server && npm run copy:server",
+    "copy:server": "copyfiles server/**/*.json server/**/*.html build",
+    "build:client": "cross-env NODE_ENV=production webpack -p --config webpack.config.js --progress",
+    "build:server": "cross-env NODE_ENV=production babel server -d build/server && npm run copy:server",
     "build": "npm run clean && npm run build:client && npm run build:server",
     "create-tables": "cross-env NODE_ENV=development babel-node server/createTables.js",
     "recreate-tables": "cross-env NODE_ENV=development babel-node server/createTables.js --force",
-    "test:api": "mocha app/server/src/test/**/*",
+    "test:api": "mocha server/src/test/**/*",
     "test": "npm run test:api"
   },
   "dependencies": {

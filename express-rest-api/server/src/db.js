@@ -1,5 +1,5 @@
-import db from './helpers/mysql'
+import db from './helpers/db/mysql'
 
-export default callback => {
+export default (callback) => {
   callback(db)
 }

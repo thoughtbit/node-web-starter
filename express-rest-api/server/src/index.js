@@ -1,34 +1,18 @@
-import server from 'server'
-import initializeDb from './helpers/mysql'
+import http from 'http'
+import server from './server'
+import initializeDb from './db'
 import config from './config'
-import pkg from  '../package.json'
-
-const banner = `
-*********************************************************************************************
-*
-* ${pkg.description}
-* @version ${pkg.version}
-* @author ${pkg.author.name}
-*
-*********************************************************************************************`;
 
 // express
-const startServer = ({ config, db }) => {
-
-    console.log(banner);
-
-    // Initialize server
-    const app = server.init({ config, db })
-
-    // Start up the server on the port specified in the config after we connected to mongodb
-    app.listen(config.server.port, () => {
-        console.log(`App started on port ${config.server.port} with environment ${config.environment}`);
-    })
+const startServer = (db) => {
+  // Initialize server
+  const app = server.init({ config, db })
+  app.server = http.createServer(app)
+  app.server.listen(process.env.PORT || config.port)
+  console.log(`Started on port ${app.server.address().port}`)
 }
 
 // connect to db
-initializeDb(db => {
-  startServer({ config, db })
+initializeDb((db) => {
+  startServer(db)
 })
-
-export default app

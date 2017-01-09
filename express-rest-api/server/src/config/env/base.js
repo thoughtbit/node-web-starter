@@ -1,8 +1,9 @@
 import path from 'path'
 
 export default {
+  version: '1.1.0',
   // 端口
-  port: process.env.PORT || 12306,
+  port: process.env.PORT || 9090,
   // 根目录
   root: path.resolve(__dirname, '../../../'),
   // 数据库
@@ -42,6 +43,6 @@ export default {
     /** 文件下载路径 */
     accessUrl: './access-files',
   },
-	"bodyLimit": "100kb",
-	"corsHeaders": ["Link"]
+  bodyLimit: '100kb',
+  corsHeaders: ['Link'],
 }

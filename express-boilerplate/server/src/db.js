@@ -1,5 +1,5 @@
 import db from './db/mysql'
 
-export default callback => {
+export default (callback) => {
   callback(db)
 }

@@ -1,20 +1,16 @@
-
-import passport from 'passport';
-import local from './passport/local';
+import passport from 'passport'
+import local from './passport/local'
 
 class Passport {
+  constructor() {
+  }
 
-    constructor() {
-    }
-
-    init(app) {
-
-        // use these strategies
-        passport.use(local);
-
-        // Add passport's middleware
-        app.use(passport.initialize());
-    }
+  init({ app, config, db }) {
+    // use these strategies
+    passport.use(local({ config, db }))
+    // Add passport's middleware
+    app.use(passport.initialize())
+  }
 }
 
-export default new Passport();
+export default new Passport()

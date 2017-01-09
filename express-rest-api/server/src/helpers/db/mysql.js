@@ -1,8 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 import Sequelize from 'sequelize'
-import config from './config'
-import logger from '../helpers/logger'
+import config from '../../config'
+
+function resolveOwn(relativePath) {
+  return path.resolve(__dirname, relativePath)
+}
 
 let db = {}
 
@@ -22,10 +25,10 @@ const sequelize = new Sequelize(
 // 测试连接
 sequelize.authenticate()
   .then(() => {
-    logger.debug('数据库连接成功！');
+    console.log('数据库连接成功！')
   })
   .catch((err) => {
-    logger.debug(`数据库连接失败，原因是:+ ${err}`)
+    console.log('数据库连接失败，原因是:', err)
   })
 
 db = {
@@ -35,7 +38,7 @@ db = {
   models: {},
 }
 
-const dir = path.join(__dirname, 'models')
+const dir = resolveOwn('../../models')
 
 fs.readdirSync(dir)
   .filter(file => (file.indexOf('.') !== 0) && (file !== basename))
