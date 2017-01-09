@@ -1,5 +1,7 @@
+import path from 'path'
 import http from 'http'
 import express from 'express'
+import engines from 'consolidate'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import initializeDb from './db'
@@ -17,10 +19,21 @@ app.use(cors({
   exposedHeaders: config.corsHeaders,
 }))
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json({
   limit: config.bodyLimit,
 }))
+
+// Static files
+app.use(express.static(path.join(__dirname, '../public')))
+app.use(['/favicon.ico', '/images*', '/media*', '/css*', '/fonts*', '/assets*'], (req, res) => {
+  res.status(404).end()
+})
+
+// view engine setup
+app.engine('html', engines.nunjucks)
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'html')
 
 // connect to db
 initializeDb((db) => {

@@ -29,8 +29,29 @@ export default ({ config, db }) => {
   })
 
   router.get('/', (req, res) => {
-    res.json({ version: config.version })
+    // res.json({ version: config.version })
+    res.render('index', {
+      name: 'home',
+    })
   })
+
+  // // catch 404 and forward to error handler
+  // router.use((req, res, next) => {
+  //   const err = new Error('Not Found')
+  //   err.status = 404
+  //   next(err)
+  // })
+
+  // router.use((error, req, res) => {
+  //   const statusCode = error.statusCode || 500
+  //   const err = {
+  //     error: statusCode,
+  //     message: error.message,
+  //   }
+  //   if (!res.headersSent) {
+  //     res.status(statusCode).send(err)
+  //   }
+  // })
 
   return router
 }

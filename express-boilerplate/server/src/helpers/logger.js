@@ -11,7 +11,7 @@ const exLogFile = path.join(__dirname, '../../.logs/exceptions.json')
 const logger = new (winston.Logger)({
   transports: [
   	new winston.transports.File({
-			level: 'error',
+      level: 'error',
     	filename: infoLogFile,
       handleExceptions: true,
       json: true,

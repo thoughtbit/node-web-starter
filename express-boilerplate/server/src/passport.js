@@ -6,4 +6,5 @@ export default ({ app, config, db }) => {
   passport.use(local({ app, config, db }))
   // Add passport's middleware
   app.use(passport.initialize())
+  app.use(passport.session())
 }
