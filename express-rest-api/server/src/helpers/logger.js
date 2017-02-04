@@ -10,12 +10,12 @@ const exLogFile = path.join(__dirname, '../../.logs/exceptions.json')
 
 const logger = new (winston.Logger)({
   transports: [
-  	new winston.transports.File({
-			level: 'error',
-    	filename: infoLogFile,
+    new winston.transports.File({
+      level: 'error',
+      filename: infoLogFile,
       handleExceptions: true,
       json: true,
-      maxsize: 5242880, //5MB
+      maxsize: 5242880, // 5MB
       maxFiles: 5,
       colorize: false,
     }),

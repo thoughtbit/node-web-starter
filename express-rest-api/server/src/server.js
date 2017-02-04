@@ -1,10 +1,13 @@
 import express from 'express'
+import graphqlHTTP from 'express-graphql'
 import cors from 'cors'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import methodOverride from 'method-override'
+
 import passport from './passport'
 import routes from './routes'
+import schema from './schema'
 
 /**
  * An Express class to configure Express application.
@@ -22,7 +25,7 @@ class Server {
     this.app.set('showStackError', true)
 
     // Request body parsing middleware should be above methodOverride
-    this.app.use(bodyParser.urlencoded({ extended: true }))
+    this.app.use(bodyParser.urlencoded({ extended: false }))
     this.app.use(bodyParser.json({
       limit: config.bodyLimit,
     }))
@@ -56,9 +59,14 @@ class Server {
     })
   }
 
+  // Configure handling.
+  initRoutes({ config, db }) {
+    // Initialize routes
+    this.app.use(routes({ config, db }))
+  }
+
   // Configure error handling.
   initErrorRoutes() {
-		// Assume 'not found' in the error msgs is a 404. this is somewhat silly, but valid, you can do whatever you
     // like, set properties, use instanceof etc.
     this.app.use((err, req, res, next) => {
       // If the error object doesn't exists
@@ -74,6 +82,23 @@ class Server {
       // Redirect to not found page
       res.sendStatus(404)
     })
+  }
+
+  // graphiql
+  initGraphql() {
+    // Multer
+    this.app.use('/graphql', multer({ dest: './uploads/' }).single('file'))
+
+    // GraphqQL server
+    this.app.use('/graphql', graphqlHTTP(req => ({
+      schema: schema.getSchema(),
+      rootValue: {
+        isAuthenticated: req.isAuthenticated(),
+        user: req.user,
+        file: req.file,
+      },
+      graphiql: true,
+    })))
   }
 
   // Initialize the Express application.
@@ -92,8 +117,11 @@ class Server {
     // Initialize passport configuration
     passport.init({ app, config, db })
 
+    // Initialize Graphql
+    this.initGraphql({ config, db })
+
     // Initialize routes
-    app.use(routes({ config, db }))
+    this.initRoutes({ config, db })
 
     // Initialize error routes
     this.initErrorRoutes()

@@ -1,27 +1,26 @@
-import config from './config';
-import redis from 'redis';
-import logger from '../helpers/logger';
-import Promise from 'bluebird';
+import Promise from 'bluebird'
+import redis from 'redis'
+import config from '../../config'
+import logger from '../logger'
 
-let redisClient = null;
+let redisClient = null
 
+if (config.db.redis.isAvailable) {
+  // It'll add a Async to all node_redis functions (e.g. return client.getAsync().then())
+  Promise.promisifyAll(redis.RedisClient.prototype)
+  Promise.promisifyAll(redis.Multi.prototype)
 
-if (config.redis.isAvailable) {
+  redisClient = redis.createClient(config.db.redis.port, config.db.redis.host)
 
-    // It'll add a Async to all node_redis functions (e.g. return client.getAsync().then())
-    Promise.promisifyAll(redis.RedisClient.prototype);
+  redisClient.auth(config.db.redis.auth)
 
-    redisClient = redis.createClient(config.redis.port, config.redis.host);
+  redisClient.on('connect', () => {
+    logger.debug('Redis connected to', config.db.redis.host, config.db.redis.port)
+  })
 
-    redisClient.auth(config.redis.auth);
-
-    redisClient.on('connect', function () {
-        logger.debug('Redis connected to', config.redis.host, config.redis.port);
-    });
-
-    redisClient.on('error', function (err) {
-        logger.error('Redis error: ' + err);
-    });
+  redisClient.on('error', (err) => {
+    logger.error(`Redis error: ${err}`)
+  })
 }
 
-export default redisClient;
+export default redisClient

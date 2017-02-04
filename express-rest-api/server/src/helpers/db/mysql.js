@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import Sequelize from 'sequelize'
+import logger from '../logger'
 import config from '../../config'
 
 function resolveOwn(relativePath) {
@@ -11,11 +12,11 @@ let db = {}
 
 const basename = path.basename(module.filename)
 const sequelize = new Sequelize(
-  config.db.name,
-  config.db.username,
-  config.db.password,
+  config.db.mysql.name,
+  config.db.mysql.username,
+  config.db.mysql.password,
   {
-    ...config.db.options,
+    ...config.db.mysql.options,
     define: {
       underscored: true,
     },
@@ -24,11 +25,11 @@ const sequelize = new Sequelize(
 
 // 测试连接
 sequelize.authenticate()
-  .then(() => {
-    console.log('数据库连接成功！')
+  .then((err) => {
+    logger.debug('DB: Connected', err)
   })
   .catch((err) => {
-    console.log('数据库连接失败，原因是:', err)
+    logger.debug('DB: Not Connected', err)
   })
 
 db = {
