@@ -40,3 +40,7 @@ jspm_packages
 
 // 私有日志
 .logs
+
+.DS_Store
+public/apidoc
+logs/*.log
