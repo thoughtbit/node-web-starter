@@ -12,4 +12,4 @@ consign({verbose: false})
   .then("libs/boot.js")
   .into(app)
 
-export default app
+module.exports = app

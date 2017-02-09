@@ -6,11 +6,11 @@ function resolveOwn(relativePath) {
   return path.resolve(__dirname, relativePath)
 }
 
-let db = {}
+let db = null
 
-export default (app) => {
+module.exports = app => {
+
   if (!db) {
-
     const basename = path.basename(module.filename)
     const config = app.libs.config
     const logger = app.libs.logger
@@ -43,7 +43,7 @@ export default (app) => {
       models: {},
     }
 
-    const dir = resolveOwn('../../models')
+    const dir = resolveOwn('./models')
 
     fs.readdirSync(dir)
       .filter(file => (file.indexOf('.') !== 0) && (file !== basename))

@@ -1,7 +1,7 @@
 import cluster from "cluster"
 import os from "os"
 
-const CPUS = os.cpus();
+const CPUS = os.cpus()
 if (cluster.isMaster) {
   CPUS.forEach(() => cluster.fork())
   cluster.on("listening", worker => {
@@ -16,5 +16,5 @@ if (cluster.isMaster) {
     // Ensure to starts a new cluster if an old one dies
   })
 } else {
-  require("./index.js")
+  require("./index")
 }

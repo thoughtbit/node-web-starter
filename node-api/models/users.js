@@ -1,6 +1,6 @@
-import bcrypt from "bcrypt"
+// import bcrypt from "bcrypt"
 
-export default (sequelize, DataType) => {
+module.exports = (sequelize, DataType) => {
   const Users = sequelize.define("Users", {
     id: {
       type: DataType.INTEGER,
@@ -29,7 +29,7 @@ export default (sequelize, DataType) => {
         notEmpty: true
       }
     }
-  }, {
+  }/*, {
     hooks: {
       beforeCreate: user => {
         const salt = bcrypt.genSaltSync()
@@ -44,6 +44,6 @@ export default (sequelize, DataType) => {
         return bcrypt.compareSync(password, encodedPassword)
       }
     }
-  })
+  }*/)
   return Users
 }

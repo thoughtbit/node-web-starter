@@ -1,4 +1,4 @@
-export default (app) => {
+module.exports = app => {
   const Users = app.db.models.Users
 
   app.route("/user")

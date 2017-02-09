@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   db: {
     name: 'darwin',
     username: 'root',

@@ -1,6 +1,6 @@
 import jwt from "jwt-simple"
 
-export default (app) => {
+module.exports = app => {
   const cfg = app.libs.config
   const Users = app.db.models.Users
 

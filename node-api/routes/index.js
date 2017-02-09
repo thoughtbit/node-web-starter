@@ -1,4 +1,4 @@
-export default (app) => {
+module.exports = app => {
   /**
    * @api {get} / API Status
    * @apiGroup Status

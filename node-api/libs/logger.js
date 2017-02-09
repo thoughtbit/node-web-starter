@@ -2,18 +2,18 @@ import fs from "fs"
 import path from 'path'
 import winston from 'winston'
 
-if (!fs.existsSync("logs")) {
-  fs.mkdirSync("logs")
+if (!fs.existsSync(".logs")) {
+  fs.mkdirSync(".logs")
 }
 
 winston.emitErrs = true
 
-const infoLogFile = path.join(__dirname, '../../.logs/info.json')
-const exLogFile = path.join(__dirname, '../../.logs/exceptions.json')
+const infoLogFile = path.join(__dirname, '../.logs/info.json')
+const exLogFile = path.join(__dirname, '../.logs/exceptions.json')
 
 // LEVELS : { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
 
-const logger = new (winston.Logger)({
+module.exports = new winston.Logger({
   transports: [
     new winston.transports.File({
       level: 'error',
@@ -36,5 +36,3 @@ const logger = new (winston.Logger)({
   ],
   exitOnError: false,
 })
-
-export default logger

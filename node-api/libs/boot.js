@@ -1,7 +1,7 @@
-import https from "https";
-import fs from "fs";
+import https from "https"
+import fs from "fs"
 
-export default (app) => {
+module.exports = app => {
   if (process.env.NODE_ENV !== "test") {
     const credentials = {
       key: fs.readFileSync("app.key", "utf8"),
