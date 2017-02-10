@@ -1,5 +1,10 @@
+import fs from "fs"
 import path from 'path'
 import winston from 'winston'
+
+if (!fs.existsSync(".logs")) {
+  fs.mkdirSync(".logs")
+}
 
 winston.emitErrs = true
 

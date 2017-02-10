@@ -1,0 +1,36 @@
+{
+  "name": "next-express",
+  "version": "0.1.0",
+  "description": "Next.js Express",
+  "scripts": {
+    "dev": "nodemon -w server.js --exec \"babel-node server.js --presets es2015,stage-0\"",
+    "build": "babel src -s -D -d dist --presets es2015,stage-0",
+    "start": "node dist/server.js",
+    "prestart": "npm run -s build",
+    "test": "jest"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "lru-cache": "^4.0.2",
+    "next": "^2.0.0-beta",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "nprogress": "^0.2.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-core": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-transform-flow-strip-types": "^6.21.0",
+    "babel-jest": "^18.0.0",
+    "enzyme": "^2.5.1",
+    "jest-cli": "^18.0.0",
+    "react-addons-test-utils": "^15.4.2",
+    "react-test-renderer": "^15.4.2",
+    "flow-bin": "^0.37.4",
+    "nodemon": "^1.9.2"
+  }
+}
+
