@@ -3,7 +3,6 @@
  */
 
 import { Router } from 'express'
-import logger from '../helpers/logger'
 
 // Import all routes
 // import auth from './auth'
@@ -31,15 +30,6 @@ export default ({ config, db }) => {
 
   router.get('/', (req, res) => {
     res.json({ version: config.version })
-  })
-
-  /**
-   * Error handling
-   */
-  router.use((err, req, res, next) => {
-    logger.error(err.stack)
-    res.status(500).send(err.stack)
-    next()
   })
 
   return router

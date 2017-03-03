@@ -4,8 +4,10 @@ import cors from 'cors'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import methodOverride from 'method-override'
-
+import multer from 'multer'
+import logger from './helpers/logger'
 import passport from './passport'
+
 import routes from './routes'
 import schema from './schema'
 
@@ -68,37 +70,59 @@ class Server {
   // Configure error handling.
   initErrorRoutes() {
     // like, set properties, use instanceof etc.
-    this.app.use((err, req, res, next) => {
-      // If the error object doesn't exists
-      if (!err) {
-        return next()
-      }
-      // Redirect to error page
-      res.sendStatus(500)
-    })
+    // this.app.use((err, req, res, next) => {
+    //   logger.error(err.stack)
+    //   // If the error object doesn't exists
+    //   if (!err) {
+    //     return next()
+    //   }
+    //   // Redirect to error page
+    //   res.sendStatus(500)
+    // })
 
     // Assume 404 since no middleware responded
-    this.app.use((req, res) => {
-      // Redirect to not found page
-      res.sendStatus(404)
+    // this.app.use((req, res) => {
+    //   // Redirect to not found page
+    //   res.sendStatus(404)
+    // })
+
+    // Catch 404 and forward to error handler
+    this.app.use((req, res, next) => {
+      const err = new Error('Not Found')
+      err.status = 404
+      next(err)
+    })
+    // // Error handler
+    this.app.use((err, req, res, next) => {
+      logger.error(err.stack)
+      res
+        .status(err.status || 500)
+        .json({ message: err.message })
     })
   }
 
   // graphiql
-  initGraphql() {
+  initGraphQL() {
     // Multer
     this.app.use('/graphql', multer({ dest: './uploads/' }).single('file'))
 
     // GraphqQL server
-    this.app.use('/graphql', graphqlHTTP(req => ({
-      schema: schema.getSchema(),
-      rootValue: {
-        isAuthenticated: req.isAuthenticated(),
-        user: req.user,
-        file: req.file,
-      },
-      graphiql: true,
-    })))
+    this.app.use('/graphql', graphqlHTTP((req) => {
+      const startTime = Date.now()
+      return {
+        schema: schema.getSchema(),
+        graphiql: process.env.NODE_ENV !== 'production',
+        pretty: process.env.NODE_ENV !== 'production',
+        extensions({ document, variables, operationName, result }) {
+          return { responseTime: Date.now() - startTime }
+        },
+        rootValue: {
+          isAuthenticated: req.isAuthenticated(),
+          user: req.user,
+          file: req.file,
+        },
+      }
+    }))
   }
 
   // Initialize the Express application.
@@ -118,7 +142,7 @@ class Server {
     passport.init({ app, config, db })
 
     // Initialize Graphql
-    this.initGraphql({ config, db })
+    this.initGraphQL({ config, db })
 
     // Initialize routes
     this.initRoutes({ config, db })
