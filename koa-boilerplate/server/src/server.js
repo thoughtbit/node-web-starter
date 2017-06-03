@@ -87,19 +87,6 @@ app.on('error', async (err, ctx) => {
   logger.error('server error', err, ctx)
 })
 
-// 捕获promise reject错误
-process.on('unhandledRejection', (reason) => {
-  console.log('unhandledRejection:', reason)
-})
-
-// 捕获未知错误
-process.on('uncaughtException', (err) => {
-  console.log('uncaughtException:', err)
-  if (err.message.indexOf(' EADDRINUSE ') > -1) {
-    process.exit()
-  }
-})
-
 app.listen(config.port, (err) => {
   if (err) {
     console.error(err)
