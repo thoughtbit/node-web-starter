@@ -109,6 +109,7 @@ class Server {
     // GraphqQL server
     this.app.use('/graphql', graphqlHTTP((req) => {
       const startTime = Date.now()
+
       return {
         schema: schema.getSchema(),
         graphiql: process.env.NODE_ENV !== 'production',
