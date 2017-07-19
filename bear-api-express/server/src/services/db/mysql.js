@@ -65,4 +65,7 @@ Object.keys(db.models).forEach((key) => {
   }
 })
 
-export default db;
+const initializeDb = (callback) => callback(db)
+
+export default db
+export { initializeDb }
