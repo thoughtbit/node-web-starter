@@ -1,4 +1,4 @@
-import db from './../db'
+import db from './../helpers/db/mysql'
 
 const UsersService = {
   // async createUser(user) {

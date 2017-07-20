@@ -1,4 +1,4 @@
-import isAuthenticated from './isAuthenticated';
-import signToken from './signToken';
+import isAuthenticated from './isAuthenticated'
+import signToken from './signToken'
 
-export { isAuthenticated, signToken };
+export { isAuthenticated, signToken }

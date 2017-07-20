@@ -1,4 +1,4 @@
-import responseHandler from './response';
+import responseHandler from './response'
 
 import {
   BadRequest,
@@ -10,7 +10,7 @@ import {
   InternalServer,
   NotImplemented,
   UserNotVerifiedError,
-} from './errors';
+} from './errors'
 
 export {
   responseHandler,
@@ -23,4 +23,4 @@ export {
   InternalServer,
   NotImplemented,
   UserNotVerifiedError,
-};
+}

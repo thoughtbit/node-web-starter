@@ -1,0 +1,1937 @@
+/* eslint-disable */
+import './assets/js/libs';
+import Vue from 'vue';
+import FastClick from 'fastclick';
+import App from './app';
+import router from './router';
+import store from './store';
+// import VueAlloyTouch from './plugins/vue-touch';
+import VueFinger from './plugins/vue-finger';
+import VueSwiper from './plugins/vue-swiper';
+// import VueECharts from './plugins/vue-echarts';
+import VueECharts from './plugins/vue-echarts-v3';
+Vue.config.productionTip = false;
+// 图表
+Vue.use(VueECharts);
+// 平板滚动
+Vue.use(VueSwiper);
+// 平板事件
+Vue.use(VueFinger);
+// 触摸运动方案
+// Vue.use(VueAlloyTouch);
+document.addEventListener('DOMContentLoaded', function (event) {
+  FastClick.attach(document.body);
+});
+// 创建vue实例并渲染到app
+new Vue({
+  router,
+  store,
+  render: h => h(App),
+}).$mount('#app');
+<template>
+  <div id="app">
+    <Loading></Loading>
+    <transition name="fade" mode="out-in" v-if="showMe">
+      <router-view></router-view>
+    </transition>
+  </div>
+</template>
+<script>
+  import './assets/css/base.css';
+  import './assets/css/animate.css';
+  import Loading from './components/loading';
+  import VueECharts from './plugins/vue-echarts-v3';
+  // Custom theme
+  import theme from './assets/echarts/theme.json';
+  // Map of xianyang
+  import xianyangMap from './assets/echarts/map/json/province/xianyang.json';
+  // registering custom theme
+  VueECharts.echarts.registerTheme('theme', theme);
+  // registering map data
+  VueECharts.echarts.registerMap('xianyang', xianyangMap);
+  export default {
+    name: 'app',
+    data() {
+      return {
+        showMe: false, // 是否展示当前页面
+        timeindex: 0,
+      };
+    },
+    components: {
+      Loading,
+    },
+    computed: {},
+    mounted() {
+      // 设置当前状态为加载中
+      this.$store.dispatch('setLoading', true);
+      // 模拟请求等待
+      const time = 1500;
+      setTimeout(() => {
+        // 页面显示
+        this.showMe = true;
+        this.$store.dispatch('setLoading', false);
+      }, time);
+    },
+    beforeUpdate() {
+      // 设置当前状态为加载中
+      this.$store.dispatch('setLoading', true);
+      setTimeout(() => {
+        // 页面显示
+        this.$store.dispatch('setLoading', false);
+        this.showMe = true;
+      }, 300);
+    },
+    methods: {},
+  };
+</script>
+<style>
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .3s;
+  }
+  .fade-enter, .fade-leave-active {
+    opacity: 0;
+  }
+</style>
+<template>
+  <div id="home-page" class="page">
+    <header id="header">
+      <router-link to="/" exact>
+        <h1 class="logo"><img src="../assets/images/logo_lg@0.5.png"></h1>
+      </router-link>
+      <div class="search-box">
+        <div class="search-panel">
+          <form action="/" method="get">
+            <input autocomplete="off" autofocus="true" accesskey="s" name="q" id="q">
+            <i class="icon-search"></i>
+            <button type="submit" class="btn-search">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-search"></use>
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div><!-- /.search-box -->
+    </header><!-- /#header -->
+    <main id="content">
+      <div class="container">
+        <div class="grid grid-nav">
+          <div class="flexbox flexbox-justify-center">
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/csyx">
+                  <img class="grid-icon" src="../assets/images/nav/icon_1.png">
+                  <div class="grid-text">城市运行</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/jjjs">
+                  <img class="grid-icon" src="../assets/images/nav/icon_2.png">
+                  <div class="grid-text">经济建设</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/jzfp">
+                  <img class="grid-icon" src="../assets/images/nav/icon_3.png">
+                  <div class="grid-text">精准扶贫</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/gzsq">
+                  <img class="grid-icon" src="../assets/images/nav/icon_4.png">
+                  <div class="grid-text">公众诉求</div>
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <div class="flexbox flexbox-justify-center">
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/jtzs">
+                  <img class="grid-icon" src="../assets/images/nav/icon_5.png">
+                  <div class="grid-text">交通指数</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/xxhm">
+                  <img class="grid-icon" src="../assets/images/nav/icon_6.png">
+                  <div class="grid-text">信息惠民</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/jtcx">
+                  <img class="grid-icon" src="../assets/images/nav/icon_7.png">
+                  <div class="grid-text">交通出行</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/zhtj">
+                  <img class="grid-icon" src="../assets/images/nav/icon_8.png">
+                  <div class="grid-text">智慧团建</div>
+                </router-link>
+              </div>
+            </div>
+          </div>
+          <div class="flexbox flexbox-justify-center">
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/xzjg">
+                  <img class="grid-icon" src="../assets/images/nav/icon_9.png">
+                  <div class="grid-text">卫生健康</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/sjjh">
+                  <img class="grid-icon" src="../assets/images/nav/icon_10.png">
+                  <div class="grid-text">数据交换</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/bi">
+                  <img class="grid-icon" src="../assets/images/nav/icon_11.png">
+                  <div class="grid-text">Quick BI</div>
+                </router-link>
+              </div>
+            </div>
+            <div class="flexbox-item grid-item">
+              <div class="grid-item-contain">
+                <router-link class="nav-item" to="/sjjc">
+                  <img class="grid-icon" src="../assets/images/nav/icon_12.png">
+                  <div class="grid-text">数据集成</div>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main><!-- /#content -->
+  </div>
+</template>
+<script>
+  export default {
+    name: 'home',
+    data() {
+      return {};
+    },
+    methods: {},
+  };
+</script>
+<style>
+  #home-page {
+    background: #00031a url(../assets/images/home_bg.jpg) 50% 50% no-repeat;
+    -webkit-background-size: cover;
+    background-size: cover;
+  }
+  /* header */
+  #header {
+    padding: .40rem 0 .30rem;
+  }
+  #header .logo {
+    margin: 0 auto 40px;
+    line-height: 108px;
+    font-weight: 500;
+    font-size: 52px;
+    color: #fff;
+  }
+
+  #header .logo img {
+    display: block;
+    margin: 0 auto;
+    width: 6.98rem;
+  }
+  .nav-item {
+    text-align: center;
+    padding: .20rem 0;
+  }
+  .grid .flexbox .flexbox-item .grid-item-contain .grid-icon {
+    margin-top: .04rem;
+    width: 50%;
+  }
+  .grid .flexbox .flexbox-item .grid-item-contain .grid-text {
+    margin-top: .1rem;
+    font-size: 0.18rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+  }
+  .grid-nav .flexbox .flexbox-item .grid-item-contain {
+    height: 1.56rem;
+  }
+  .grid-nav .flexbox .flexbox-item.grid-item .nav-item {
+    border-radius: .20rem;
+    overflow: hidden;
+  }
+  .grid-nav .flexbox .flexbox-item.grid-item .nav-item:active {
+    background-color: rgba(24, 106, 197, 0.6);
+  }
+  .search-box {
+    position: relative;
+    width: 4.85rem;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .search-panel {
+    position: relative;
+    width: 4.85rem;
+    height: .44rem;
+  }
+  .search-panel input {
+    float: left;
+    border: 0 none;
+    width: 4rem;
+    height: .44rem;
+    line-height: 30px;
+    padding: 5px 20px;
+    color: #999;
+    font-size: 18px;
+    border-radius: 20px 0 0 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  .search-panel input:focus {
+    background-color: rgba(255, 255, 255, 0.6);
+    color: #333;
+  }
+  .search-panel .btn-search {
+    float: right;
+    width: .85rem;
+    height: .44rem;
+    border: 0 none;
+    font-size: 18px;
+    font-weight: normal;
+    background-color: rgba(24, 106, 197, 0.50);
+    color: #fff;
+    border-radius: 0 20px 20px 0;
+  }
+  .search-panel .btn-search .icon { width: .28rem;height: .28rem; }
+  .container {
+    padding: .7rem .2rem;
+  }
+  #content .container {
+    padding: 0 .2rem;
+  }
+</style>
+<template>
+  <div class="page" id="csyx-page">
+    <NavBar title="城市运行"></NavBar>
+    <swiper :options="swiperOption" class="swiper-box">
+      <swiper-slide class="swiper-item">
+        <leftOneScreenPage></leftOneScreenPage>
+      </swiper-slide>
+      <swiper-slide class="swiper-item">
+        <leftTwoScreenPage></leftTwoScreenPage>
+      </swiper-slide>
+      <swiper-slide class="swiper-item">
+        <div class="container">
+          <header class="header" role="banner">
+            <h1 class="logo">某市新型智慧城市-运行指挥系统</h1>
+          </header><!-- /.header -->
+          <indexScreenPage></indexScreenPage>
+        </div>
+      </swiper-slide>
+      <swiper-slide class="swiper-item">
+        <rightOneScreenPage></rightOneScreenPage>
+      </swiper-slide>
+      <swiper-slide class="swiper-item">
+        <rightTwoScreenPage></rightTwoScreenPage>
+      </swiper-slide>
+      <div class="swiper-pagination" slot="pagination"></div>
+    </swiper>
+  </div>
+</template>
+<script>
+import VueECharts from '@/plugins/vue-echarts';
+import NavBar from '@/components/nav-bar';
+// 主屏页面
+import indexScreenPage from './index-screen-page';
+// 左一页面
+import leftOneScreenPage from './left-one-screen-page';
+// 左二页面
+import leftTwoScreenPage from './left-two-screen-page';
+// 右一页面
+import rightOneScreenPage from './right-one-screen-page';
+// 右二页面
+import rightTwoScreenPage from './right-two-screen-page';
+// Custom theme
+import theme from './../../assets/echarts/theme.json';
+// Map of xianyang
+import xianyangMap from './../../assets/echarts/map/json/province/xianyang.json';
+// registering custom theme
+VueECharts.echarts.registerTheme('theme', theme);
+// registering map data
+VueECharts.echarts.registerMap('xianyang', xianyangMap);
+export default {
+  name: 'jtzs',
+  components: {
+    NavBar,
+    indexScreenPage,
+    leftOneScreenPage,
+    leftTwoScreenPage,
+    rightOneScreenPage,
+    rightTwoScreenPage,
+  },
+  data() {
+    return {
+      swiperOption: {
+        initialSlide: 2,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+      },
+    };
+  },
+};
+</script>
+<style scoped>
+  .row > div { padding: .1rem; }
+  .header {
+    position: relative;
+  }
+  .header .logo {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 466px;
+    text-indent: -999em;
+    background: url(./../../assets/images/csyx/logo.png) 50% 50% no-repeat;
+  }
+</style>
+<template>
+  <div class="xianyang-map-wrapper">
+    <chart :options="xyMapData" ref="xymapChart" theme="theme" resizable class="xianyang-map"></chart>
+    <div class="lighting-wraper"></div><!-- /.lighting-wrapper -->
+    <div class="aureole-wrapper">
+      <div class="aureole-item aureole-one"></div>
+      <div class="aureole-item aureole-two"></div>
+      <div class="aureole-item aureole-three"></div>
+      <div class="aureole-item aureole-four"></div>
+    </div><!-- /.aureole-wrapper -->
+  </div><!-- /.xianyang-map-wrapper -->
+</template>
+<script>
+  // 某市地图数据源
+  import xyMapData from '@/data/csyx/xy_map';
+  export default {
+    data: () => ({
+      xyMapData,
+    }),
+  };
+</script>
+<style scoped>
+  .xianyang-map-wrapper {
+    position: relative;
+    z-index: 8;
+    margin-top: 0;
+  }
+  .xianyang-map {
+    position: relative;
+    z-index: 88;
+    left: 0;
+    width: 640px;
+    height: 658px;
+  }
+  .lighting-wraper {
+    position: absolute;
+    z-index: 12;
+    top: 0;
+    left: 0;
+    width: 644px;
+    height: 658px;
+    background: url(./../../assets/images/csyx/lighting.png) 50% 100% no-repeat;
+    /*-moz-transform: scale(0.8);
+    -ms-transform: scale(0.8);
+    -webkit-transform: scale(0.8);
+    transform: scale(0.8);*/
+  }
+  /* 光环旋转 */
+  .aureole-wrapper {
+    position: absolute;
+    z-index: 11;
+    top: 250px;
+    left: 0;
+    width: 644px;
+    height: 658px;
+    -webkit-transform: rotate(-1deg) skew(45deg) scale(.85) scaleY(-.2);
+    -moz-transform: rotate(-1deg) skew(45deg) scale(.85) scaleY(-.2);
+    -ms-transform: rotate(-1deg) skew(45deg) scale(.85) scaleY(-.2);
+    transform: rotate(-1deg) skew(45deg) scale(.85) scaleY(-.2);
+  }
+  .aureole-item {
+    position: absolute;
+    width: 644px;
+    height: 658px;
+    -webkit-background-size: cover;
+    background-size: cover;
+    transform-style: preserve-3d;
+  }
+  .aureole-one {
+    top: 0;
+    left: 0;
+    -webkit-animation: spin 25s infinite linear;
+    -moz-animation: spin 25s infinite linear;
+    -o-animation: spin 25s infinite linear;
+    animation: spin 25s infinite linear;
+    background: url(./../../assets/images/csyx/aureole_1.png) 50% 50% no-repeat;
+  }
+  .aureole-two {
+    top: 0;
+    left: 0;
+    -webkit-animation: spininvert 20s infinite linear;
+    -moz-animation: spininvert 20s infinite linear;
+    -o-animation: spininvert 20s infinite linear;
+    animation: spininvert 20s infinite linear;
+    background: url(./../../assets/images/csyx/aureole_2.png) 50% 50% no-repeat;
+  }
+
+  .aureole-three {
+    -webkit-animation: spin 12s infinite linear;
+    -moz-animation: spin 12s infinite linear;
+    -o-animation: spin 12s infinite linear;
+    animation: spin 12s infinite linear;
+    background: url(./../../assets/images/csyx/aureole_3.png) 50% 50% no-repeat;
+  }
+  .aureole-four {
+    -webkit-animation: spininvert 10s infinite linear;
+    -moz-animation: spininvert 10s infinite linear;
+    -o-animation: spininvert 10s infinite linear;
+    animation: spininvert 10s infinite linear;
+    background: url(./../../assets/images/csyx/aureole_4.png) 50% 50% no-repeat;
+  }
+
+  @-moz-keyframes spin {
+    0% {
+      -moz-transform: rotate(0deg);
+    }
+    100% {
+      -moz-transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes spin {
+    0% {
+      -o-transform: rotate(0deg);
+    }
+    100% {
+      -o-transform: rotate(360deg);
+    }
+  }
+  @-ms-keyframes spin {
+    0% {
+      -ms-transform: rotate(0deg);
+    }
+    100% {
+      -ms-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @-moz-keyframes spininvert {
+    0% {
+      -moz-transform: rotate(360deg);
+    }
+    100% {
+      -moz-transform: rotate(0deg);
+    }
+  }
+  @-webkit-keyframes spininvert {
+    0% {
+      -webkit-transform: rotate(360deg);
+    }
+    100% {
+      -webkit-transform: rotate(0deg);
+    }
+  }
+  @-o-keyframes spininvert {
+    0% {
+      -o-transform: rotate(360deg);
+    }
+    100% {
+      -o-transform: rotate(0deg);
+    }
+  }
+
+  @-ms-keyframes spininvert {
+    0% {
+      -ms-transform: rotate(360deg);
+    }
+    100% {
+      -ms-transform: rotate(0deg);
+    }
+  }
+
+  @keyframes spininvert {
+    0% {
+      transform: rotate(360deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  @keyframes orbit {
+    0% {
+      transform: rotateZ(0deg);
+    }
+
+    100% {
+      transform: rotateZ(-360deg);
+    }
+  }
+
+  @keyframes suborbit {
+    0% {
+      transform: rotateX(90deg) rotateZ(0deg);
+    }
+
+    100% {
+      transform: rotateX(90deg) rotateZ(-360deg);
+    }
+  }
+
+  @keyframes invert {
+    0% {
+      transform: rotateX(-90deg) rotateY(360deg) rotateZ(0deg);
+    }
+
+    100% {
+      transform: rotateX(-90deg) rotateY(0deg) rotateZ(0deg);
+    }
+  }
+
+</style>
+<template>
+  <div class="simple-mod operation-indices-mod">
+    <div class="mod-hd">
+      <h3>某市运行指标完成率 <span class="label label-success">(2016年度)</span></h3>
+    </div><!-- /.mod-hd -->
+    <div class="mod-bd">
+      <div id="J_xy_operation_indices" class="xy-operation-indices">
+        <div class="hd">
+          <ul class="group indices-status">
+            <li class="item item-s__bule">
+              <div class="label"></div>
+              <div class="value">
+                70% ~ 100%
+              </div>
+            </li>
+            <li class="item item-s__green">
+              <div class="label"></div>
+              <div class="value">
+                50% ~ 70%
+              </div>
+            </li>
+            <li class="item item-s__yellow">
+              <div class="label"></div>
+              <div class="value">
+                低于50%
+              </div>
+            </li>
+          </ul>
+        </div><!-- /.xy-operation-indices-hd -->
+        <div class="bd">
+          <div class="indices-list">
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>政务</strong>
+                  <i class="icon icon-s-zw"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        电子证照
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        一站式办理
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        网上统一入口
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div>
+            <!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>交通</strong>
+                  <i class="icon icon-s-jt"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        交通指数发布
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        公车信息预报
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        乘车电子支付
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div><!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>社保</strong>
+                  <i class="icon icon-s-sb"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        社保在线办理
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        社区自助服务
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        异地业务办理
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div>
+            <!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>医疗</strong>
+                  <i class="icon icon-s-yl"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        电子病历普及
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        在线预约诊疗
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        健康档案调阅
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div>
+            <!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>教育</strong>
+                  <i class="icon icon-s-jyu"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        多媒体教室
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        网络学习
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        无线网络覆盖率
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div>
+            <!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>就业</strong>
+                  <i class="icon icon-s-jye"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        信息覆盖率
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        服务在线办理
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div><!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>城市</strong>
+                  <i class="icon icon-s-cs"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        移动互联
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        一卡通使用
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div><!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>帮扶</strong>
+                  <i class="icon icon-s-bf"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        困难户电子档案
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        互联网无障碍访问
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div><!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>城市管理</strong>
+                  <i class="icon icon-s-csgl"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        数字化城管
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        市政管网管线监测
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        综合管廊覆盖
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div><!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>公共安全</strong>
+                  <i class="icon icon-s-ggaq"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        视频采集和覆盖
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        监控资源联网
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        全视频图像建设
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div>
+            <!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>智慧环保</strong>
+                  <i class="icon icon-s-ggaq"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        污染源监测
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        环境信息公开
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        环境问题处置率
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div><!-- /.indices-item -->
+            <div class="indices-item">
+              <dl class="group">
+                <dt>
+                  <strong>绿色节能</strong>
+                  <i class="icon icon-s-lsjn"></i>
+                </dt>
+                <dd>
+                  <ul class="list indices-cnt-list">
+                    <li class="item">
+                      <div class="name">
+                        万元GDP能耗降低率
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-blue">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 83%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">83%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        绿色建筑覆盖率
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-green">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 49%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">49%</div>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="item">
+                      <div class="name">
+                        用能单位在线监测率
+                      </div>
+                      <div class="desc">
+                        <div class="progress progress-show-yellow">
+                          <div class="progress-outer">
+                            <div class="progress-inner">
+                              <div class="progress-bg"
+                                   style="width: 36%;"></div>
+                            </div>
+                          </div>
+                          <div class="progress-text">36%</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </dd>
+              </dl>
+            </div><!-- /.indices-item -->
+          </div><!-- /.indices-list -->
+        </div><!-- /.xy-operation-indices-bd -->
+      </div><!-- /.xy-operation-indices -->
+    </div><!-- /.mod-bd -->
+  </div><!-- /.simple-mod -->
+</template>
+<script>
+  export default {
+    /* eslint-disable no-undef */
+    mounted() {
+      this.opiSilde();
+    },
+    methods: {
+      // 某市运行指标完成率
+      opiSilde() {
+        if ($('#J_xy_operation_indices').length) {
+          $('#J_xy_operation_indices').slide({ mainCell: '.bd .indices-list', autoPlay: true, effect: 'topMarquee', vis: 5, interTime: 50, trigger: 'click' });
+        }
+      },
+    },
+  };
+</script>
+<style scoped>
+
+  /* 某市运行指标完成率 */
+  .xy-operation-indices {
+    position: relative;
+    width: 310px;
+    overflow: hidden;
+  }
+  .operation-indices-mod { margin-top: 0; }
+  .indices-status { padding:0 15px; height:40px;overflow:hidden;line-height:40px; }
+  .indices-status .item { float:left;width:33.333%;text-align:center; }
+  .indices-status .item .label { display:inline-block;width:12px;height:6px;vertical-align:middle;-webkit-transition:all .4s cubic-bezier(.08, .82, .17, 1) 0s;transition:all .4s cubic-bezier(.08, .82, .17, 1) 0s;border-radius:100px;background-color:#3c9cff; }
+  .indices-status .item .value {display:inline-block; margin-left:8px;vertical-align:middle;font-size:12px;color:#fff; }
+  .indices-status .item-s__bule .label { background-color:#3c9cff; }
+  .indices-status .item-s__bule .value { color:#3c9cff; }
+  .indices-status .item-s__green .label { background-color:#20d573; }
+  .indices-status .item-s__green .value { color:#20d573; }
+  .indices-status .item-s__yellow .label { background-color:#fff100; }
+  .indices-status .item-s__yellow .value { color:#fff100; }
+
+  .indices-list { height:528px;overflow:hidden;overflow-y:auto;font-size: 14px; }
+  .indices-item { margin-bottom:8px; }
+  .indices-item dl { overflow:hidden; }
+  .indices-item dl dt { float:left;padding:10px;width:82px;height:96px;background-color:rgba(5, 22, 69, .9); }
+  .indices-item dl dt strong {display:block; height:22px;overflow:hidden; line-height:22px;font-weight: bold;text-align:center;color:#fff; }
+  .indices-item dl dt .ell { font-size:12px; }
+  .indices-item dl dt .icon { display:block;margin:0 auto;width:50px;height:50px; }
+  .icon-s-zw { background:url(./../../assets/images/csyx/icons/icon_exp_1.png) 50% 50% no-repeat; }
+  .icon-s-jt { background:url(./../../assets/images/csyx/icons/icon_exp_2.png) 50% 50% no-repeat; }
+  .icon-s-sb { background:url(./../../assets/images/csyx/icons/icon_exp_6.png) 50% 50% no-repeat; }
+  .icon-s-yl { background:url(./../../assets/images/csyx/icons/icon_yl.png) 50% 50% no-repeat; }
+  .icon-s-jyu { background:url(./../../assets/images/csyx/icons/icon_exp_3.png) 50% 50% no-repeat; }
+  .icon-s-jye { background:url(./../../assets/images/csyx/icons/icon_exp_4.png) 50% 50% no-repeat; }
+  .icon-s-cs { background:url(./../../assets/images/csyx/icons/icon_exp_5.png) 50% 50% no-repeat; }
+  .icon-s-bf { background:url(./../../assets/images/csyx/icons/icon_bf.png) 50% 50% no-repeat; }
+  .icon-s-csgl { background:url(./../../assets/images/csyx/icons/icon_zhsgl.png) 50% 50% no-repeat; }
+  .icon-s-ggaq { background:url(./../../assets/images/csyx/icons/icon_ggaq.png) 50% 50% no-repeat; }
+  .icon-s-zhhb { background:url(./../../assets/images/csyx/icons/icon_zhhhb.png) 50% 50% no-repeat; }
+  .icon-s-lsjn { background:url(./../../assets/images/csyx/icons/icon_lsjn.png) 50% 50% no-repeat; }
+  .indices-item dl dd { margin-left:85px; }
+  .indices-cnt-list .item {margin-bottom:3px; height:30px;line-height:30px;color:#fff; background-color:rgba(0, 0, 0, .2); }
+  .indices-cnt-list .item .name { float:left;width:110px;font-weight: normal;overflow:hidden;white-space:nowrap;text-indent:15px;text-overflow:ellipsis;word-wrap:normal;-o-text-overflow:ellipsis; }
+  .indices-cnt-list .item .desc { margin-left:125px; }
+  .indices-cnt-list .item:last-child { margin-bottom:0; }
+
+</style>
+<template>
+  <div class="container">
+    <div class="row">
+      <div class="col-16">
+        <ChartBox>
+          <div slot="header">
+            <h3>电子证照使用率</h3>
+          </div>
+          <chart :options="dzzmsyl" ref="dzzmsylChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+      <div class="col-8">
+        <ChartBox>
+          <div slot="header">
+            <h3>社保在线办理统计</h3>
+          </div>
+          <chart :options="sbzxbltj" ref="sbzxbltjChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-24">
+        <ChartBox>
+          <div slot="header">
+            <h3>县综合服务指标</h3>
+          </div>
+          <chart :options="xzhfwzb" ref="xzhfwzbChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import ChartBox from '@/components/chart-box';
+
+import dzzmsyl from './../../data/csyx/dzzmsyl';
+import sbzxbltj from './../../data/csyx/sbzxbltj';
+import xzhfwzb from './../../data/csyx/xzhfwzb';
+
+export default {
+  components: {
+    ChartBox,
+  },
+  data() {
+    return {
+      dzzmsyl,
+      sbzxbltj,
+      xzhfwzb,
+    };
+  },
+};
+</script>
+<style scoped>
+  .row > div { padding: .1rem; }
+  .echart-box { width: 100%; }
+</style>
+<template>
+  <div class="container">
+    <div class="row">
+      <div class="col-24">
+        <ChartBox>
+          <div slot="header">
+            <h3>城市交通运行指数</h3>
+          </div>
+          <chart :options="csjtyyzs" ref="csjtyyzsChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-24">
+        <ChartBox>
+          <div slot="header">
+            <h3>公共汽车实时到站预报率</h3>
+          </div>
+          <div class="group">
+            <div class="chart-inner-item">
+               <chart :options="swjA" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+              <chart :options="swjB" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+              <chart :options="swjC" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+              <chart :options="swjD" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+              <chart :options="swjE" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+               <chart :options="swjF" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+              <chart :options="swjG" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+              <chart :options="swjH" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+              <chart :options="swjI" theme="theme" resizable class="echart-box"></chart>
+            </div>
+            <div class="chart-inner-item">
+              <chart :options="swjJ" theme="theme" resizable class="echart-box"></chart>
+            </div>
+          </div>
+        </ChartBox>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import ChartBox from '@/components/chart-box';
+import csjtyyzs from './../../data/csyx/csjtyyzs';
+import ggqcssdzybl from './../../data/csyx/ggqcssdzybl';
+export default {
+  components: {
+    ChartBox,
+  },
+  data() {
+    return {
+      csjtyyzs,
+      swjA: ggqcssdzybl.swjA,
+      swjB: ggqcssdzybl.swjB,
+      swjC: ggqcssdzybl.swjC,
+      swjD: ggqcssdzybl.swjD,
+      swjE: ggqcssdzybl.swjE,
+      swjF: ggqcssdzybl.swjF,
+      swjG: ggqcssdzybl.swjG,
+      swjH: ggqcssdzybl.swjH,
+      swjI: ggqcssdzybl.swjI,
+      swjJ: ggqcssdzybl.swjJ,
+    };
+  },
+};
+</script>
+<style scoped>
+  .row > div { padding: .1rem; }
+  .echart-box { width: 100%; }
+  .chart-inner-item { float: left;width: 20%;height: 122px; }
+    .chart-inner-item .echart-box { height: 122px; }
+</style>
+<template>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>交通乘车电子支付使用率</h3>
+          </div>
+          <chart :options="jtccdzzfsyl" ref="jtccdzzfsylChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>社保异地联网情况</h3>
+          </div>
+          <chart :options="sbydlwqk" ref="sbydlwqkChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-24">
+        <ChartBox>
+          <div slot="header">
+            <h3>一卡通使用情况</h3>
+          </div>
+          <chart :options="yktsyqk" ref="yktsyqkChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import ChartBox from '@/components/chart-box';
+import jtccdzzfsyl from './../../data/csyx/jtccdzzfsyl';
+import sbydlwqk from './../../data/csyx/sbydlwqk';
+import yktsyqk from './../../data/csyx/yktsyqk';
+export default {
+  components: {
+    ChartBox,
+  },
+  data() {
+    return {
+      jtccdzzfsyl,
+      sbydlwqk,
+      yktsyqk,
+    };
+  },
+};
+</script>
+<style scoped>
+  .row > div { padding: .1rem; }
+  .echart-box { width: 100%; }
+  .chart-inner-item { float: left;width: 20%;height: 200px; }
+    .chart-inner-item .echart-box { height: 200px; }
+</style>
+<template>
+  <div class="container">
+    <div class="row">
+      <div class="col-24">
+        <ChartBox>
+          <div slot="header">
+            <h3>某市二级以上医院电子病历普及率（86.67%）</h3>
+          </div>
+          <div id="J_hospital_list_box" class="hospital-list-box">
+            <div class="bd">
+              <ul class="infoList">
+                <li>
+                  <div>某市中心医院</div>
+                  <div>某省核工业二一五医院</div>
+                  <div>某省中医学院第二附属医院</div>
+                </li>
+                <li>
+                  <div>某省中医学院附属医院</div>
+                  <div>某市第一人民医院</div>
+                  <div>某市医院</div>
+                </li>
+                <li>
+                  <div>彩虹医院</div>
+                  <div>区县一人民医院</div>
+                  <div>区县一中医医院</div>
+                </li>
+                <li>
+                  <div>区县二人民医院</div>
+                  <div>区县二中医医院</div>
+                  <div>区县三人民医院</div>
+                </li>
+                <li>
+                  <div>区县三中医医院</div>
+                  <div>区县四人民医院</div>
+                  <div>区县四中医医院</div>
+                </li>
+                <li>
+                  <div>区县五人民医院</div>
+                  <div>区县五中医医院</div>
+                  <div>区县六人民医院</div>
+                </li>
+                <li>
+                  <div>区县七人民医院</div>
+                  <div>区县八中医医院</div>
+                  <div>区县八人民医院</div>
+                </li>
+                <li>
+                  <div>区县八中医医院</div>
+                  <div>区县九医院</div>
+                  <div>区县九中医医院</div>
+                </li>
+                <li>
+                  <div>区县十医院</div>
+                  <div>区县十中医医院</div>
+                  <div>区县十一医院</div>
+                </li>
+                <li>
+                  <div>区县十一中医医院</div>
+                  <div>某省水电医院</div>
+                  <div>区县十二医院</div>
+                </li>
+                <li>
+                  <div>某附属医院</div>
+                  <div>某省红原医院</div>
+                  <div class="color-red">区县十二职工医院</div>
+                </li>
+                <li>
+                  <div class="color-red">某省兴化集团职工医院</div>
+                  <div class="color-red">区县十二中医院</div>
+                  <div class="color-red">某市西橡医院</div>
+                </li>
+                <li>
+                  <div>某市妇幼保健院</div>
+                  <div class="color-red">某市中心医院</div>
+                  <div class="color-red">某市医院</div>
+                </li>
+                <li>
+                  <div>区县十一妇幼保健院</div>
+                  <div>区县八妇幼保健服务中心</div>
+                  <div>区县三妇幼保健院</div>
+                </li>
+                <li>
+                  <div class="color-red">某职工医院</div>
+                  <div class="color-red">某医院</div>
+                  <div class="color-red">某省航空医院</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ChartBox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-24">
+        <ChartBox>
+          <div slot="header">
+            <h3>二、三级医院预约诊疗率</h3>
+          </div>
+          <chart :options="esjyyyyzll" ref="esjyyyyzllChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  import ChartBox from '@/components/chart-box';
+
+  import esjyyyyzll from './../../data/csyx/esjyyyyzll';
+
+  export default {
+    components: {
+      ChartBox,
+    },
+    data() {
+      return {
+        esjyyyyzll,
+      };
+    },
+    /* eslint-disable no-undef */
+    mounted() {
+      this.hospitalSlide();
+    },
+    methods: {
+      // 某市二级以上医院电子病历普及率（86.67%）
+      hospitalSlide() {
+        if ($('#J_hospital_list_box').length) {
+          $('#J_hospital_list_box').slide({
+            titCell: '.hd ul',
+            mainCell: '.bd ul',
+            autoPage: true,
+            effect: 'topLoop',
+            delayTime: 500,
+            autoPlay: true,
+            vis: 9,
+            pnLoop: false,
+          });
+        }
+      },
+    },
+  };
+</script>
+<style scoped>
+  .row > div { padding: .1rem; }
+  .echart-box { width: 100%; }
+
+  .hospital-list-box { margin:10px auto; width:660px;height: 225px;overflow:hidden; }
+    .hospital-list-box .infoList li { height:38px;line-height:38px;color:#fff;font-size: 14px;font-weight: normal; }
+    .hospital-list-box .infoList .color-red { color: red; }
+    .hospital-list-box .infoList div { float:left;width:220px; text-align:center; }
+</style>
+<template>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>师生网络学习空间覆盖率</h3>
+          </div>
+          <chart :options="sswlxxkjfgl" ref="sswlxxkjfglChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>学校无线网络覆盖率</h3>
+          </div>
+          <chart :options="xxwxwlfgl" ref="xxwxwlfglChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-24">
+        <ChartBox>
+          <div slot="header">
+            <h3>学校多媒体教育普及率</h3>
+          </div>
+          <chart :options="xxdmtjjpjl" ref="xxdmtjjpjlChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+  import ChartBox from '@/components/chart-box';
+
+  import sswlxxkjfgl from './../../data/csyx/sswlxxkjfgl';
+  import xxwxwlfgl from './../../data/csyx/xxwxwlfgl';
+  import xxdmtjjpjl from './../../data/csyx/xxdmtjjpjl';
+
+  export default {
+    components: {
+      ChartBox,
+    },
+    data() {
+      return {
+        sswlxxkjfgl,
+        xxwxwlfgl,
+        xxdmtjjpjl,
+      };
+    },
+    /* eslint-disable no-undef */
+    mounted() {
+      this.hospitalSlide();
+    },
+    methods: {
+      // 某市二级以上医院电子病历普及率（86.67%）
+      hospitalSlide() {
+        if ($('#J_hospital_list_box').length) {
+          $('#J_hospital_list_box').slide({
+            titCell: '.hd ul',
+            mainCell: '.bd ul',
+            autoPage: true,
+            effect: 'topLoop',
+            delayTime: 500,
+            autoPlay: true,
+            vis: 9,
+            pnLoop: false,
+          });
+        }
+      },
+    },
+  };
+</script>
+<style scoped>
+  .row > div { padding: .1rem; }
+  .echart-box { width: 100%; }
+
+  .hospital-list-box { margin:20px auto; width:660px;height: 320px;overflow:hidden; }
+    .hospital-list-box .infoList li { height:40px;line-height:40px;color:#fff;font-size: 14px;font-weight: normal; }
+    .hospital-list-box .infoList .color-red { color: red; }
+    .hospital-list-box .infoList div { float:left;width:220px; text-align:center; }
+</style>
+<template>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>市政管线智能化监测管理率</h3>
+          </div>
+          <chart :options="szgxznhjcgll" ref="szgxznhjcgllChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>综合管廊覆盖率</h3>
+          </div>
+          <chart :options="zhglfgl" ref="zhglfglChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-24">
+        <ChartBox>
+          <div slot="header">
+            <h3>绿色建筑覆盖率</h3>
+          </div>
+          <chart :options="lsjzfgl" ref="lsjzfglChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import ChartBox from '@/components/chart-box';
+
+import szgxznhjcgll from './../../data/csyx/szgxznhjcgll';
+import zhglfgl from './../../data/csyx/zhglfgl';
+import lsjzfgl from './../../data/csyx/lsjzfgl';
+
+export default {
+  components: {
+    ChartBox,
+  },
+  data() {
+    return {
+      szgxznhjcgll,
+      zhglfgl,
+      lsjzfgl,
+    };
+  },
+};
+</script>
+<style scoped>
+  .row > div { padding: .1rem; }
+  .echart-box { width: 100%; }
+</style>
+<template>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>公共安全视频资源覆盖情况</h3>
+          </div>
+          <chart :options="ggaqspzyfgqk" ref="ggaqspzyfgqkChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>重点污染源在线监测情况</h3>
+          </div>
+          <chart :options="zdwryzxjcqk" ref="zdwryzxjcqkChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>万元GDP能耗降低率</h3>
+          </div>
+          <chart :options="wygdpnhjdl" ref="wygdpnhjdlChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+      <div class="col-12">
+        <ChartBox>
+          <div slot="header">
+            <h3>环境问题处置率</h3>
+          </div>
+          <chart :options="hjwtczl" ref="hjwtczlChart" theme="theme" resizable class="echart-box"></chart>
+        </ChartBox>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import ChartBox from '@/components/chart-box';
+import ggaqspzyfgqk from './../../data/csyx/ggaqspzyfgqk';

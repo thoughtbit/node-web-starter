@@ -1,7 +1,7 @@
 import http from 'http'
-import _debug from 'debug';
+import _debug from 'debug'
 import app from './app'
-import { logger, db, initializeDb, redis } from './services/index'
+import { logger, initializeDb } from './services/index'
 import config from './config'
 
 const debug = _debug('bear:server')
@@ -24,7 +24,7 @@ initializeDb(() => {
     )
   })
 
-  server.on('error', err => {
+  server.on('error', (err) => {
     logger.error(`⚠️  ${err}`)
     throw err
   })
@@ -39,7 +39,7 @@ process.on('SIGINT', () => {
   process.exit()
 })
 
-process.on('uncaughtException', error => {
+process.on('uncaughtException', (error) => {
   logger.error(`uncaughtException: ${error.message}`)
   logger.error(error.stack)
   debug(error.stack)

@@ -1,5 +1,4 @@
-import  { Response, Request } from 'express';
-import { Unauthorized } from '../../core/errors/clientError';
+import { Unauthorized } from '../../core/errors/clientError'
 
 /**
  * Attaches the user object to the request if authenticated
@@ -9,10 +8,10 @@ import { Unauthorized } from '../../core/errors/clientError';
 function isAuthenticated(req, res) {
   // $FlowIssue
   if (req.isAuthenticated()) {
-    next();
+    next()
   } else {
-    return next(new Unauthorized());
+    return next(new Unauthorized())
   }
 }
 
-export default isAuthenticated;
+export default isAuthenticated

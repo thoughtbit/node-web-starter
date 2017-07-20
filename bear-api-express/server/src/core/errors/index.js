@@ -1,6 +1,6 @@
-const clientError = require('./clientError');
-const HttpError = require('./httpError');
-const serverError = require('./serverError');
+const clientError = require('./clientError')
+const HttpError = require('./httpError')
+const serverError = require('./serverError')
 
 const {
   BadRequest,
@@ -10,8 +10,8 @@ const {
   MethodNotAllowed,
   Conflict,
   UserNotVerifiedError,
-} = clientError;
-const { InternalServer, NotImplemented } = serverError;
+} = clientError
+const { InternalServer, NotImplemented } = serverError
 
 module.exports = {
   BadRequest,

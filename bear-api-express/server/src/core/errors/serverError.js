@@ -1,4 +1,4 @@
-const HttpError = require('./httpError');
+const HttpError = require('./httpError')
 
 /**
  * @class InternalServer
@@ -13,7 +13,7 @@ class InternalServer extends HttpError {
     from fulfilling the request.`,
       500,
       isPublic,
-    );
+    )
   }
 }
 
@@ -29,11 +29,11 @@ class NotImplemented extends HttpError {
       'The server does not support the functionality required to fulfill the request.',
       500,
       isPublic,
-    );
+    )
   }
 }
 
 module.exports = {
   InternalServer,
   NotImplemented,
-};
+}

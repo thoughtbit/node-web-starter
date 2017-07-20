@@ -1,4 +1,4 @@
-const HttpError = require('./httpError');
+const HttpError = require('./httpError')
 
 /**
  * @class BadRequest
@@ -12,7 +12,7 @@ class BadRequest extends HttpError {
     status = 400,
     isPublic = false,
   ) {
-    super(message, 400, isPublic);
+    super(message, 400, isPublic)
   }
 }
 
@@ -28,7 +28,7 @@ class Unauthorized extends HttpError {
     status = 401,
     isPublic = false,
   ) {
-    super(message, 401, isPublic);
+    super(message, 401, isPublic)
   }
 }
 
@@ -44,7 +44,7 @@ class Forbidden extends HttpError {
     status = 403,
     isPublic = false,
   ) {
-    super(message, 403, isPublic);
+    super(message, 403, isPublic)
   }
 }
 
@@ -60,7 +60,7 @@ class NotFound extends HttpError {
       'Unable to find what you were looking for. Please try the request again.',
       404,
       isPublic,
-    );
+    )
   }
 }
 
@@ -77,7 +77,7 @@ class MethodNotAllowed extends HttpError {
     not supported by the target resource.`,
       405,
       isPublic,
-    );
+    )
   }
 }
 
@@ -94,7 +94,7 @@ class Conflict extends HttpError {
     of the target resource.`,
       409,
       isPublic,
-    );
+    )
   }
 }
 /**
@@ -109,7 +109,7 @@ class UserNotVerifiedError extends HttpError {
       'This account has not been confirmed. Please check your email for a verification link.',
       401,
       isPublic,
-    );
+    )
   }
 }
 
@@ -121,4 +121,4 @@ module.exports = {
   MethodNotAllowed,
   Conflict,
   UserNotVerifiedError,
-};
+}

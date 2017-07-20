@@ -1,10 +1,5 @@
-import logger from './logger'
-import redis from './redis'
-import db, { initializeDb } from './db/mysql'
+import auth from './authentication'
 
 export {
-  logger,
-  db,
-  initializeDb,
-  redis
+  auth,
 }

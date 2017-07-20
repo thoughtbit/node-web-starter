@@ -1,3 +1,3 @@
-const responseHandler = require('./responseHandler');
+const responseHandler = require('./responseHandler')
 
-module.exports = responseHandler;
+module.exports = responseHandler
