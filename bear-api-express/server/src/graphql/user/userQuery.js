@@ -1,11 +1,11 @@
-import { GraphQLList, GraphQLNonNull, GraphQLInt, GraphQLString } from 'graphql';
-import _debug from 'debug';
-import { GraphQLUUID } from '../scalars';
-import User from '../../models/User';
-import { db } from '../../services/db';
-import UserType from './userType';
+import { GraphQLList, GraphQLNonNull, GraphQLInt, GraphQLString } from 'graphql'
+import _debug from 'debug'
+import { GraphQLUUID } from '../scalars'
+import User from './../../models/user'
+import { db } from './../../helpers/db/mysql'
+import UserType from './userType'
 
-const debug = _debug('boldr:server:userQuery');
+const debug = _debug('boldr:server:userQuery')
 
 export default {
   getUsers: {
@@ -22,12 +22,12 @@ export default {
       },
     },
     async resolve(_, { limit, offset }, context) {
-      debug(context);
-      const users = await db.table('user').select('*');
+      debug(context)
+      const users = await db.table('user').select('*')
       if (users) {
-        return users;
+        return users
       }
-      console.log('error');
+      console.log('error')
     },
   },
   getUserByUserId: {
@@ -41,11 +41,11 @@ export default {
     },
     async resolve(_, { userId }, context) {
       // const user = await User.query().findById(userId);
-      const user = await context.users.load(userId);
+      const user = await context.users.load(userId)
       if (user) {
-        return user;
+        return user
       }
-      console.log('error');
+      console.log('error')
     },
   },
   getUserByUsername: {
@@ -58,11 +58,11 @@ export default {
       },
     },
     async resolve(_, { username }, context) {
-      const user = await User.getUserByUsername(username);
+      const user = await User.getUserByUsername(username)
       if (user) {
-        return user;
+        return user
       }
-      console.log('error');
+      console.log('error')
     },
   },
   getCurrentUser: {
@@ -70,11 +70,11 @@ export default {
     description: 'Given an auth token, return the user and auth token',
     async resolve(_, args, context) {
       // const userId = requireAuth(authToken);
-      const user = await User.query().findById(context.user.id);
+      const user = await User.query().findById(context.user.id)
       if (!user) {
-        console.log('error');
+        console.log('error')
       }
-      return user;
+      return user
     },
   },
-};
+}

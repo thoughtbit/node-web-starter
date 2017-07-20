@@ -1,4 +1,4 @@
-import GraphQLJSON from './GraphQLJSON';
+import GraphQLJSON from './GraphQLJSON'
 import {
   GraphQLEmail,
   GraphQLURL,
@@ -6,11 +6,11 @@ import {
   GraphQLPassword,
   GraphQLDateTime,
   GraphQLUUID,
-} from './scalars';
+} from './scalars'
 
-import { GraphQLCustomScalarType } from './types';
+import { GraphQLCustomScalarType } from './types'
 
-import { Factory } from './factory';
+import { Factory } from './factory'
 
 export {
   GraphQLCustomScalarType,
@@ -21,4 +21,4 @@ export {
   GraphQLDateTime,
   GraphQLUUID,
   GraphQLJSON,
-};
+}

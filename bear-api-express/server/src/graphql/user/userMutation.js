@@ -1,19 +1,16 @@
-import { GraphQLID, GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql';
-import uuid from 'uuid';
-import jwt from 'jsonwebtoken';
-import { mailer, signToken, generateHash, comparePassword } from '../../services';
-import { welcomeEmail } from '../../services/mailer/templates';
-import User from '../../models/User';
-import VerificationToken from '../../models/VerificationToken';
-import { GraphQLUUID } from '../scalars';
+import { GraphQLID, GraphQLInt, GraphQLString, GraphQLNonNull } from 'graphql'
+import uuid from 'uuid'
+import jwt from 'jsonwebtoken'
+import User from './../../models/user'
+import { GraphQLUUID } from './../scalars'
 import {
   UserLoginInput,
   UserLoginResponse,
   UserSignupInput,
   AuthError,
-} from './auth/userAuthTypes';
+} from './auth/userAuthTypes'
 
-import UserType, { EditUserInput } from './userType';
+import UserType, { EditUserInput } from './userType'
 
 export default {
   loginUser: {
@@ -28,19 +25,19 @@ export default {
       const user = await User.query()
         .where({ email: args.input.email })
         .eager('[roles,socialMedia]')
-        .first();
+        .first()
 
-      const validAuth = await user.authenticate(args.input.password);
+      const validAuth = await user.authenticate(args.input.password)
       // remove the password from the response.
-      user.stripPassword();
+      user.stripPassword()
       // sign the token
-      const token = signToken(user);
-      context.req.user = user;
+      const token = signToken(user)
+      context.req.user = user
       const payload = {
         token,
         user,
-      };
-      return payload;
+      }
+      return payload
     },
   },
   signupUser: {
@@ -53,33 +50,33 @@ export default {
     },
     async resolve(_, args, context) {
       console.log(args);
-      const checkUser = await User.query().where({ email: args.input.email }).first();
+      const checkUser = await User.query().where({ email: args.input.email }).first()
 
       if (checkUser) {
-        return new Error('The user exists');
+        return new Error('The user exists')
       }
 
-      const newUser = await User.query().insert(args.input);
-      await newUser.$relatedQuery('roles').relate({ id: 1 });
+      const newUser = await User.query().insert(args.input)
+      await newUser.$relatedQuery('roles').relate({ id: 1 })
 
       if (!newUser) {
-        return new Error('Signup failed');
+        return new Error('Signup failed')
       }
       // generate user verification token to send in the email.
-      const verifToken = uuid.v4();
+      const verifToken = uuid.v4()
       // get the mail template
-      const mailBody = welcomeEmail(verifToken);
+      const mailBody = welcomeEmail(verifToken)
       // subject
-      const mailSubject = 'Boldr User Verification';
+      const mailSubject = 'Boldr User Verification'
       // send the welcome email
-      mailer(newUser, mailBody, mailSubject);
+      mailer(newUser, mailBody, mailSubject)
       // create a relationship between the user and the token
       const verificationEmail = await newUser.$relatedQuery('verificationToken').insert({
         ip: context.req.ip,
         token: verifToken,
         userId: newUser.id,
-      });
-      return newUser;
+      })
+      return newUser
     },
   },
   editUser: {
@@ -102,8 +99,8 @@ export default {
         bio: args.input.bio,
         email: args.input.email,
         location: args.input.location,
-      });
-      return updatedUser;
+      })
+      return updatedUser
     },
   },
-};
+}

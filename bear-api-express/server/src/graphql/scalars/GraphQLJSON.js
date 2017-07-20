@@ -4,39 +4,37 @@ import {
   GraphQLFloat,
   GraphQLBoolean,
   GraphQLString,
-} from 'graphql';
+} from 'graphql'
 
-import { Kind } from 'graphql/language';
+import { Kind } from 'graphql/language'
 
 const astToJson = {
   [Kind.INT](ast) {
-    return GraphQLInt.parseLiteral(ast);
+    return GraphQLInt.parseLiteral(ast)
   },
   [Kind.FLOAT](ast) {
-    return GraphQLFloat.parseLiteral(ast);
+    return GraphQLFloat.parseLiteral(ast)
   },
   [Kind.BOOLEAN](ast) {
-    return GraphQLBoolean.parseLiteral(ast);
+    return GraphQLBoolean.parseLiteral(ast)
   },
   [Kind.STRING](ast) {
-    return GraphQLString.parseLiteral(ast);
+    return GraphQLString.parseLiteral(ast)
   },
   [Kind.ENUM](ast) {
-    return String(ast.value);
+    return String(ast.value)
   },
   [Kind.LIST](ast) {
-    return ast.values.map(astItem => {
-      return JSONType.parseLiteral(astItem);
-    });
+    return ast.values.map(astItem => JSONType.parseLiteral(astItem))
   },
   [Kind.OBJECT](ast) {
-    const obj = {};
-    ast.fields.forEach(field => {
-      obj[field.name.value] = JSONType.parseLiteral(field.value);
-    });
-    return obj;
+    const obj = {}
+    ast.fields.forEach((field) => {
+      obj[field.name.value] = JSONType.parseLiteral(field.value)
+    })
+    return obj
   },
-};
+}
 
 export default new GraphQLScalarType({
   name: 'JSON',
@@ -45,8 +43,8 @@ export default new GraphQLScalarType({
     'publications/files/ECMA-ST/ECMA-404.pdf).',
   serialize: value => value,
   parseValue: value => value,
-  parseLiteral: ast => {
-    const parser = astToJson[ast.kind];
-    return parser ? parser.call(this, ast) : null;
+  parseLiteral: (ast) => {
+    const parser = astToJson[ast.kind]
+    return parser ? parser.call(this, ast) : null
   },
-});
+})

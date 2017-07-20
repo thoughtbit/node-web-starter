@@ -7,13 +7,11 @@ import {
   GraphQLID,
   GraphQLInt,
   GraphQLInputObjectType,
-} from 'graphql';
-import { GraphQLEmail, GraphQLURL, GraphQLDateTime, GraphQLUUID, GraphQLJSON } from '../scalars';
-import User from '../../models/User';
-import ArticleType from '../article/articleType';
-import MediaType from '../media/mediaType';
-import AttachmentType from '../attachment/attachmentType';
-import RoleType from '../role/roleType';
+} from 'graphql'
+import { GraphQLEmail, GraphQLURL, GraphQLDateTime, GraphQLUUID, GraphQLJSON } from '../scalars'
+import User from '../../models/User'
+import ArticleType from '../article/articleType'
+import RoleType from '../role/roleType'
 
 export const SocialType = new GraphQLObjectType({
   name: 'Social',
@@ -51,7 +49,7 @@ export const SocialType = new GraphQLObjectType({
       description: 'The facebook profile url for the user.',
     },
   }),
-});
+})
 
 export const ResetTokenType = new GraphQLObjectType({
   name: 'ResetToken',
@@ -86,7 +84,7 @@ export const ResetTokenType = new GraphQLObjectType({
       description: 'The timestamp when the article was last updated',
     },
   }),
-});
+})
 
 export const VerificationTokenType = new GraphQLObjectType({
   name: 'VerificationToken',
@@ -121,7 +119,7 @@ export const VerificationTokenType = new GraphQLObjectType({
       description: 'The timestamp when the article was last updated',
     },
   }),
-});
+})
 
 const UserType = new GraphQLObjectType({
   name: 'User',
@@ -223,7 +221,7 @@ const UserType = new GraphQLObjectType({
       type: new GraphQLList(MediaType),
       description: 'Articles the user has written',
       resolve(user, args, ctx) {
-        return User.query().findById(user.id).then(result => result.$relatedQuery('uploads'));
+        return User.query().findById(user.id).then(result => result.$relatedQuery('uploads'))
       },
     },
     verificationToken: {
@@ -232,18 +230,18 @@ const UserType = new GraphQLObjectType({
       resolve(user, args, ctx) {
         return User.query()
           .findById(user.id)
-          .then(result => result.$relatedQuery('verificationToken'));
+          .then(result => result.$relatedQuery('verificationToken'))
       },
     },
     resetToken: {
       type: ResetTokenType,
       description: 'Articles the user has written',
       resolve(user, args, ctx) {
-        return User.query().findById(user.id).then(result => result.$relatedQuery('resetToken'));
+        return User.query().findById(user.id).then(result => result.$relatedQuery('resetToken'))
       },
     },
   }),
-});
+})
 
 export const EditUserInput = new GraphQLInputObjectType({
   name: 'EditUserInput',
@@ -273,6 +271,6 @@ export const EditUserInput = new GraphQLInputObjectType({
       description: 'The last name of the user.',
     },
   }),
-});
+})
 
-export default UserType;
+export default UserType

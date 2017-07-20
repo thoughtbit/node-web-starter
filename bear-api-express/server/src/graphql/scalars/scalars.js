@@ -1,16 +1,16 @@
-import { GraphQLError } from 'graphql/error';
-import { Kind } from 'graphql/language';
-import { Factory } from './factory';
-import { GraphQLCustomScalarType } from './types';
+import { GraphQLError } from 'graphql/error'
+import { Kind } from 'graphql/language'
+import { Factory } from './factory'
+import { GraphQLCustomScalarType } from './types'
 
-const factory = new Factory();
+const factory = new Factory()
 
 export const GraphQLEmail = factory.getRegexScalar({
   name: 'Email',
   regex: /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
   description: 'The Email scalar type represents E-Mail addresses compliant to RFC 822.',
   error: 'Query error: Not a valid Email address',
-});
+})
 
 export const GraphQLURL = factory.getRegexScalar({
   name: 'URL',
@@ -21,7 +21,7 @@ export const GraphQLURL = factory.getRegexScalar({
   ),
   description: 'The URL scalar type represents URL addresses.',
   error: 'Query error: Not a valid URL',
-});
+})
 
 export const GraphQLUUID = factory.getRegexScalar({
   name: 'UUID',
@@ -32,134 +32,4 @@ export const GraphQLUUID = factory.getRegexScalar({
   ),
   description: 'The UUID scalar type represents a UUID.',
   error: 'Query error: Not a valid UUID',
-});
-
-const stringValidator = function(ast) {
-  if (ast.kind !== Kind.STRING) {
-    throw new GraphQLError(
-      'Query error: Can only parse strings got a: ' + ast.kind,
-      [ast],
-    );
-  }
-};
-
-const lengthValidator = function(ast, min, max) {
-  if (ast.value.length < min) {
-    throw new GraphQLError('Query error: String not long enough', [ast]);
-  }
-
-  if (max && ast.value.length > max) {
-    throw new GraphQLError('Query error: String too long', [ast]);
-  }
-};
-
-const alphabetValidator = function(ast, alphabet) {
-  for (var char of ast.value) {
-    if (alphabet.indexOf(char) < 0) {
-      throw new GraphQLError('Query error: Invalid character found', [ast]);
-    }
-  }
-};
-
-const complexityValidator = function(ast, options) {
-  const complexity = options || {};
-  const alhpaNumericRe = /^(?=.*[0-9])(?=.*[a-zA-Z])(.+)$/;
-  const mixedCaseRe = /^(?=.*[a-z])(?=.*[A-Z])(.+)$/;
-  const specialCharsRe = /^(?=.*[^a-zA-Z0-9])(.+)$/;
-
-  if (complexity.alphaNumeric && !alhpaNumericRe.test(ast.value)) {
-    throw new GraphQLError(
-      'Query error: String must contain at least one number and one letter',
-      [ast],
-    );
-  }
-
-  if (complexity.mixedCase && !mixedCaseRe.test(ast.value)) {
-    throw new GraphQLError(
-      'Query error: String must contain at least one uper and one lower case letter',
-      [ast],
-    );
-  }
-
-  if (complexity.specialChars && !specialCharsRe.test(ast.value)) {
-    throw new GraphQLError(
-      'Query error: String must contain at least one special character',
-      [ast],
-    );
-  }
-};
-
-var limitedStringCounter = 0;
-export class GraphQLLimitedString extends GraphQLCustomScalarType {
-  constructor(min = 1, max, alphabet) {
-    const suffix = limitedStringCounter++ > 0 ? limitedStringCounter : '';
-    const name = 'LimitedString' + suffix;
-    var description = 'A limited string.';
-    if (max)
-      description +=
-        ' Has to be between ' + min + ' and ' + max + ' characters long.';
-    else description += ' Has to be at least ' + min + ' characters long.';
-    if (alphabet)
-      description += ' May only contain the following characters: ' + alphabet;
-
-    const validator = function(ast) {
-      stringValidator(ast);
-      lengthValidator(ast, min, max);
-
-      if (alphabet) alphabetValidator(ast, alphabet);
-
-      return ast.value;
-    };
-
-    super(name, description, validator);
-  }
-}
-
-var passwordCounter = 0;
-export class GraphQLPassword extends GraphQLCustomScalarType {
-  constructor(min = 1, max, alphabet, complexity) {
-    const suffix = passwordCounter++ > 0 ? passwordCounter : '';
-    const name = 'Password' + suffix;
-    var description = 'A password string.';
-    if (max)
-      description +=
-        ' Has to be between ' + min + ' and ' + max + ' characters long.';
-    else description += ' Has to be at least ' + min + ' characters long.';
-    if (alphabet)
-      description += ' May only contain the following characters: ' + alphabet;
-    if (complexity) {
-      if (complexity.alphaNumeric) description += ' Has to be alpha numeric.';
-      if (complexity.mixedCase) description += ' Has to be mixed case.';
-      if (complexity.specialChars)
-        description += ' Has to contain special characters.';
-    }
-
-    const validator = function(ast) {
-      stringValidator(ast);
-      lengthValidator(ast, min, max);
-
-      if (alphabet) alphabetValidator(ast, alphabet);
-      if (complexity) complexityValidator(ast, complexity);
-
-      return ast.value;
-    };
-
-    super(name, description, validator);
-  }
-}
-
-export const GraphQLDateTime = factory.getCustomScalar(
-  'DateTime',
-  'The DateTime scalar type represents date time strings complying to ISO-8601.',
-  function(ast) {
-    stringValidator(ast);
-    if (isNaN(Date.parse(ast.value))) {
-      throw new GraphQLError(
-        'Query error: String is not a valid date time string',
-        [ast],
-      );
-    }
-
-    return ast.value;
-  },
-);
+})

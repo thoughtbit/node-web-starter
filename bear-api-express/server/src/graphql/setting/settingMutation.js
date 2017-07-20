@@ -1,6 +1,6 @@
-import { GraphQLList, GraphQLNonNull, GraphQLID, GraphQLInt, GraphQLString } from 'graphql';
-import Setting from '../../models/Setting';
-import SettingType, { SettingInput } from './settingType';
+import { GraphQLList, GraphQLNonNull, GraphQLID, GraphQLInt, GraphQLString } from 'graphql'
+import Setting from './../../models/setting'
+import SettingType, { SettingInput } from './settingType'
 
 export default {
   editSetting: {
@@ -16,8 +16,8 @@ export default {
     },
     async resolve(_, args, context) {
       // await Article.query().patchAndFetchById(args.id, {
-      const payload = await Setting.query().saveAndFetch(args.input);
-      return payload;
+      const payload = await Setting.query().saveAndFetch(args.input)
+      return payload
     },
   },
-};
+}

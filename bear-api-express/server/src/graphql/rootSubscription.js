@@ -1,8 +1,8 @@
-import { GraphQLObjectType } from 'graphql';
+import { GraphQLObjectType } from 'graphql'
 
-const rootFields = Object.assign({});
+const rootFields = Object.assign({})
 const RootSubscriptionType = new GraphQLObjectType({
   name: 'RootSubscription',
   fields: () => rootFields,
 });
-export default RootSubscriptionType;
+export default RootSubscriptionType

@@ -1,5 +1,5 @@
-import { GraphQLString, GraphQLObjectType, GraphQLID, GraphQLInputObjectType } from 'graphql';
-import { GraphQLURL } from '../scalars';
+import { GraphQLString, GraphQLObjectType, GraphQLID, GraphQLInputObjectType } from 'graphql'
+import { GraphQLURL } from '../scalars'
 
 const SettingType = new GraphQLObjectType({
   name: 'Setting',
@@ -26,7 +26,7 @@ const SettingType = new GraphQLObjectType({
       description: 'The description for what the setting does.',
     },
   }),
-});
+})
 
 export const SettingInput = new GraphQLInputObjectType({
   name: 'SettingInput',
@@ -48,6 +48,6 @@ export const SettingInput = new GraphQLInputObjectType({
       description: 'The description for what the setting does.',
     },
   }),
-});
+})
 
-export default SettingType;
+export default SettingType

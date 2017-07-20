@@ -7,10 +7,10 @@ import {
   GraphQLID,
   GraphQLInt,
   GraphQLInputObjectType,
-} from 'graphql';
-import { GraphQLEmail, GraphQLURL, GraphQLDateTime, GraphQLUUID, GraphQLJSON } from '../../scalars';
+} from 'graphql'
+import { GraphQLEmail, GraphQLURL, GraphQLDateTime, GraphQLUUID, GraphQLJSON } from '../../scalars'
 
-import UserType from '../userType';
+import UserType from '../userType'
 
 export const UserLoginInput = new GraphQLInputObjectType({
   name: 'UserLoginInput',
@@ -24,7 +24,7 @@ export const UserLoginInput = new GraphQLInputObjectType({
       description: 'The password belonging to the account.',
     },
   }),
-});
+})
 export const UserSignupInput = new GraphQLInputObjectType({
   name: 'UserSignupInput',
   fields: () => ({
@@ -49,7 +49,7 @@ export const UserSignupInput = new GraphQLInputObjectType({
       description: 'The last name of the user.',
     },
   }),
-});
+})
 export const AuthError = new GraphQLObjectType({
   name: 'AuthError',
   fields: () => ({
@@ -62,7 +62,7 @@ export const AuthError = new GraphQLObjectType({
       description: 'The error message.',
     },
   }),
-});
+})
 
 export const UserLoginResponse = new GraphQLObjectType({
   name: 'UserLoginResponse',
@@ -80,4 +80,4 @@ export const UserLoginResponse = new GraphQLObjectType({
       description: 'Any auth related errors.',
     },
   }),
-});
+})

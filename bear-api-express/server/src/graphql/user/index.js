@@ -1,1 +1,1 @@
-export { default as UserType, EditUserInput } from './userType';
+export { default as UserType, EditUserInput } from './userType'
