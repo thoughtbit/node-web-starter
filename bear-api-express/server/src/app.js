@@ -4,13 +4,13 @@ import bodyParser from 'body-parser'
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express'
 import { printSchema } from 'graphql'
 // import _debug from 'debug'
-import appRootDir from './utils/appRoot'
+import appRootDir from 'app-root-dir'
 import RootSchema from './graphql/rootSchema'
 import config from './config'
 import routes from './routes'
-import { enableEnhancedStackTraces } from './utils/debugUtil'
+import { enableEnhancedStackTraces } from './helpers/utils/debugUtil'
 
-import { expressMiddleware, authMiddleware, errorHandler, apolloUpload } from './middleware'
+import { expressMiddleware, /* authMiddleware8, */ errorHandler, apolloUpload } from './middleware'
 
 // const debug = _debug('bear:server:app')
 
@@ -21,7 +21,7 @@ const app = express()
 // Base Express middleware - body-parser, method-override, busboy, cors
 expressMiddleware(app)
 // Session middleware, authentication check, rbac
-authMiddleware(app)
+// authMiddleware(app)
 
 app.get('/graphql/schema', (req, res) => {
   res.type('text/plain').send(printSchema(RootSchema))

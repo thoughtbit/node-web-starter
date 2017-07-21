@@ -4,6 +4,25 @@ export default {
   version: '1.1.0',
   // 根目录
   root: path.resolve(__dirname, '../../../'),
+  api: {
+    port: {
+      format: 'port',
+      default: 3000,
+    },
+    protocol: {
+      format: String,
+      default: 'http',
+    },
+    host: {
+      format: 'ipaddress',
+      default: '0.0.0.0',
+    },
+    prefix: {
+      format: String,
+      default: '/api/v1',
+      doc: 'The prefix for api routes and then the versioning',
+    },
+  },
   server: {
     port: process.env.PORT || 9090,
     host: '127.0.0.1',
@@ -21,29 +40,14 @@ export default {
   },
   // 数据库
   db: {
-    name: 'darwin',
-    username: 'root',
-    password: '',
-    options: {
-      host: 'localhost',
-      port: 3306,
-      dialect: 'mysql',
-    },
-    encode: {
-      set: 'utf8',
-      collation: 'utf8_general_ci',
-    },
-    pool: {
-      min: 2,
-      max: 10,
-      /** 单位毫秒 */
-      idle: 300 * 1000,
-    },
+    url: 'mysql://root:pass@127.0.0.1:3306/bear',
+    name: 'bear',
+    debug: false,
   },
   // // MongoDB settings
   mongodb: {
-    dbURI: 'mongodb://localhost:27017',
-    dbOptions: { user: '', pass: '' },
+    url: 'mongodb://127.0.0.1:27017',
+    options: { user: '', pass: '' },
   },
   redis: {
     url: 'redis://127.0.0.1:6379',

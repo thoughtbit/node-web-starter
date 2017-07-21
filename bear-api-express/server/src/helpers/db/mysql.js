@@ -1,71 +1,57 @@
-import fs from 'fs'
 import path from 'path'
-import Sequelize from 'sequelize'
-import logger from '../logger'
-import config from '../../config'
+import knex from 'knex'
+import { Model } from 'objection'
+import config from './../../config'
 
 function resolveOwn(relativePath) {
   return path.resolve(__dirname, relativePath)
 }
 
-let db = {}
-
-const defaultConfig = {
-  host: "localhost",
-  port: 3306,
-  username: "root",
-  benchmark: true,
-  define: {
-    freezeTableName: false,
-    underscored: true
-  }
-};
-const config = Object.assign(defaultConfig, config.sequelize);
-
-const basename = path.basename(module.filename);
-
-const sequelize = new Sequelize(
-  config.db.mysql.database,
-  config.db.mysql.username,
-  config.db.mysql.password,
-  {
-    ...config.db.mysql.options
-  }
-);
-
-// 测试连接
-sequelize.authenticate()
-  .then((err) => {
-    logger.debug('DB: Connected', err)
-  })
-  .catch((err) => {
-    logger.debug('DB: Not Connected', err)
-  })
-
-db = {
-  sequelize,
-  Sequelize,
-  execute: ::sequelize.transaction,
-  models: {},
+const dbConfig = {
+  client: 'mysql',
+  connection: config.db.url,
+  pool: {
+    min: 2,
+    max: 10,
+  },
+  migrations: {
+    tableName: 'migrations',
+  },
+  debug: config.db.debug,
 }
 
-const dir = resolveOwn('../../models')
+const knexOpts = Object.assign(dbConfig, config.db)
 
-fs.readdirSync(dir)
-  .filter(file => (file.indexOf('.') !== 0) && (file !== basename))
-  .forEach((file) => {
-    const modelDir = path.join(dir, file)
-    const model = sequelize.import(modelDir)
-    db.models[model.name] = model
-  })
+const db = knex(knexOpts)
 
-Object.keys(db.models).forEach((key) => {
-  if ('associate' in db.models[key]) {
-    db.models[key].associate(db.models)
+function initializeDb() {
+  // const dir = resolveOwn('../../models')
+  Model.knex(db)
+  // Model.setBasePath(dir);
+  // Model.pickJsonSchemaProperties = false;
+  return db.raw('select 1+1 as result')
+}
+
+/*
+function initializeDb(callback) {
+  // const dir = resolveOwn('../../models')
+  Model.knex(db)
+  // Model.setBasePath(dir);
+  // Model.pickJsonSchemaProperties = false;
+  return callback(db.raw('select 1+1 as result'))
+}
+*/
+
+async function disconnect(db) {
+  if (!db) {
+    return
   }
-})
-
-const initializeDb = (callback) => callback(db)
+  try {
+    await db.destroy()
+  } catch (err) {
+    throw new Error(err)
+  }
+}
 
 export default db
-export { initializeDb }
+export { disconnect, initializeDb }

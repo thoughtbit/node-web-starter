@@ -1,7 +1,8 @@
 import http from 'http'
 import _debug from 'debug'
 import app from './app'
-import { logger, initializeDb } from './services/index'
+import { initializeDb, disconnect } from './helpers/db/mysql'
+import { logger } from './helpers/utils/logger'
 import config from './config'
 
 const debug = _debug('bear:server')
@@ -12,29 +13,35 @@ const HOST = config.server.host
 const server = http.createServer(app)
 
 // connect to db
-initializeDb(() => {
-  server.listen(PORT, HOST)
+initializeDb()
+  .then(() => {
+    logger.info('Database connected successfully')
+    server.listen(PORT, HOST)
 
-  server.on('listening', () => {
-    const address = server.address()
-    logger.info(
-      '🚀  Starting server on %s:%s',
-      address.address,
-      address.port,
-    )
+    server.on('listening', () => {
+      const address = server.address()
+      logger.info(
+        '🚀  Starting server on %s:%s',
+        address.address,
+        address.port,
+      )
+    })
+
+    server.on('error', (err) => {
+      logger.error(`⚠️  ${err}`)
+      throw err
+    })
+
+    console.log(`Started on port ${server.address().port}`)
   })
-
-  server.on('error', (err) => {
-    logger.error(`⚠️  ${err}`)
-    throw err
+  .catch((err) => {
+    logger.error(err)
+    process.exit(1)
   })
-
-  console.log(`Started on port ${server.address().port}`)
-})
 
 process.on('SIGINT', () => {
   logger.info('shutting down!')
-  // disconnect(); // 尝试关闭mysql
+  disconnect() // 关闭mysql
   server.close()
   process.exit()
 })

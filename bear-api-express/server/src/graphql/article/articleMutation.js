@@ -1,0 +1,91 @@
+import { GraphQLList, GraphQLNonNull, GraphQLID, GraphQLInt, GraphQLString } from 'graphql'
+import _debug from 'debug'
+import { GraphQLUUID } from '../scalars'
+import Tag from '../../models/tag'
+import User from '../../models/user'
+import Article from '../../models/article'
+import ArticleTag from './../../models/join/article_tag'
+import ArticleType, { CreateArticleInput, EditArticleInput } from './articleType'
+
+const debug = _debug('bear:server:articleMutation')
+
+export default {
+  createArticle: {
+    type: ArticleType,
+    description: 'Adds a new article to the database.',
+    args: {
+      input: {
+        type: new GraphQLNonNull(CreateArticleInput),
+      },
+    },
+    async resolve(_, args, context) {
+      const newArticle = await Article.query().insert({
+        title: args.input.title,
+        slug: slugIt(args.input.title),
+        excerpt: args.input.excerpt,
+        content: args.input.content,
+        rawContent: args.input.rawContent,
+        featureImage: args.input.featureImage,
+        backgroundImage: args.input.backgroundImage,
+        meta: args.input.meta,
+        attachments: args.input.attachments,
+        published: args.input.published,
+        userId: context.user.id,
+      })
+
+      args.input.tags.map(async (tag) => {
+        console.log(tag)
+        const existingTag = await Tag.query().where('name', tag).first().skipUndefined()
+        if (existingTag) {
+          await ArticleTag.query().insert({
+            tagId: existingTag.id,
+            articleId: newArticle.id,
+          })
+        } else {
+          await newArticle.$relatedQuery('tags').insert({ name: tag }).skipUndefined()
+        }
+      })
+      const relatedFeatureImg = await Media.query()
+        .where('url', args.input.featureImage)
+        .first()
+        .skipUndefined()
+      await ArticleMedia.query()
+        .insert({
+          mediaId: relatedFeatureImg.id,
+          articleId: createArticle.id,
+        })
+        .skipUndefined()
+      return newArticle
+    },
+  },
+  editArticle: {
+    type: ArticleType,
+    description: 'Edit an existing article',
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLUUID),
+        description: 'The article ID',
+      },
+      input: {
+        type: new GraphQLNonNull(EditArticleInput),
+        description: 'The required fields for creating an article.',
+      },
+    },
+    async resolve(_, args, context) {
+      debug(args)
+      const updatedArticle = await Article.query().patchAndFetchById(args.id, {
+        title: args.input.title,
+        slug: slugIt(args.input.title),
+        excerpt: args.input.excerpt,
+        content: args.input.content,
+        rawContent: args.input.rawContent,
+        featureImage: args.input.featureImage,
+        backgroundImage: args.input.backgroundImage,
+        meta: args.input.meta,
+        attachments: args.input.attachments,
+        published: args.input.published,
+      })
+      return updatedArticle
+    },
+  },
+}

@@ -34,7 +34,7 @@ export function logError(nativeError) {
   /* eslint-disable no-console */
   if (nativeError instanceof Error) {
     // Triggering generating formatted stacktrace
-    String(nativeError.stack);
+    String(nativeError.stack)
 
     const formattedMessage = chalk.red(`${nativeError.name}: ${nativeError.message}`)
     const formattedStack = highlightStack(nativeError.stack)
@@ -68,10 +68,6 @@ export function enableEnhancedStackTraces(debug = false) {
 
   // Catch uncaught exceptions and pass them over to our log handler
   process.on('uncaughtException', error => logError(error))
-
-  // Enable by hooking into V8 Stacktrace API integration
-  // https://github.com/v8/v8/wiki/Stack-Trace-API
-  Error.prepareStackTrace = prepareStackTrace
 
   task('Activated enhanced stack traces')
 }

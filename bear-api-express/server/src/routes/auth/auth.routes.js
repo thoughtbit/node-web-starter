@@ -4,15 +4,6 @@ import * as ctrl from './auth.controller'
 
 const router = new Router()
 
-router.post('/login', ctrl.loginUser)
-
-
-router.post('/signup', ctrl.registerUser)
-
-
-router.get('/check', isAuthenticated, ctrl.checkAuthentication)
-
-
-router.post('/verify', ctrl.verifyUser)
+// router.get('/login', ctrl.loginUser)
 
 export default router

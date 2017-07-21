@@ -6,18 +6,18 @@ import * as ctrl from './user.controller'
 
 const router = new Router()
 
-router.get('/:id', ctrl.getUser)
+// router.get('/:id', ctrl.getUser)
 
-router.post('/', isAuthenticated, checkRole('Admin'), ctrl.adminCreateUser)
+// router.post('/', isAuthenticated, checkRole('Admin'), ctrl.adminCreateUser)
 
-router.put('/:id', isAuthenticated, ctrl.updateUser)
+// router.put('/:id', isAuthenticated, ctrl.updateUser)
 
-router.put('/admin/:id', isAuthenticated, checkRole('Admin'), ctrl.adminUpdateUser)
+// router.put('/admin/:id', isAuthenticated, checkRole('Admin'), ctrl.adminUpdateUser)
 
-router.patch('/:id', isAuthenticated, ctrl.updateUser)
+// router.patch('/:id', isAuthenticated, ctrl.updateUser)
 
-router.delete('/:id', isAuthenticated, checkRole('Admin'), ctrl.destroyUser)
+// router.delete('/:id', isAuthenticated, checkRole('Admin'), ctrl.destroyUser)
 
-router.get('/:username/profile', ctrl.getUsername)
+// router.get('/:username/profile', ctrl.getUsername)
 
 export default router

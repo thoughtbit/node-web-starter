@@ -1,37 +1,28 @@
 import db from './../../helpers/db/mysql'
+import users from '../../../../../express-boilerplate/server/src/models/users'
 
 const UsersService = {
-  // async createUser(user) {
-  //   return await db.execute(async (transaction) => {
-  //   })
-  // },
   async getUser(userId) {
-    const user = await db.models.Users.findById(userId, {
-      attributes: ['id', 'name', 'email'],
-    })
+    const user = await User.query()
+      .findById(userId)
+      .eager('[roles,socialMedia]')
+      .omit(['password'])
     if (!user) {
       console.log(`您查询的${userId}出错了`)
     }
     return user
   },
 
-  async getUsers() {
-    const users = await db.models.Users.findAll({ where: { id: [1, 2, 3] } })
-    if (!users) {
+  async getUsername() {
+    const user = await User.query()
+      .where({ username: req.params.username })
+      .eager('[roles,socialMedia]')
+      .omit(['password'])
+      .first()
+    if (!user) {
       console.log('您查询的记录不存在')
     }
-    return users
-  },
-
-  async updateUser(userId, users) {
-    await db.execute(async (transaction) => {
-      const user = await this.getUser(userId, { transaction })
-      await user.update(users, { transaction })
-    })
-  },
-
-  async deleteUser(userId) {
-    return await db.models.Users.destroy({ where: { id: userId } })
+    return user
   },
 }
 

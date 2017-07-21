@@ -1,20 +1,37 @@
-export default (sequelize, DataTypes) => {
-  const Setting = sequelize.define('Setting', {
-    id: {
-      type: DataTypes.INTEGER(11),
-    },
-    key: {
-      type: DataTypes.STRING,
-    },
-    value: {
-      type: DataTypes.STRING,
-    },
-    label: {
-      type: DataTypes.STRING,
-    },
-    description: {
-      type: DataTypes.STRING,
+import BaseModel, { mergeSchemas } from './base'
+
+class Setting extends BaseModel {
+  static tableName = 'setting';
+  static jsonSchema = mergeSchemas(BaseModel.jsonSchema, {
+    required: ['key', 'value', 'label', 'description'],
+    properties: {
+      id: {
+        type: 'number',
+      },
+      key: {
+        type: 'string',
+        minLength: 1,
+        maxLength: 255,
+      },
+      value: {
+        type: 'string',
+        minLength: 1,
+        maxLength: 255,
+      },
+      label: {
+        type: 'string',
+        minLength: 1,
+        maxLength: 255,
+      },
+      description: {
+        type: 'string',
+        minLength: 1,
+        maxLength: 255,
+      },
     },
   })
-  return Setting
+
+  static addTimestamps = false;
 }
+
+export default Setting

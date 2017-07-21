@@ -30,14 +30,14 @@ export default {
     },
     // // MongoDB settings
     // mongodb: {
-    //   dbURI: `mongodb://${process.env.MONGO_HOST || process.env.EXPRESSRESTAPIES6_MONGO_1_PORT_27017_TCP_ADDR || 'localhost'}:27017/${process.env.MONGO_DB_NAME || 'db-name'}`,
+    //   dbURI: `mongodb://localhost:27017/db-name}`,
     //   dbOptions: { user: '', pass: '' },
     // },
     redis: {
-      isAvailable: process.env.IS_REDIS_AVAILABLE || false,
-      host: process.env.APP_REDIS_HOST || process.env.EXPRESSRESTAPIES6_REDIS_1_PORT_6379_TCP_ADDR || '127.0.0.1',
-      port: process.env.APP_REDIS_PORT || process.env.EXPRESSRESTAPIES6_REDIS_1_PORT_6379_TCP_PORT || 6379,
-      auth: process.env.REDIS_AUTH || '',
+      isAvailable: false,
+      host: '127.0.0.1',
+      port: 6379,
+      auth: '',
       options: {},
     },
   },

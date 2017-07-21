@@ -49,7 +49,7 @@ export default {
       },
     },
     async resolve(_, args, context) {
-      console.log(args);
+      console.log(args)
       const checkUser = await User.query().where({ email: args.input.email }).first()
 
       if (checkUser) {

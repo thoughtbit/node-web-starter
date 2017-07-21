@@ -22,9 +22,7 @@ export default (app) => {
       credentials: true,
     }),
   )
-  if (process.env.NODE_ENV === 'development') {
-    app.use(morgan('dev'))
-  }
+
   app.use((req, res, next) => {
     res.set('Request-Id', uuid.v4())
     next()
