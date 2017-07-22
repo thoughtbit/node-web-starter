@@ -3,7 +3,7 @@ import config from './../config'
 import authRoutes from './auth/auth.routes'
 import userRoutes from './user/user.routes'
 
-const API_PREFIX = config.server.apiPrefix
+const API_PREFIX = config.api.prefix.default
 
 export default (app) => {
   app.get(`${API_PREFIX}/health-check`, (req, res) => {

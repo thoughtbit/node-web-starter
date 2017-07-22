@@ -4,6 +4,8 @@ import * as ctrl from './auth.controller'
 
 const router = new Router()
 
-// router.get('/login', ctrl.loginUser)
+router.get('/login', (req, res) => {
+  res.json('login')
+})
 
 export default router

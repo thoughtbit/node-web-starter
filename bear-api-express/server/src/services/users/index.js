@@ -1,5 +1,5 @@
 import db from './../../helpers/db/mysql'
-import users from '../../../../../express-boilerplate/server/src/models/users'
+import User from './../../models/user'
 
 const UsersService = {
   async getUser(userId) {

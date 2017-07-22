@@ -1,12 +1,14 @@
 import { Router } from 'express'
-import { isAuthenticated } from '../../services/authentication'
-import { checkRole } from '../../middleware/rbac'
+import { isAuthenticated } from './../../services/authentication'
+import { checkRole } from './../../middleware/rbac'
 import User from './../../models/user'
 import * as ctrl from './user.controller'
 
 const router = new Router()
 
-// router.get('/:id', ctrl.getUser)
+router.get('/', (req, res) => {
+  res.json('userid')
+})
 
 // router.post('/', isAuthenticated, checkRole('Admin'), ctrl.adminCreateUser)
 

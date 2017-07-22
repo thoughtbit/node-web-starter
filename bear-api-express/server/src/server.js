@@ -2,7 +2,6 @@ import http from 'http'
 import _debug from 'debug'
 import app from './app'
 import { initializeDb, disconnect } from './helpers/db/mysql'
-import { logger } from './helpers/utils/logger'
 import config from './config'
 
 const debug = _debug('bear:server')
@@ -15,12 +14,12 @@ const server = http.createServer(app)
 // connect to db
 initializeDb()
   .then(() => {
-    logger.info('Database connected successfully')
+    console.log('Database connected successfully')
     server.listen(PORT, HOST)
 
     server.on('listening', () => {
       const address = server.address()
-      logger.info(
+      console.log(
         '🚀  Starting server on %s:%s',
         address.address,
         address.port,
@@ -28,27 +27,26 @@ initializeDb()
     })
 
     server.on('error', (err) => {
-      logger.error(`⚠️  ${err}`)
+      console.log(`⚠️  ${err}`)
       throw err
     })
-
-    console.log(`Started on port ${server.address().port}`)
   })
   .catch((err) => {
-    logger.error(err)
+    console.log(err)
+    // console.log(err)
     process.exit(1)
   })
 
 process.on('SIGINT', () => {
-  logger.info('shutting down!')
+  console.log('shutting down!')
   disconnect() // 关闭mysql
   server.close()
   process.exit()
 })
 
 process.on('uncaughtException', (error) => {
-  logger.error(`uncaughtException: ${error.message}`)
-  logger.error(error.stack)
+  console.log(`uncaughtException: ${error.message}`)
+  console.log(error.stack)
   debug(error.stack)
   process.exit(1)
 })

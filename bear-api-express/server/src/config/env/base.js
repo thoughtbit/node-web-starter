@@ -24,7 +24,7 @@ export default {
     },
   },
   server: {
-    port: process.env.PORT || 9090,
+    port: 9090,
     host: '127.0.0.1',
     apiPrefix: '/api/v1',
     siteUrl: 'http://localhost:3000',
@@ -40,7 +40,7 @@ export default {
   },
   // 数据库
   db: {
-    url: 'mysql://root:pass@127.0.0.1:3306/bear',
+    url: 'mysql://root:123456@127.0.0.1:3306/bear',
     name: 'bear',
     debug: false,
   },

@@ -1,7 +1,7 @@
 const logger = console
 
 const print = (level, text) => {
-  const verbose = process.env.BOLDR_DEBUG === 'true'
+  const verbose = true
 
   let msg = ''
   let logObject = false

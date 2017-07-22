@@ -6,7 +6,7 @@
  */
 class HttpError extends Error {
   constructor(message, status, isPublic) {
-    super(message);
+    super(message)
     this.name = this.constructor.name
     this.message = message
     this.status = status
