@@ -57,14 +57,14 @@ class User extends BaseModel {
       },
       username: { type: 'string' },
       password: { type: 'string' },
-      address: {
-        type: 'object',
-        properties: {
-          street: { type: 'string' },
-          city: { type: 'string' },
-          zipCode: { type: 'string' },
-        },
-      },
+      // address: {
+      //   type: 'object',
+      //   properties: {
+      //     street: { type: 'string' },
+      //     city: { type: 'string' },
+      //     zipCode: { type: 'string' },
+      //   },
+      // },
       website: { type: 'string' },
       avatarUrl: { type: 'string' },
       verified: { type: 'boolean' },

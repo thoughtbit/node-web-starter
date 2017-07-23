@@ -11,8 +11,7 @@
     "build:client": "cross-env NODE_ENV=production webpack -p --config webpack.config.js --progress",
     "build:server": "cross-env NODE_ENV=production babel server -d build/server && npm run copy:server",
     "build": "npm run clean && npm run build:client && npm run build:server",
-    "create-tables": "cross-env NODE_ENV=development babel-node server/createTables.js",
-    "recreate-tables": "cross-env NODE_ENV=development babel-node server/createTables.js --force"
+    "create-tables": "cross-env NODE_ENV=development babel-node server/src/createTables.js"
   },
   "dependencies": {
     "app-root-dir": "^1.0.2",

@@ -27,8 +27,8 @@ const db = knex(knexOpts)
 function initializeDb() {
   // const dir = resolveOwn('../../models')
   Model.knex(db)
-  // Model.setBasePath(dir);
-  // Model.pickJsonSchemaProperties = false;
+  // Model.setBasePath(dir)
+  // Model.pickJsonSchemaProperties = false
   return db.raw('select 1+1 as result')
 }
 
