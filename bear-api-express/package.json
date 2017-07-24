@@ -11,7 +11,10 @@
     "build:client": "cross-env NODE_ENV=production webpack -p --config webpack.config.js --progress",
     "build:server": "cross-env NODE_ENV=production babel server -d build/server && npm run copy:server",
     "build": "npm run clean && npm run build:client && npm run build:server",
-    "create-tables": "cross-env NODE_ENV=development babel-node server/src/createTables.js"
+    "create-tables": "cross-env NODE_ENV=development babel-node server/src/createTables.js",
+    "test": "mocha server/**/*-test.@(js|jsx)",
+    "pretty": "prettier-standard 'server/*.@(js|jsx)'",
+    "prelint": "npm run pretty"
   },
   "dependencies": {
     "app-root-dir": "^1.0.2",
@@ -68,7 +71,9 @@
     "rimraf": "^2.6.1",
     "copyfiles": "^1.2.0",
     "supertest": "^3.0.0",
-    "faker": "^4.1.0"
+    "faker": "^4.1.0",
+    "mocha": "^3.4.2",
+    "prettier-standard": "^6.0.0"
   },
   "repository": {
     "type": "git",
