@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "start": "cross-env NODE_ENV=development nodemon server/start.js --watch server --exec",
-    "build": "npm run tsc",
+    "start:build": "npm run tsc && node build/index.js",
+    "build": "npm run tsc && nodemon --config nodemon.json",
     "clean": "rimraf node_modules",
     "clear": "rimraf build",
     "pstart": "concurrently \"npm run start\" \"npm run open\"",

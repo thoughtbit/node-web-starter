@@ -1,12 +1,22 @@
 {
-  "verbose": true,
+  "restartable": "rs",
+  "legacy-watch": true,
+  "cleanly": true,
   "ignore": [
     "**/*.test.ts",
     "client/../assets",
     "public/images/"
   ],
+  "verbose": true,
+  "events": {},
   "execMap": {
     "": "node",
     "js": "node --harmony"
-  }
+  },
+  "exec": "node ./build/index.js",
+  "watch": [
+    "build/**/*.js"
+  ],
+  "env": {},
+  "ext": "js json"
 }
