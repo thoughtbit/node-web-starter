@@ -11,5 +11,14 @@ app.use(async function (ctx, next) {
 app.use(ctx => {
     ctx.body = 'Hello World';
 });
-app.listen(9000);
+app.listen(9000, () => {
+    console.log('>>| Listen on 9000');
+});
+/**
+ * demo for test
+ * */
+function add(a, b) {
+    return a + b;
+}
+exports.add = add;
 //# sourceMappingURL=index.js.map

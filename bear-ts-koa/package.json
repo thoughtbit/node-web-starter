@@ -13,7 +13,7 @@
     "open": "opn \"http://localhost:9000\"",
     "tsc": "npm run clear && tsc",
     "tsc:w": "npm run clear && tsc -w",
-    "test": "mocha server/src/**/*.test.ts",
+    "test": "mocha server/src/**/*.test.ts --opts mocha.opts",
     "lint": "tslint \"src/**/*.ts\" "
   },
   "dependencies": {
@@ -33,6 +33,7 @@
     "@types/koa-bodyparser": "^3.0.23",
     "@types/lodash": "^4.14.64",
     "@types/mocha": "^2.2.41",
+    "@types/chai": "^4.0.1",
     "@types/node": "^7.0.16",
     "@types/should": "^8.3.0",
     "mocha": "^3.3.0",
