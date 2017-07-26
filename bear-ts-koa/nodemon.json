@@ -1,0 +1,12 @@
+{
+  "verbose": true,
+  "ignore": [
+    "**/*.test.ts",
+    "client/../assets",
+    "public/images/"
+  ],
+  "execMap": {
+    "": "node",
+    "js": "node --harmony"
+  }
+}

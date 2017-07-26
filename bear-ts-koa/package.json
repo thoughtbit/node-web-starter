@@ -1,0 +1,70 @@
+{
+  "name": "bear-ts-koa",
+  "version": "0.0.1",
+  "description": "TypeScript Koa 项目模板",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon server/start.js --watch server --exec",
+    "build": "npm run tsc",
+    "clean": "rimraf node_modules",
+    "clear": "rimraf build",
+    "pstart": "concurrently \"npm run start\" \"npm run open\"",
+    "open": "opn \"http://localhost:9000\"",
+    "tsc": "npm run clear && tsc",
+    "tsc:w": "npm run clear && tsc -w",
+    "test": "mocha server/src/**/*.test.ts",
+    "lint": "tslint \"src/**/*.ts\" "
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "debug": "^2.6.3",
+    "koa": "^2.3.0",
+    "koa-router": "7.2.1",
+    "koa-favicon": "^2.0.0",
+    "koa-bodyparser": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.3",
+    "@types/bluebird-global": "^3.5.2",
+    "@types/koa": "^2.0.39",
+    "@types/koa-favicon": "^2.0.17",
+    "@types/koa-router": "^7.0.22",
+    "@types/koa-bodyparser": "^3.0.23",
+    "@types/lodash": "^4.14.64",
+    "@types/mocha": "^2.2.41",
+    "@types/node": "^7.0.16",
+    "@types/should": "^8.3.0",
+    "mocha": "^3.3.0",
+    "chai": "^3.5.0",
+    "should": "11.2.1",
+    "supertest": "^1.2.0",
+    "ts-node": "^3.3.0",
+    "tslib": "^1.7.1",
+    "tslint": "^5.5.0",
+    "typescript": "^2.3.2",
+    "opn-cli": "^3.1.0",
+    "concurrently": "^3.1.0",
+    "nodemon": "^1.11.0",
+    "cross-env": "^3.1.4",
+    "rimraf": "^2.5.4",
+    "copyfiles": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thoughtbit/node-web-starter/bear-ts-koa.git"
+  },
+  "author": {
+    "name": "moocss",
+    "email": "moocss@gmail.com"
+  },
+  "keywords": [
+    "typescript",
+    "koa",
+    "mocha",
+    "chai"
+  ],
+  "engines": {
+    "node": ">= 7.6"
+  },
+  "license": "MIT"
+}
