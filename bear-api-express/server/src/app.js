@@ -10,7 +10,7 @@ import config from './config'
 import routes from './routes'
 import { enableEnhancedStackTraces } from './helpers/utils/debugUtil'
 
-import { expressMiddleware, /* authMiddleware8, */ errorHandler, apolloUpload } from './middleware'
+import { expressMiddleware, /* authMiddleware, */ errorHandler, apolloUpload } from './middleware'
 
 // const debug = _debug('bear:server:app')
 

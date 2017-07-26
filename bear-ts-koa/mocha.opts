@@ -3,4 +3,7 @@
 --growl
 --timeout 5000
 --reporter spec
---require ts-node/register
+--compilers ts:ts-node/register,tsx:ts-node/register
+
+--require mocha.conf.js
+--globals expect

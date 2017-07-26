@@ -78,7 +78,7 @@ const createTables = {
       table.text('content').notNullable()
       table.text('excerpt').notNullable()
       table.uuid('userId').unsigned().notNullable()
-      table.boolean('published')
+      table.boolean('published').defaultTo(false)
       table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
       table.timestamp('updatedAt').nullable().defaultTo(null)
       table.timestamp('deletedAt').nullable().defaultTo(null)
