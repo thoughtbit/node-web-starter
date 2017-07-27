@@ -18,11 +18,6 @@ class Social extends BaseModel {
         maxLength: 36,
         pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
       },
-      facebookUrl: {
-        type: 'string',
-        minLength: 1,
-        maxLength: 255,
-      },
       googleUrl: {
         type: 'string',
         minLength: 1,
