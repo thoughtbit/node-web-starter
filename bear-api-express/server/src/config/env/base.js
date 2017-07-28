@@ -40,7 +40,7 @@ export default {
   },
   // 数据库
   db: {
-    url: 'mysql://root:123456@127.0.0.1:3306/bear',
+    url: 'mysql://root:123456@127.0.0.1:3306/bear', // url: 'postgres://postgres@127.0.0.1:5432/bear',
     name: 'bear',
     debug: false,
   },

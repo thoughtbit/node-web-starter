@@ -4,22 +4,23 @@ import db from './helpers/db/mysql'
 function truncate(knex, Promise, tables) {
   return Promise.each(tables, table =>
     knex.raw(`TRUNCATE TABLE ${table}`),
+    // knex.raw(`TRUNCATE TABLE ${table} RESTART IDENTITY CASCADE`),
   )
 }
 
 const tables = [
   'role',
   'user',
+  'user_role',
+  'user_social_media',
   'tag',
   'article',
-  'setting',
-  'user_social_media',
   'article_tag',
-  'user_role',
+  'setting',
 ]
 
 const createTables = {
-  up: async (db) => {
+  up_mysql: async (db) => {
     await db.schema.createTable('role', (table) => {
       // pk
       table.increments('id').unsigned().primary()
@@ -79,7 +80,7 @@ const createTables = {
       table.string('slug', 140).unique().notNullable()
       table.text('content').notNullable()
       table.text('excerpt').notNullable()
-      table.uuid('userId') // .unsigned().notNullable()
+      table.uuid('userId').notNullable()
       table.boolean('published').defaultTo(0)
       table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
       table.timestamp('updatedAt').nullable().defaultTo(null)
@@ -112,7 +113,7 @@ const createTables = {
 
     await db.schema.createTable('user_social_media', (table) => {
       table.increments('id').unsigned().primary()
-      table.uuid('userId') // .unsigned().notNullable()
+      table.uuid('userId').notNullable()
       table.string('googleUrl', 255).notNullable()
       table.string('githubUrl', 255).notNullable()
       table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
@@ -121,8 +122,8 @@ const createTables = {
 
     await db.schema.createTable('article_tag', (table) => {
       table.increments('id').primary()
-      table.uuid('articleId') // .unsigned().notNullable()
-      table.integer('tagId') // .unsigned().notNullable()
+      table.uuid('articleId').notNullable()
+      table.integer('tagId').unsigned().notNullable()
       table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
       table.timestamp('updatedAt').nullable().defaultTo(null)
       table.unique(['articleId', 'tagId'])
@@ -132,18 +133,18 @@ const createTables = {
         .inTable('article')
         .onDelete('cascade')
         .onUpdate('cascade')
-      // table
-      //   .foreign('tagId')
-      //   .references('id')
-      //   .inTable('tag')
-      //   .onDelete('cascade')
-      //   .onUpdate('cascade')
+      table
+        .foreign('tagId')
+        .references('id')
+        .inTable('tag')
+        .onDelete('cascade')
+        .onUpdate('cascade')
     })
 
     await db.schema.createTable('user_role', (table) => {
       table.increments('id').primary()
-      table.uuid('userId') // .unsigned().notNullable()
-      table.integer('roleId') // .unsigned().notNullable()
+      table.uuid('userId').notNullable()
+      table.integer('roleId').unsigned().notNullable()
       table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
       table.timestamp('updatedAt').nullable().defaultTo(null)
       table.unique(['userId', 'roleId'])
@@ -153,12 +154,154 @@ const createTables = {
         .inTable('user')
         .onDelete('cascade')
         .onUpdate('cascade')
-      // table
-      //   .foreign('roleId')
-      //   .references('id')
-      //   .inTable('role')
-      //   .onDelete('cascade')
-      //   .onUpdate('cascade')
+      table
+        .foreign('roleId')
+        .references('id')
+        .inTable('role')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+    })
+  },
+  up_pg: async (db) => {
+    await db.schema.createTable('role', (table) => {
+      // pk
+      table.increments('id').unsigned().primary()
+      // uuid
+      table.uuid('uuid').notNullable()
+
+      table.string('name', 64).notNullable().unique()
+      table.string('image', 200).nullable()
+      table.text('description').nullable()
+
+      table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      // indexes
+      table.index('name')
+      table.index('uuid')
+    })
+
+    await db.schema.createTable('user', (table) => {
+      // pk
+      table.uuid('id').notNullable().primary()
+
+      table.string('email', 100).unique().notNullable()
+      table.string('password', 64).notNullable()
+      table.string('username', 115).unique().notNullable()
+      table.string('avatarUrl', 255).defaultTo('https://avatars0.githubusercontent.com/u/1026216?v=4&s=460')
+      table.string('website', 100).nullable()
+      table.boolean('verified').defaultTo(0)
+
+      table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      table.timestamp('deletedAt').nullable().defaultTo(null)
+      // fk
+
+      // indexes
+      table.index('username')
+      table.index('verified')
+      table.index('email')
+    })
+
+    await db.schema.createTable('tag', (table) => {
+      table.increments('id').unsigned().primary()
+      // uuid
+      table.uuid('uuid').notNullable()
+      table.string('name').notNullable().unique()
+      table.string('description').nullable()
+      table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      table.timestamp('deletedAt').nullable().defaultTo(null)
+
+      table.index('name')
+    })
+
+    await db.schema.createTable('article', (table) => {
+      // pk | uuid
+      table.uuid('id').notNullable().primary()
+      table.string('title', 140).unique().notNullable()
+      table.string('slug', 140).unique().notNullable()
+      table.text('content').notNullable()
+      table.text('excerpt').notNullable()
+      table.uuid('userId').unsigned().notNullable()
+      table.boolean('published').defaultTo(0)
+      table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      table.timestamp('deletedAt').nullable().defaultTo(null)
+      // fk | uuid
+      table
+        .foreign('userId')
+        .references('id')
+        .inTable('user')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+
+      table.index('slug')
+      table.index('published')
+      table.index('createdAt')
+    })
+
+    await db.schema.createTable('setting', (table) => {
+      table.increments('id').unsigned().primary()
+      table.string('key', 100).notNullable()
+      table.string('label', 100).notNullable()
+      table.string('value', 255).notNullable()
+      table.string('description', 255).notNullable()
+      table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+
+      table.index('key')
+      table.index('value')
+    })
+
+    await db.schema.createTable('user_social_media', (table) => {
+      table.increments('id').unsigned().primary()
+      table.uuid('userId').unsigned().notNullable()
+      table.string('googleUrl', 255).notNullable()
+      table.string('githubUrl', 255).notNullable()
+      table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+    })
+
+    await db.schema.createTable('article_tag', (table) => {
+      table.increments('id').primary()
+      table.uuid('articleId').unsigned().notNullable()
+      table.integer('tagId').unsigned().notNullable()
+      table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      table.unique(['articleId', 'tagId'])
+      table
+        .foreign('articleId')
+        .references('id')
+        .inTable('article')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+      table
+        .foreign('tagId')
+        .references('id')
+        .inTable('tag')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+    })
+
+    await db.schema.createTable('user_role', (table) => {
+      table.increments('id').primary()
+      table.uuid('userId').unsigned().notNullable()
+      table.integer('roleId').unsigned().notNullable()
+      table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      table.unique(['userId', 'roleId'])
+      table
+        .foreign('userId')
+        .references('id')
+        .inTable('user')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+      table
+        .foreign('roleId')
+        .references('id')
+        .inTable('role')
+        .onDelete('cascade')
+        .onUpdate('cascade')
     })
   },
   down: async (db) => {
@@ -186,7 +329,7 @@ const createTables = {
           id: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
           email: 'admin@bear.io',
           password: '$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka',
-          username: 'Kims',
+          username: 'moocss',
           avatarUrl: 'avatar.png',
           website: 'https://moocss.com',
           verified: 0,
@@ -195,9 +338,16 @@ const createTables = {
     )
     .then(() =>
       Promise.all([
+        knex('user_role').insert({
+          userId: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
+          roleId: 1,
+        }),
+      ]),
+    )
+    .then(() =>
+      Promise.all([
         knex('user_social_media').insert({
           userId: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
-          facebookUrl: 'https://facebook.com',
           githubUrl: 'https://github.com',
           googleUrl: 'https://google.com',
         }),
@@ -206,6 +356,7 @@ const createTables = {
     .then(() =>
       Promise.all([
         knex('tag').insert({
+          uuid: '7b7cf186-30bf-4607-9a85-752ee174d69d',
           name: 'javascript',
           description: 'JS',
         }),
@@ -236,15 +387,7 @@ const createTables = {
       Promise.all([
         knex('article_tag').insert({
           articleId: '5c9ed236-79f0-4ff7-93bd-2815f06c74b4',
-          tagId: 2,
-        }),
-      ]),
-    )
-    .then(() =>
-      Promise.all([
-        knex('user_role').insert({
-          userId: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
-          roleId: 3,
+          tagId: 1,
         }),
       ]),
     )
@@ -261,5 +404,6 @@ const createTables = {
 }
 
 // createTables.down(db)
-// createTables.up(db)
+// createTables.up_mysql(db)
+// createTables.up_pg(db)
 createTables.seed(db, Promise)

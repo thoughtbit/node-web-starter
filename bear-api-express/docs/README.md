@@ -1,3 +1,9 @@
+## knex
+```
+knex migrate:latest
+knex seed:run
+```
+
 # Schema Builder
 ## 添加字段
 方法	                                     说明
