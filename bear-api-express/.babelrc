@@ -1,11 +1,13 @@
 {
   "presets": [
-    "es2015",
+    ["env", {
+      "targets": {
+        "node": "current"
+      }
+    }],
     "stage-0",
     "react"
   ],
-  "plugins": [
-    "transform-class-properties"
-  ],
+  "plugins": ["transform-class-properties"],
   "ignore": "node_modules"
 }

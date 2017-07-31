@@ -31,19 +31,21 @@ class Tag extends BaseModel {
     },
   })
 
-  static relationMappings = {
-    articles: {
-      relation: BaseModel.ManyToManyRelation,
-      modelClass: Article,
-      join: {
-        from: 'tag.id',
-        through: {
-          from: 'article_tag.tagId',
-          to: 'article_tag.articleId',
+  static get relationMappings() {
+    return {
+      articles: {
+        relation: BaseModel.ManyToManyRelation,
+        modelClass: Article,
+        join: {
+          from: 'tag.id',
+          through: {
+            from: 'article_tag.tagId',
+            to: 'article_tag.articleId',
+          },
+          to: 'article.id',
         },
-        to: 'article.id',
       },
-    },
+    }
   }
 
   static getTags(offset, limit) {

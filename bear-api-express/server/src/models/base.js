@@ -18,28 +18,28 @@ export function mergeSchemas(...schemas) {
   )
 }
 
-class BaseModel extends Model {
+export default class BaseModel extends Model {
   /**
    * If we should update the createdAt attribute when inserted and the
    * updatedAt attribute when updated.
    *
    * @type {boolean}
    */
-  static addTimestamps = true;
+  static addTimestamps = true
   /**
    * An object of attribute names with function values to transform
    * attributes on the model if they exist.
    *
    * @type {object}
    */
-  static transforms = {};
+  static transforms = {}
 
   /**
    * An array of attribute names that will be excluded from being returned.
    *
    * @type {array}
    */
-  static hidden = [];
+  static hidden = []
 
   static jsonSchema = {
     type: 'object',
@@ -110,4 +110,3 @@ class BaseModel extends Model {
   }
 }
 
-export default BaseModel

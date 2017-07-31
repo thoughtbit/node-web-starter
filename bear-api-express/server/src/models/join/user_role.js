@@ -29,24 +29,26 @@ class UserRole extends BaseModel {
     },
   })
 
-  static relationMappings = {
-    role: {
-      relation: BaseModel.BelongsToOneRelation,
-      modelClass: Role,
-      join: {
-        from: 'user_role.roleId',
-        to: 'role.id',
+  static get relationMappings() {
+    return {
+      role: {
+        relation: BaseModel.BelongsToOneRelation,
+        modelClass: Role,
+        join: {
+          from: 'user_role.roleId',
+          to: 'role.id',
+        },
       },
-    },
-    user: {
-      relation: BaseModel.BelongsToOneRelation,
-      modelClass: User,
-      join: {
-        from: 'user_role.userId',
-        to: 'user.id',
+      user: {
+        relation: BaseModel.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'user_role.userId',
+          to: 'user.id',
+        },
       },
-    },
-  };
+    }
+  }
 }
 
 export default UserRole

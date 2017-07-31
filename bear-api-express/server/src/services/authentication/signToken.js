@@ -4,7 +4,7 @@ import config from './../../config'
 function signToken(user) {
   const roleinfo = user.roles[0].name
   const payload = {
-    issuer: 'boldr',
+    issuer: 'bear',
     subject: user.id,
     algorithms: ['HS256'],
     expiresIn: Math.floor(Date.now() / 1000) + 60 * 60 * 24,

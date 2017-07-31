@@ -31,27 +31,29 @@ class Article extends BaseModel {
     },
   })
 
-  static relationMappings = {
-    author: {
-      relation: BaseModel.BelongsToOneRelation,
-      modelClass: User,
-      join: {
-        from: 'article.userId',
-        to: 'user.id',
-      },
-    },
-    tags: {
-      relation: BaseModel.ManyToManyRelation,
-      modelClass: Tag,
-      join: {
-        from: 'article.id',
-        through: {
-          from: 'article_tag.articleId',
-          to: 'article_tag.tagId',
+  static get relationMappings() {
+    return {
+      author: {
+        relation: BaseModel.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'article.userId',
+          to: 'user.id',
         },
-        to: 'tag.id',
       },
-    },
+      tags: {
+        relation: BaseModel.ManyToManyRelation,
+        modelClass: Tag,
+        join: {
+          from: 'article.id',
+          through: {
+            from: 'article_tag.articleId',
+            to: 'article_tag.tagId',
+          },
+          to: 'tag.id',
+        },
+      },
+    }
   }
 
   static getOnlyArticles(offset, limit) {

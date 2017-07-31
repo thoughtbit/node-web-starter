@@ -1,63 +1,43 @@
-import UsersService from './../../services/users'
+import _debug from 'debug'
 
-/**
- * Load user and append to req.
- */
-function load(req, res, next, id) {
+import {
+  responseHandler,
+  UserNotVerifiedError,
+  NotFound,
+  BadRequest,
+  InternalServer,
+  Unauthorized,
+  Conflict,
+} from './../../core'
+import User from './../../models/user'
 
+const debug = _debug('bear:user-ctrl')
+
+export async function getUser(req, res, next) {
+  try {
+    const user = await User.query()
+      .findById(req.params.id)
+      .eager('[roles,socialMedia]')
+      .omit(['password'])
+
+    return responseHandler(res, 200, user)
+  } catch (error) {
+    const err = new BadRequest(error)
+    return next(err)
+  }
 }
 
-/**
- * Get user
- * @returns {User}
- */
-function get(req, res) {
-  return res.json(req.user)
-}
+export async function getUsername(req, res, next) {
+  try {
+    const user = await User.query()
+      .where({ username: req.params.username })
+      .eager('[roles,socialMedia]')
+      .omit(['password'])
+      .first()
 
-/**
- * Create new user
- * @property {string} req.body.username - The username of user.
- * @property {string} req.body.mobileNumber - The mobileNumber of user.
- * @returns {User}
- */
-function create(req, res, next) {
-
-}
-
-/**
- * Update existing user
- * @property {string} req.body.username - The username of user.
- * @property {string} req.body.mobileNumber - The mobileNumber of user.
- * @returns {User}
- */
-function update(req, res, next) {
-
-}
-
-/**
- * Get user list.
- * @property {number} req.query.skip - Number of users to be skipped.
- * @property {number} req.query.limit - Limit number of users to be returned.
- * @returns {User[]}
- */
-function list(req, res, next) {
-
-}
-
-/**
- * Delete user.
- * @returns {User}
- */
-function remove(req, res, next) {
-
-}
-
-export default {
-  load,
-  get,
-  create,
-  update,
-  list,
-  remove,
+    return responseHandler(res, 200, user)
+  } catch (error) {
+    const err = new BadRequest(error)
+    return next(err)
+  }
 }

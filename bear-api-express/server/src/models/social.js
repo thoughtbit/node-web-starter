@@ -33,15 +33,17 @@ class Social extends BaseModel {
 
   static addTimestamps = false
 
-  static relationMappings = {
-    user: {
-      relation: BaseModel.BelongsToOneRelation,
-      modelClass: User,
-      join: {
-        from: 'user_social_media.userId',
-        to: 'user.id',
+  static get relationMappings() {
+    return {
+      user: {
+        relation: BaseModel.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'user_social_media.userId',
+          to: 'user.id',
+        },
       },
-    },
+    }
   }
 }
 

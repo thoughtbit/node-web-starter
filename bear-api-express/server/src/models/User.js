@@ -1,8 +1,6 @@
 import Promise from 'bluebird'
 import Bcrypt from 'bcryptjs'
 import _debug from 'debug'
-import { Model } from 'objection'
-
 import BaseModel, { mergeSchemas } from './base'
 import Role from './role'
 import Article from './article'
@@ -43,7 +41,6 @@ class User extends BaseModel {
   }
 
   static jsonSchema = mergeSchemas(BaseModel.jsonSchema, {
-    type: 'object',
     required: ['email', 'password', 'username'],
     properties: {
       id: {
@@ -52,19 +49,9 @@ class User extends BaseModel {
         maxLength: 36,
         pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
       },
-      email: {
-        type: 'string',
-      },
+      email: { type: 'string' },
       username: { type: 'string' },
       password: { type: 'string' },
-      // address: {
-      //   type: 'object',
-      //   properties: {
-      //     street: { type: 'string' },
-      //     city: { type: 'string' },
-      //     zipCode: { type: 'string' },
-      //   },
-      // },
       website: { type: 'string' },
       avatarUrl: { type: 'string' },
       verified: { type: 'boolean' },
@@ -78,35 +65,37 @@ class User extends BaseModel {
 
   static hidden = []
 
-  static relationMappings = {
-    roles: {
-      relation: BaseModel.ManyToManyRelation,
-      modelClass: Role,
-      join: {
-        from: 'user.id',
-        through: {
-          from: 'user_role.userId',
-          to: 'user_role.roleId',
+  static get relationMappings() {
+    return {
+      roles: {
+        relation: BaseModel.ManyToManyRelation,
+        modelClass: Role,
+        join: {
+          from: 'user.id',
+          through: {
+            from: 'user_role.userId',
+            to: 'user_role.roleId',
+          },
+          to: 'role.id',
         },
-        to: 'role.id',
       },
-    },
-    articles: {
-      relation: BaseModel.HasManyRelation,
-      modelClass: Article,
-      join: {
-        from: 'user.id',
-        to: 'article.userId',
+      articles: {
+        relation: BaseModel.HasManyRelation,
+        modelClass: Article,
+        join: {
+          from: 'user.id',
+          to: 'article.userId',
+        },
       },
-    },
-    socialMedia: {
-      relation: BaseModel.HasOneRelation,
-      modelClass: Social,
-      join: {
-        from: 'user.id',
-        to: 'user_social_media.userId',
+      socialMedia: {
+        relation: BaseModel.HasOneRelation,
+        modelClass: Social,
+        join: {
+          from: 'user.id',
+          to: 'user_social_media.userId',
+        },
       },
-    },
+    }
   }
 
   static getUserByUsername(username) {
@@ -154,3 +143,5 @@ class User extends BaseModel {
     }
   }
 }
+
+export default User
