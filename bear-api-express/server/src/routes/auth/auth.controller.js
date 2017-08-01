@@ -28,9 +28,10 @@ export async function registerUser(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail()
   req.assert('email', 'Email cannot be blank').notEmpty()
   req.assert('password', 'Password cannot be blank').notEmpty()
-  req.assert('username', 'Userneme cannot be blank').notEmpty()
+  req.assert('username', 'First name cannot be blank').notEmpty()
 
   req.sanitize('email').normalizeEmail({ remove_dots: false })
+  req.sanitize('username').trim()
 
   const checkExisting = await User.query().where('email', req.body.email)
 
@@ -50,12 +51,9 @@ export async function registerUser(req, res, next) {
       // no need to hash here, its taken care of on the model instance
       email: req.body.email,
       password: req.body.password,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
       username: req.body.username,
       avatarUrl: req.body.avatarUrl,
     }
-
     const newUser = await objection.transaction(User, async (User) => {
       const user = await User.query().insert(payload)
       await user.$relatedQuery('roles').relate({ id: 1 })
@@ -89,13 +87,6 @@ export async function registerUser(req, res, next) {
   }
 }
 
-/**
- * login takes an email address and password, check the database,
- * and issues a JWT.
- * @param req
- * @param res
- * @param next
- */
 export async function loginUser(req, res, next) {
   const user = await User.query()
     .where({ email: req.body.email })

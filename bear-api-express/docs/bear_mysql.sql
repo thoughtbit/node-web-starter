@@ -11,10 +11,10 @@
  Target Server Version : 50626
  File Encoding         : utf-8
 
- Date: 07/28/2017 16:35:07 PM
+ Date: 08/01/2017 14:38:05 PM
 */
 
-SET NAMES utf8mb4;
+SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
@@ -158,6 +158,7 @@ CREATE TABLE `user` (
   `avatarUrl` varchar(255) COLLATE utf8_bin DEFAULT 'https://avatars0.githubusercontent.com/u/1026216?v=4&s=460',
   `website` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `verified` tinyint(1) DEFAULT '0',
+  `address` text COLLATE utf8_bin,
   `createdAt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updatedAt` timestamp NULL DEFAULT NULL,
   `deletedAt` timestamp NULL DEFAULT NULL,
@@ -173,7 +174,7 @@ CREATE TABLE `user` (
 --  Records of `user`
 -- ----------------------------
 BEGIN;
-INSERT INTO `user` VALUES ('1b062e26-df71-48ce-b363-4ae9b966e7a0', 'admin@gmail.com', '$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka', 'moocss', 'https://avatars0.githubusercontent.com/u/1026216?v=4&s=460', null, '0', '2017-07-28 11:40:39', null, null);
+INSERT INTO `user` VALUES ('1b062e26-df71-48ce-b363-4ae9b966e7a0', 'admin@gmail.com', '$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka', 'moocss', 'https://avatars0.githubusercontent.com/u/1026216?v=4&s=460', null, '0', null, '2017-07-28 11:40:39', null, null);
 COMMIT;
 
 -- ----------------------------

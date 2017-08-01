@@ -48,16 +48,57 @@ const createTables = {
       table.string('avatarUrl', 255).defaultTo('https://avatars0.githubusercontent.com/u/1026216?v=4&s=460')
       table.string('website', 100).nullable()
       table.boolean('verified').defaultTo(0)
+      table.json('address')
 
       table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
       table.timestamp('updatedAt').nullable().defaultTo(null)
       table.timestamp('deletedAt').nullable().defaultTo(null)
       // fk
-
       // indexes
       table.index('username')
       table.index('verified')
       table.index('email')
+    })
+
+    await db.schema.createTable('verification_token', (table) => {
+      // pk
+      table.increments('id').unsigned().primary()
+      table.string('ip', 32)
+      table.string('token')
+      table.boolean('used').defaultTo(false)
+      table.uuid('userId').unsigned()
+      table.timestamp('createdAt').defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      // fk
+      table
+        .foreign('userId')
+        .references('id')
+        .inTable('user')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+      // indexes
+      table.index('token')
+    })
+    await db.schema.createTable('reset_token', (table) => {
+      // pk
+      table.increments('id').unsigned().primary()
+      table.string('ip', 32)
+      table.string('token', 255).comment('hashed token')
+      table.dateTime('expiration')
+      table.boolean('used').defaultTo(false)
+
+      table.uuid('userId').unsigned()
+      table.timestamp('createdAt').defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      // fk
+      table
+        .foreign('userId')
+        .references('id')
+        .inTable('user')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+      // indexes
+      table.index('token')
     })
 
     await db.schema.createTable('tag', (table) => {
@@ -190,6 +231,7 @@ const createTables = {
       table.string('avatarUrl', 255).defaultTo('https://avatars0.githubusercontent.com/u/1026216?v=4&s=460')
       table.string('website', 100).nullable()
       table.boolean('verified').defaultTo(0)
+      table.json('address')
 
       table.timestamp('createdAt').notNullable().defaultTo(db.fn.now())
       table.timestamp('updatedAt').nullable().defaultTo(null)
@@ -200,6 +242,47 @@ const createTables = {
       table.index('username')
       table.index('verified')
       table.index('email')
+    })
+
+    await db.schema.createTable('verification_token', (table) => {
+      // pk
+      table.increments('id').unsigned().primary()
+      table.string('ip', 32)
+      table.string('token')
+      table.boolean('used').defaultTo(false)
+      table.uuid('userId').unsigned()
+      table.timestamp('createdAt').defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      // fk
+      table
+        .foreign('userId')
+        .references('id')
+        .inTable('user')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+      // indexes
+      table.index('token')
+    })
+    await db.schema.createTable('reset_token', (table) => {
+      // pk
+      table.increments('id').unsigned().primary()
+      table.string('ip', 32)
+      table.string('token', 255).comment('hashed token')
+      table.dateTime('expiration')
+      table.boolean('used').defaultTo(false)
+
+      table.uuid('userId').unsigned()
+      table.timestamp('createdAt').defaultTo(db.fn.now())
+      table.timestamp('updatedAt').nullable().defaultTo(null)
+      // fk
+      table
+        .foreign('userId')
+        .references('id')
+        .inTable('user')
+        .onDelete('cascade')
+        .onUpdate('cascade')
+      // indexes
+      table.index('token')
     })
 
     await db.schema.createTable('tag', (table) => {
@@ -406,4 +489,4 @@ const createTables = {
 // createTables.down(db)
 // createTables.up_mysql(db)
 // createTables.up_pg(db)
-createTables.seed(db, Promise)
+// createTables.seed(db, Promise)

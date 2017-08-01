@@ -13,7 +13,7 @@ const welcomeEmail = verificationToken =>
         style='background-color: #288feb; color: #fff;
         padding: 14px; text-decoration: none; border-radius: 5px;
         margin-top: 20px; display: inline-block;'>Activate Account</a>
-        </div> <h3 style='color: #5f5f5f; text-align: center; margin-top: 30px;'>BoldrCMS Team</h3></div></div>
+        </div> <h3 style='color: #5f5f5f; text-align: center; margin-top: 30px;'>Bear Team</h3></div></div>
       </body>
     </html>
   `
@@ -28,7 +28,7 @@ const forgotPasswordEmail = verificationToken =>
     style='background-color: #288feb; color: #fff;
     padding: 14px; text-decoration: none; border-radius: 5px;
     margin-top: 20px; display: inline-block;'>Reset password</a>
-    </div> <h3 style='color: #5f5f5f; text-align: center; margin-top: 30px;'>BoldrCMS Team</h3></div></div>
+    </div> <h3 style='color: #5f5f5f; text-align: center; margin-top: 30px;'>Bear Team</h3></div></div>
   `
 
 const passwordModifiedEmail = user =>
@@ -40,7 +40,7 @@ const passwordModifiedEmail = user =>
     style='background-color: #288feb; color: #fff;
     padding: 14px; text-decoration: none; border-radius: 5px;
     margin-top: 20px; display: inline-block;'>Activate Account</a>
-    </div> <h3 style='color: #5f5f5f; text-align: center; margin-top: 30px;'>BoldrCMS Team</h3></div></div>
+    </div> <h3 style='color: #5f5f5f; text-align: center; margin-top: 30px;'>Bear Team</h3></div></div>
   `
 
 export { welcomeEmail, forgotPasswordEmail, passwordModifiedEmail }

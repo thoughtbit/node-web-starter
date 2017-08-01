@@ -3,7 +3,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express'
 import { printSchema } from 'graphql'
-// import _debug from 'debug'
+import _debug from 'debug'
 import appRootDir from 'app-root-dir'
 import RootSchema from './graphql/rootSchema'
 import config from './config'
@@ -12,7 +12,7 @@ import { enableEnhancedStackTraces } from './helpers/utils/debugUtil'
 
 import { expressMiddleware, /* authMiddleware, */ errorHandler, apolloUpload } from './middleware'
 
-// const debug = _debug('bear:server:app')
+const debug = _debug('bear:server:app')
 
 enableEnhancedStackTraces()
 
