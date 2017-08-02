@@ -9,9 +9,9 @@ import { expressMiddleware } from './middleware'
 
 const promiseRouter = require('express-promise-router')
 
-const app: express.Application = express()
-
 const router: express.Router = promiseRouter()
+
+const app: express.Application = express().use(bodyParser.json()).use(router)
 
 // Base Express middleware - body-parser, method-override, busboy, cors
 expressMiddleware(app)
