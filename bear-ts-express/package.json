@@ -1,0 +1,78 @@
+{
+  "name": "bear-ts-express",
+  "version": "0.0.1",
+  "description": "TypeScript Express 项目模板",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development nodemon server/start.js --watch server --exec",
+    "start:build": "npm run tsc && node build",
+    "build": "npm run tsc && nodemon --config nodemon.json",
+    "clean": "rimraf node_modules",
+    "clear": "rimraf build",
+    "pstart": "concurrently \"npm run start\" \"npm run open\"",
+    "open": "opn \"http://localhost:9000\"",
+    "tsc": "npm run clear && tsc",
+    "tsc:w": "npm run clear && tsc -w",
+    "test": "mocha server/src/**/*.test.ts --opts mocha.opts",
+    "lint": "tslint src/**/*.ts"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "debug": "^2.6.3",
+    "express": "^4.15.3",
+    "body-parser": "^1.17.2",
+    "express-promise-router": "^2.0.0",
+    "morgan": "^1.8.2",
+    "knex": "^0.13.0",
+    "objection": "^0.8.5",
+    "mysql": "^2.13.0",
+    "pg": "^7.0.2",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.3",
+    "@types/bluebird-global": "^3.5.2",
+    "@types/body-parser": "^1.16.4",
+    "@types/express": "^4.0.36",
+    "@types/knex": "^0.0.56",
+    "@types/lodash": "^4.14.70",
+    "@types/morgan": "^1.7.32",
+    "@types/mocha": "^2.2.41",
+    "@types/chai": "^4.0.1",
+    "@types/node": "^7.0.16",
+    "@types/should": "^8.3.0",
+    "mocha": "^3.3.0",
+    "chai": "^3.5.0",
+    "should": "11.2.1",
+    "supertest": "^1.2.0",
+    "ts-node": "^3.3.0",
+    "tslib": "^1.7.1",
+    "tslint": "^5.5.0",
+    "tslint-config-standard": "^6.0.1",
+    "typescript": "^2.4.2",
+    "opn-cli": "^3.1.0",
+    "concurrently": "^3.1.0",
+    "nodemon": "^1.11.0",
+    "cross-env": "^3.1.4",
+    "rimraf": "^2.5.4",
+    "copyfiles": "^1.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thoughtbit/node-web-starter/bear-ts-express.git"
+  },
+  "author": {
+    "name": "moocss",
+    "email": "moocss@gmail.com"
+  },
+  "keywords": [
+    "typescript",
+    "koa",
+    "mocha",
+    "chai"
+  ],
+  "engines": {
+    "node": ">= 7.6"
+  },
+  "license": "MIT"
+}
