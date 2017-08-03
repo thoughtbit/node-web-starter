@@ -1,10 +1,11 @@
+import * as path from 'path'
 import { Model } from 'objection'
 import Role from './role'
 
 export interface Address {
-  street: string;
-  city: string;
-  zipCode: string;
+  street: string
+  city: string
+  zipCode: string
 }
 
 class User extends Model {
@@ -14,9 +15,6 @@ class User extends Model {
   address: Address
 
   static tableName = 'user'
-
-  // Where to look for models classes.
-  static modelPaths = [__dirname]
 
   static jsonSchema = {
     type: 'object',
@@ -48,13 +46,12 @@ class User extends Model {
     },
   }
 
-  static addTimestamps = true
-
-  static hidden = []
+  // Centralize the models.
+  static modelPaths = [__dirname]
 
   static relationMappings = {
     roles: {
-      relation: Model.HasManyRelation,
+      relation: Model.ManyToManyRelation,
       modelClass: Role,
       join: {
         from: 'user.id',

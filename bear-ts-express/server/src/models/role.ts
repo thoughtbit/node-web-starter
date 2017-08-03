@@ -1,3 +1,4 @@
+import * as path from 'path'
 import { Model } from 'objection'
 import User from './user'
 
@@ -5,10 +6,10 @@ class Role extends Model {
   readonly id: number
   name: string
 
-  static tableName = 'role';
-  static addTimestamps = true;
-  static hidden = ['password'];
+  static tableName = 'role'
+
   static jsonSchema = {
+    type: 'object',
     required: ['name'],
     properties: {
       id: {
@@ -36,6 +37,9 @@ class Role extends Model {
       },
     },
   }
+
+  // Centralize the models.
+  static modelPaths = [__dirname]
 
   static relationMappings = {
     users: {

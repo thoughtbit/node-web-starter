@@ -5,8 +5,6 @@ const role_1 = require("./role");
 class User extends objection_1.Model {
 }
 User.tableName = 'user';
-// Where to look for models classes.
-User.modelPaths = [__dirname];
 User.jsonSchema = {
     type: 'object',
     required: ['email', 'password', 'username'],
@@ -36,11 +34,11 @@ User.jsonSchema = {
         deletedAt: { type: 'date-time' },
     },
 };
-User.addTimestamps = true;
-User.hidden = [];
+// Centralize the models.
+User.modelPaths = [__dirname];
 User.relationMappings = {
     roles: {
-        relation: objection_1.Model.HasManyRelation,
+        relation: objection_1.Model.ManyToManyRelation,
         modelClass: role_1.default,
         join: {
             from: 'user.id',

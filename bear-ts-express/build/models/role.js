@@ -5,9 +5,8 @@ const user_1 = require("./user");
 class Role extends objection_1.Model {
 }
 Role.tableName = 'role';
-Role.addTimestamps = true;
-Role.hidden = ['password'];
 Role.jsonSchema = {
+    type: 'object',
     required: ['name'],
     properties: {
         id: {
@@ -35,6 +34,8 @@ Role.jsonSchema = {
         },
     },
 };
+// Centralize the models.
+Role.modelPaths = [__dirname];
 Role.relationMappings = {
     users: {
         relation: objection_1.Model.ManyToManyRelation,
