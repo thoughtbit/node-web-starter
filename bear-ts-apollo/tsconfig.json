@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "sourceMap": true,
+    "noEmit": false,
+    "noEmitHelpers": true,
+    "importHelpers": true,
+    "strictNullChecks": false,
+    "lib": [
+      "es6",
+      "es7"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "bluebird",
+      "bluebird-global",
+      "lodash",
+      "mocha",
+      "node",
+      "should"
+    ],
+    "outDir": "./build",
+    "rootDir": "./server/src"
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "typings",
+    "**/*.test.ts"
+  ],
+  "compileOnSave": false,
+  "buildOnSave": false
+}

@@ -1,0 +1,9 @@
+--reporter spec
+--recursive
+--growl
+--timeout 5000
+--reporter spec
+--compilers ts:ts-node/register,tsx:ts-node/register
+
+--require mocha.conf.js
+--globals expect
