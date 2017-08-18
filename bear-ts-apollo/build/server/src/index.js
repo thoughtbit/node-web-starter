@@ -29,7 +29,7 @@ postgres_1.initializeDb()
 });
 process.on('SIGINT', () => {
     console.log('shutting down!');
-    postgres_1.disconnect(); // 关闭mysql
+    postgres_1.disconnect(); // 关闭数据库
     server.close();
     process.exit();
 });

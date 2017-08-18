@@ -41,20 +41,22 @@ class Role extends Model {
   // Centralize the models.
   static modelPaths = [__dirname];
 
-  static relationMappings = {
-    users: {
-      relation: Model.ManyToManyRelation,
-      modelClass: User,
-      join: {
-        from: 'role.id',
-        through: {
-          from: 'user_role.roleId',
-          to: 'user_role.userId'
-        },
-        to: 'user.id'
+  static get relationMappings() {
+    return {
+      users: {
+        relation: Model.ManyToManyRelation,
+        modelClass: User,
+        join: {
+          from: 'role.id',
+          through: {
+            from: 'user_role.roleId',
+            to: 'user_role.userId'
+          },
+          to: 'user.id'
+        }
       }
-    }
-  };
+    };
+  }
 }
 
 export default Role;

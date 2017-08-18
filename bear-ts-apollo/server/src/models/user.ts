@@ -24,7 +24,7 @@ class User extends Model {
         type: 'string',
         minLength: 36,
         maxLength: 36,
-        pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+        pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
       },
       email: { type: 'string' },
       username: { type: 'string' },
@@ -49,20 +49,22 @@ class User extends Model {
   // Centralize the models.
   static modelPaths = [__dirname];
 
-  static relationMappings = {
-    roles: {
-      relation: Model.ManyToManyRelation,
-      modelClass: Role,
-      join: {
-        from: 'user.id',
-        through: {
-          from: 'user_role.userId',
-          to: 'user_role.roleId'
-        },
-        to: 'role.id'
+  static get relationMappings() {
+    return {
+      roles: {
+        relation: Model.ManyToManyRelation,
+        modelClass: Role,
+        join: {
+          from: 'user.id',
+          through: {
+            from: 'user_role.userId',
+            to: 'user_role.roleId'
+          },
+          to: 'role.id'
+        }
       }
-    }
-  };
+    };
+  }
 }
 
 export default User;

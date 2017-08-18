@@ -2,8 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_routes_1 = require("./user/user.routes");
 const role_routes_1 = require("./role/role.routes");
-exports.default = (app) => {
-    app.get('health-check', (req, res) => {
+exports.default = (server) => {
+    server.get('/', (req, res) => {
+        res.send('hello world!');
+    });
+    server.get('/health-check', (req, res) => {
         res.status(200);
         res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.set('Pragma', 'no-cache');
@@ -14,7 +17,7 @@ exports.default = (app) => {
             memoryUsage: process.memoryUsage()
         });
     });
-    app.use('users', user_routes_1.default);
-    app.use('roles', role_routes_1.default);
+    server.use('/users', user_routes_1.default);
+    server.use('/roles', role_routes_1.default);
 };
 //# sourceMappingURL=index.js.map

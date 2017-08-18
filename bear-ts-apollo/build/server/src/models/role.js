@@ -3,6 +3,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const objection_1 = require("objection");
 const user_1 = require("./user");
 class Role extends objection_1.Model {
+    static get relationMappings() {
+        return {
+            users: {
+                relation: objection_1.Model.ManyToManyRelation,
+                modelClass: user_1.default,
+                join: {
+                    from: 'role.id',
+                    through: {
+                        from: 'user_role.roleId',
+                        to: 'user_role.userId'
+                    },
+                    to: 'user.id'
+                }
+            }
+        };
+    }
 }
 Role.tableName = 'role';
 Role.jsonSchema = {
@@ -36,19 +52,5 @@ Role.jsonSchema = {
 };
 // Centralize the models.
 Role.modelPaths = [__dirname];
-Role.relationMappings = {
-    users: {
-        relation: objection_1.Model.ManyToManyRelation,
-        modelClass: user_1.default,
-        join: {
-            from: 'role.id',
-            through: {
-                from: 'user_role.roleId',
-                to: 'user_role.userId'
-            },
-            to: 'user.id'
-        }
-    }
-};
 exports.default = Role;
 //# sourceMappingURL=role.js.map

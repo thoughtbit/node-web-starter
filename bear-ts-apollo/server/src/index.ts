@@ -38,7 +38,7 @@ initializeDb()
 
 process.on('SIGINT', () => {
   console.log('shutting down!');
-  disconnect(); // 关闭mysql
+  disconnect(); // 关闭数据库
   server.close();
   process.exit();
 });

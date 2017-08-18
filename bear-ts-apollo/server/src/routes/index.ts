@@ -2,8 +2,11 @@ import config from './../config';
 import userRoutes from './user/user.routes';
 import roleRoutes from './role/role.routes';
 
-export default (app) => {
-  app.get('health-check', (req, res) => {
+export default (server) => {
+  server.get('/', (req, res) => {
+    res.send('hello world!');
+  });
+  server.get('/health-check', (req, res) => {
     res.status(200);
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.set('Pragma', 'no-cache');
@@ -14,7 +17,6 @@ export default (app) => {
       memoryUsage: process.memoryUsage()
     });
   });
-
-  app.use('users', userRoutes);
-  app.use('roles', roleRoutes);
+  server.use('/users', userRoutes);
+  server.use('/roles', roleRoutes);
 };

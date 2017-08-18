@@ -3,7 +3,7 @@ import userRoutes from './user/user.routes'
 import roleRoutes from './role/role.routes'
 
 export default (app) => {
-  app.get('health-check', (req, res) => {
+  app.get('/health-check', (req, res) => {
     res.status(200)
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate')
     res.set('Pragma', 'no-cache')
@@ -15,6 +15,6 @@ export default (app) => {
     })
   })
 
-  app.use('users', userRoutes)
-  app.use('roles', roleRoutes)
+  app.use('/users', userRoutes)
+  app.use('/roles', roleRoutes)
 }

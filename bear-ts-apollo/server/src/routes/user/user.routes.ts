@@ -8,5 +8,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:id', ctrl.getUser);
+router.get('/:username/profile', ctrl.getUsername);
 
 export default router;
