@@ -1,3 +1,9 @@
+// const app = require('express')();
+// const expressty = require('expressty');
+// app.use(expressty);
+// app.get('/anakin', (req, res) => fightObiWan().then(res.ok).fail(res.error));
+// app.use((req, res) => res.notFound());
+
 /**
  * default messages by httpCode
  * @type {{200: string, 500: string, 400: string, 404: string, 201: string, 502: string,

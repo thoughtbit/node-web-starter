@@ -1,3 +1,3 @@
-import expressMiddleware from './express'
+import expressMiddleware from './express';
 
-export { expressMiddleware }
+export { expressMiddleware };

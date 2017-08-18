@@ -4,7 +4,7 @@ import app from './app';
 import { initializeDb, disconnect } from './helpers/db/postgres';
 import config from './config';
 
-const debug = _debug('bear:server');
+const debug = _debug('bear:app');
 
 const PORT = config.server.port;
 const HOST = config.server.host;

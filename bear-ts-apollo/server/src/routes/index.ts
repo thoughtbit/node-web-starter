@@ -4,8 +4,11 @@ import roleRoutes from './role/role.routes';
 
 export default (server) => {
   server.get('/', (req, res) => {
-    res.send('hello world!');
+    res.render('index', {
+      name: '我是内容页'
+    });
   });
+
   server.get('/health-check', (req, res) => {
     res.status(200);
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -17,6 +20,7 @@ export default (server) => {
       memoryUsage: process.memoryUsage()
     });
   });
+
   server.use('/users', userRoutes);
   server.use('/roles', roleRoutes);
 };

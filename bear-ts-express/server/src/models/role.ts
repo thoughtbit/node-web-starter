@@ -1,45 +1,45 @@
-import * as path from 'path'
-import { Model } from 'objection'
-import User from './user'
+import * as path from 'path';
+import { Model } from 'objection';
+import User from './user';
 
 class Role extends Model {
-  readonly id: number
-  name: string
+  readonly id: number;
+  name: string;
 
-  static tableName = 'role'
+  static tableName = 'role';
 
   static jsonSchema = {
     type: 'object',
     required: ['name'],
     properties: {
       id: {
-        type: 'number',
+        type: 'number'
       },
       uuid: {
         type: 'string',
         minLength: 36,
         maxLength: 36,
-        pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+        pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
       },
       name: {
         type: 'string',
         minLength: 3,
         maxLength: 64,
-        pattern: '^[A-Za-z0-9-_]+$',
+        pattern: '^[A-Za-z0-9-_]+$'
       },
       image: {
         type: 'string',
-        maxLength: 255,
+        maxLength: 255
       },
       description: {
         type: 'string',
-        maxLength: 255,
-      },
-    },
-  }
+        maxLength: 255
+      }
+    }
+  };
 
   // Centralize the models.
-  static modelPaths = [__dirname]
+  static modelPaths = [__dirname];
 
   static get relationMappings() {
     return {
@@ -59,4 +59,4 @@ class Role extends Model {
   }
 }
 
-export default Role
+export default Role;

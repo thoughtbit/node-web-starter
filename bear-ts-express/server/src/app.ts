@@ -1,30 +1,26 @@
-import * as path from 'path'
-import * as express from 'express'
-import * as bodyParser from 'body-parser'
-import config from './config'
-import routesAll from './routes'
-import registerApi from './api'
+import * as path from 'path';
+import * as express from 'express';
+import * as _debug from 'debug';
 
-import { expressMiddleware } from './middleware'
+import config from './config';
+import routes from './routes';
+import { expressMiddleware } from './middleware';
 
-const router = express.Router()
+const debug = _debug('bear:server');
+const server = express();
 
-const app: express.Application = express()
-
+// ==============================================================================
+// 中间件
+// ==============================================================================
 // Base Express middleware - body-parser, method-override, busboy, cors
-expressMiddleware(app)
+expressMiddleware(server);
 
-// All routes for the app
-routesAll(app)
+debug(`mounting routes ...`);
 
-// Register our REST API.
-registerApi(router)
+// ==============================================================================
+// ROUTES
+// ==============================================================================
+// All routes for the server
+routes(server);
 
-app.use(bodyParser.json())
-
-// app.use(router)
-
-// Setup the public directory so that we can serve static assets.
-app.use(express.static(path.resolve(__dirname, '../../public')))
-
-export default app
+export default server;
