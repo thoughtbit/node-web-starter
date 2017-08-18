@@ -1,20 +1,20 @@
-import * as path from 'path'
-import { Model } from 'objection'
-import Role from './role'
+import * as path from 'path';
+import { Model } from 'objection';
+import Role from './role';
 
 export interface Address {
-  street: string
-  city: string
-  zipCode: string
+  street: string;
+  city: string;
+  zipCode: string;
 }
 
 class User extends Model {
-  readonly id: number
-  password: string
-  username: string
-  address: Address
+  readonly id: number;
+  password: string;
+  username: string;
+  address: Address;
 
-  static tableName = 'user'
+  static tableName = 'user';
 
   static jsonSchema = {
     type: 'object',
@@ -36,18 +36,18 @@ class User extends Model {
         properties: {
           street: { type: 'string' },
           city: { type: 'string' },
-          zipCode: { type: 'string' },
-        },
+          zipCode: { type: 'string' }
+        }
       },
       verified: { type: 'boolean' },
       createdAt: { type: 'date-time' },
       updatedAt: { type: 'date-time' },
-      deletedAt: { type: 'date-time' },
-    },
-  }
+      deletedAt: { type: 'date-time' }
+    }
+  };
 
   // Centralize the models.
-  static modelPaths = [__dirname]
+  static modelPaths = [__dirname];
 
   static relationMappings = {
     roles: {
@@ -57,12 +57,12 @@ class User extends Model {
         from: 'user.id',
         through: {
           from: 'user_role.userId',
-          to: 'user_role.roleId',
+          to: 'user_role.roleId'
         },
-        to: 'role.id',
-      },
+        to: 'role.id'
+      }
     }
-  }
+  };
 }
 
-export default User
+export default User;

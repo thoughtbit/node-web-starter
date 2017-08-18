@@ -16,19 +16,17 @@
       "es6",
       "es7"
     ],
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "types": [
-      "bluebird",
-      "bluebird-global",
       "lodash",
       "mocha",
       "node",
       "should"
     ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "outDir": "./build",
-    "rootDir": "./server/src"
+    "rootDir": "./"
   },
   "exclude": [
     "node_modules",

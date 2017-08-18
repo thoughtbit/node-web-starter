@@ -27,25 +27,25 @@ initializeDb()
     });
 
     server.on('error', (err) => {
-      console.log(`⚠️  ${err}`)
-      throw err
-    })
+      console.log(`⚠️  ${err}`);
+      throw err;
+    });
   })
   .catch((err) => {
-    console.log(err)
-    process.exit(1)
-  })
+    console.log(err);
+    process.exit(1);
+  });
 
 process.on('SIGINT', () => {
-  console.log('shutting down!')
-  disconnect() // 关闭mysql
-  server.close()
-  process.exit()
-})
+  console.log('shutting down!');
+  disconnect(); // 关闭mysql
+  server.close();
+  process.exit();
+});
 
 process.on('uncaughtException', (error) => {
-  console.log(`uncaughtException: ${error.message}`)
-  console.log(error.stack)
-  debug(error.stack)
-  process.exit(1)
-})
+  console.log(`uncaughtException: ${error.message}`);
+  console.log(error.stack);
+  debug(error.stack);
+  process.exit(1);
+});

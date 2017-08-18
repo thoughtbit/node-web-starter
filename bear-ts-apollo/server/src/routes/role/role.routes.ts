@@ -1,12 +1,12 @@
-import * as express from 'express'
-import * as ctrl from './role.controller'
+import * as express from 'express';
+import * as ctrl from './role.controller';
 
-let router = express.Router()
+let router = express.Router();
 
-router.get('/', ctrl.listRoles)
+router.get('/', ctrl.listRoles);
 
-router.get('/:id', ctrl.getRole)
+router.get('/:id', ctrl.getRole);
 
-router.get('/:id/users', ctrl.getRoleUsers)
+router.get('/:id/users', ctrl.getRoleUsers);
 
-export default router
+export default router;

@@ -1,10 +1,10 @@
-import * as path from 'path'
-import * as Knex from 'knex'
-import { Model } from 'objection'
-import config from './../../config'
+import * as path from 'path';
+import * as Knex from 'knex';
+import { Model } from 'objection';
+import config from './../../config';
 
 function resolveOwn(relativePath) {
-  return path.resolve(__dirname, relativePath)
+  return path.resolve(__dirname, relativePath);
 }
 
 const dbConfig = {
@@ -12,36 +12,36 @@ const dbConfig = {
   connection: config.db.url,
   pool: {
     min: 2,
-    max: 10,
+    max: 10
   },
   migrations: {
-    tableName: 'migrations',
+    tableName: 'migrations'
   },
-  debug: config.db.debug,
-}
+  debug: config.db.debug
+};
 
-const knexOpts = Object.assign(dbConfig, config.db)
+const knexOpts = Object.assign(dbConfig, config.db);
 
-const db = Knex(knexOpts)
+const db = Knex(knexOpts);
 
 function initializeDb() {
   // const dir = resolveOwn('../../models')
-  Model.knex(db)
+  Model.knex(db);
   // Model.setBasePath(dir)
   // Model.pickJsonSchemaProperties = false
-  return db.raw('select 1+1 as result')
+  return db.raw('select 1+1 as result');
 }
 
 async function disconnect() {
   if (!db) {
-    return
+    return;
   }
   try {
-    await db.destroy()
+    await db.destroy();
   } catch (err) {
-    throw new Error(err)
+    throw new Error(err);
   }
 }
 
-export default db
-export { disconnect, initializeDb }
+export default db;
+export { disconnect, initializeDb };

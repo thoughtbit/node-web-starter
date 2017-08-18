@@ -13,25 +13,25 @@
     "importHelpers": true,
     "strictNullChecks": false,
     "lib": [
-      "es6"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
+      "es6",
+      "es7"
     ],
     "types": [
-      "bluebird",
-      "bluebird-global",
       "lodash",
       "mocha",
       "node",
       "should"
     ],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "outDir": "./build",
-    "rootDir": "./server/src"
+    "rootDir": "./"
   },
   "exclude": [
     "node_modules",
     "build",
+    "typings",
     "**/*.test.ts"
   ],
   "compileOnSave": false,
