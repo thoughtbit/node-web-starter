@@ -7,3 +7,4 @@
 - https://github.com/relax/relax
 - https://github.com/coralproject/talk
 - https://github.com/strues/boldr
+- https://github.com/jsec516/rugal-core

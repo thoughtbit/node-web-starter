@@ -5,7 +5,6 @@ import * as morgan from 'morgan';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
-import * as engines from 'consolidate';
 import * as uuid from 'uuid';
 
 import config from '../config';
@@ -72,15 +71,5 @@ export default (server) => {
   // ==============================================================================
   // VIEW CONFIGURATION
   // ==============================================================================
-  // Static files
-  server.use(express.static(path.join(__dirname, '../../public')));
-  server.use(['/favicon.ico', '/images*', '/media*', '/css*', '/fonts*', '/assets*'], (req, res) => {
-    res.status(404).end();
-  });
-
-  // view engine setup
-  server.engine('html', engines.nunjucks);
-  server.set('views', path.join(__dirname, '../views'));
-  server.set('view engine', 'html');
 
 };

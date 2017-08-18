@@ -1,13 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = require("path");
-const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
-const engines = require("consolidate");
 const uuid = require("uuid");
 function nonceMiddleware(req, res, next) {
     res.locals.nonce = uuid.v4();
@@ -58,14 +55,5 @@ exports.default = (server) => {
     // ==============================================================================
     // VIEW CONFIGURATION
     // ==============================================================================
-    // Static files
-    server.use(express.static(path.join(__dirname, '../../public')));
-    server.use(['/favicon.ico', '/images*', '/media*', '/css*', '/fonts*', '/assets*'], (req, res) => {
-        res.status(404).end();
-    });
-    // view engine setup
-    server.engine('html', engines.nunjucks);
-    server.set('views', path.join(__dirname, '../views'));
-    server.set('view engine', 'html');
 };
 //# sourceMappingURL=express.js.map
