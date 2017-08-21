@@ -1,3 +1,3 @@
 "use strict";
-require('./src');
+require('./src').default();
 //# sourceMappingURL=start.js.map

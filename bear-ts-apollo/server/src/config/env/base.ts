@@ -3,7 +3,7 @@ export default {
   // Server Config
   // ------------------------------------------------------------------------------
   server: {
-    port: 9090,
+    port: 3000,
     host: '127.0.0.1',
     apiPrefix: '/api/v1',
     siteUrl: 'http://localhost:3000'

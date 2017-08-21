@@ -12,10 +12,8 @@
     "noEmitHelpers": true,
     "importHelpers": true,
     "strictNullChecks": false,
-    "lib": [
-      "es6",
-      "es7"
-    ],
+    "jsx": "react",
+    "lib": ["dom","es5","es6","es7","es2017.object"],
     "types": [
       "lodash",
       "mocha",
@@ -28,6 +26,13 @@
     "outDir": "./build",
     "rootDir": "./"
   },
+  "files": [
+    "./server/src/types/styled-jsx.d.ts"
+  ],
+  "filesGlob": [
+    "./**/*.tsx?",
+    "!./**/tests/*"
+  ],
   "exclude": [
     "node_modules",
     "build",

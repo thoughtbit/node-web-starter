@@ -1,10 +1,11 @@
 import * as http from 'http';
+import * as express from 'express';
 import * as next from 'next';
 import * as _debug from 'debug';
+import * as LRUCache from 'lru-cache';
 
-const LRUCache = require('lru-cache');
+import { setupParentApp } from './app';
 
-import server from './app';
 import { initializeDb, disconnect } from './helpers/db/postgres';
 import config from './config';
 
@@ -14,7 +15,7 @@ const PORT = config.server.port;
 const HOST = config.server.host;
 
 const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dir: '.', dev });
+const app = next({ dev });
 const handle = app.getRequestHandler();
 
 // This is where we cache our rendered HTML pages
@@ -23,64 +24,70 @@ const ssrCache = new LRUCache({
   maxAge: 1000 * 60 * 60 // 1hour
 });
 
-// connect to db
-initializeDb();
-console.log('Database connected successfully');
+let parentApp;
+let server;
 
-let sr = server;
-app.prepare().then(() => {
-  sr.run = http.createServer(sr);
-  // Use the `renderAndCache` utility defined below to serve pages
-  sr.get('/', (req, res) => {
-    renderAndCache(req, res, '/', {});
-  });
+export default function start() {
+  debug('initializing server creation procedure...');
+  // connect to db
+  initializeDb()
+  .then(() => {
+    console.log('Database connected successfully');
+    app
+    .prepare()
+    .then(() => {
+      parentApp = setupParentApp();
+      server = http.createServer(parentApp);
+      // Use the `renderAndCache` utility defined below to serve pages
+      parentApp.get('/', (req, res) => {
+        renderAndCache(req, res, '/', {});
+      });
 
-  sr.get('/about/:id', (req, res) => {
-    const queryParams = { id: req.params.id };
-    renderAndCache(req, res, '/about', queryParams);
-  });
+      parentApp.get('/about/:id', (req, res) => {
+        const queryParams = { id: req.params.id };
+        renderAndCache(req, res, '/about', queryParams);
+      });
 
-  sr.get('/about', (req, res) => {
-    return app.render(req, res, '/about', req.query);
-  });
+      parentApp.get('/about', (req, res) => {
+        return app.render(req, res, '/about', req.query);
+      });
 
-  sr.get('/contact', (req, res) => {
-    return app.render(req, res, '/contact', req.query);
-  });
+      parentApp.get('/contact', (req, res) => {
+        return app.render(req, res, '/contact', req.query);
+      });
 
-  sr.get('/error', (req, res) => {
-    return app.render(req, res, '/error', req.query);
-  });
+      parentApp.get('/error', (req, res) => {
+        return app.render(req, res, '/error', req.query);
+      });
 
-  sr.get('*', (req, res) => {
-    return handle(req, res);
+      parentApp.get('*', (req, res) => {
+        return handle(req, res);
+      });
+      server.listen(PORT, HOST);
+      server.on('listening', () => {
+        const address = server.address();
+        console.log(
+          '🚀  Starting server on %s:%s',
+          address.address,
+          address.port
+        );
+      });
+      server.on('error', (err) => {
+        console.log(`⚠️  ${err}`);
+        throw err;
+      });
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+    process.exit(1);
   });
-
-  sr.run.listen(3000, (err) => {
-    if (err) throw err;
-    console.log(`=> Started on port ${sr.run.address().port}`);
-  });
-
-  sr.listen(PORT, HOST);
-  sr.on('listening', () => {
-    const address = sr.address();
-    console.log(
-      '🚀  Starting server on %s:%s',
-      address.address,
-      address.port
-    );
-  });
-  sr.on('error', (err) => {
-    console.log(`⚠️  ${err}`);
-    throw err;
-  });
-
-});
+}
 
 process.on('SIGINT', () => {
   console.log('shutting down!');
   disconnect(); // 关闭数据库
-  sr.close();
+  server.close();
   process.exit();
 });
 
