@@ -16,7 +16,6 @@ initializeDb()
   .then(() => {
     console.log('Database connected successfully');
     server.listen(PORT, HOST);
-
     server.on('listening', () => {
       const address = server.address();
       console.log(
