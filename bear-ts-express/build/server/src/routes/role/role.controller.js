@@ -3,18 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const user_1 = require("./../../models/user");
 const role_1 = require("./../../models/role");
-function listRoles(req, res, next) {
-    return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        try {
-            const roles = yield role_1.default.query().eager('users').omit(user_1.default, ['password']);
-            return res.send(roles);
-        }
-        catch (error) {
-            return next(error);
-        }
-    });
-}
-exports.listRoles = listRoles;
+exports.listRoles = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    try {
+        const roles = yield role_1.default.query().eager('users').omit(user_1.default, ['password']);
+        return res.send(roles);
+    }
+    catch (error) {
+        return next(error);
+    }
+});
 function getRole(req, res, next) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         try {

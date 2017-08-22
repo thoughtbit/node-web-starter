@@ -17,6 +17,7 @@ postgres_1.initializeDb()
     server.on('listening', () => {
         const address = server.address();
         console.log('🚀  Starting server on %s:%s', address.address, address.port);
+        console.log('Press CTRL-C to stop\n');
     });
     server.on('error', (err) => {
         console.log(`⚠️  ${err}`);

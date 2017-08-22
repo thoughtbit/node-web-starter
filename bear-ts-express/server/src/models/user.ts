@@ -2,6 +2,19 @@ import * as path from 'path';
 import { Model } from 'objection';
 import Role from './role';
 
+export type UserModel = {
+  email: string,
+  username: string,
+  password: string,
+  website: string,
+  avatarUrl: string
+};
+
+export type AuthToken = {
+  accessToken: string,
+  kind: string
+};
+
 export interface Address {
   street: string;
   city: string;
