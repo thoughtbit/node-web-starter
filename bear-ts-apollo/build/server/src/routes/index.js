@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const user_routes_1 = require("./user/user.routes");
 const role_routes_1 = require("./role/role.routes");
 exports.default = (server) => {
+    server.get('/', function (req, res, next) {
+        res.send('Hello World!');
+    });
     server.get('/health-check', (req, res) => {
         res.status(200);
         res.set('Cache-Control', 'no-cache, no-store, must-revalidate');

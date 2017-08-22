@@ -3,6 +3,9 @@ import userRoutes from './user/user.routes';
 import roleRoutes from './role/role.routes';
 
 export default (server) => {
+  server.get('/', function (req, res, next) {
+    res.send('Hello World!');
+  });
   server.get('/health-check', (req, res) => {
     res.status(200);
     res.set('Cache-Control', 'no-cache, no-store, must-revalidate');

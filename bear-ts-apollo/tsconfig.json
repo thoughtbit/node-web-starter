@@ -13,7 +13,7 @@
     "importHelpers": true,
     "strictNullChecks": false,
     "jsx": "react",
-    "lib": ["dom","es5","es6","es7","es2017.object"],
+    "lib": ["dom","es6", "es7"],
     "types": [
       "lodash",
       "mocha",
@@ -26,12 +26,12 @@
     "outDir": "./build",
     "rootDir": "./"
   },
-  "files": [
-    "./server/src/types/styled-jsx.d.ts"
-  ],
   "filesGlob": [
     "./**/*.tsx?",
     "!./**/tests/*"
+  ],
+  "files": [
+    "./client/types/styled-jsx.d.ts"
   ],
   "exclude": [
     "node_modules",

@@ -1,11 +1,8 @@
 import * as http from 'http';
 import * as express from 'express';
-import * as next from 'next';
 import * as _debug from 'debug';
-import * as LRUCache from 'lru-cache';
 
 import { setupParentApp } from './app';
-
 import { initializeDb, disconnect } from './helpers/db/postgres';
 import config from './config';
 
@@ -14,16 +11,6 @@ const debug = _debug('bear:app');
 const PORT = config.server.port;
 const HOST = config.server.host;
 
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev });
-const handle = app.getRequestHandler();
-
-// This is where we cache our rendered HTML pages
-const ssrCache = new LRUCache({
-  max: 100,
-  maxAge: 1000 * 60 * 60 // 1hour
-});
-
 let parentApp;
 let server;
 
@@ -31,38 +18,10 @@ export default function start() {
   debug('initializing server creation procedure...');
   // connect to db
   initializeDb()
-  .then(() => {
-    console.log('Database connected successfully');
-    app
-    .prepare()
     .then(() => {
+      console.log('Database connected successfully');
       parentApp = setupParentApp();
       server = http.createServer(parentApp);
-      // Use the `renderAndCache` utility defined below to serve pages
-      parentApp.get('/', (req, res) => {
-        renderAndCache(req, res, '/', {});
-      });
-
-      parentApp.get('/about/:id', (req, res) => {
-        const queryParams = { id: req.params.id };
-        renderAndCache(req, res, '/about', queryParams);
-      });
-
-      parentApp.get('/about', (req, res) => {
-        return app.render(req, res, '/about', req.query);
-      });
-
-      parentApp.get('/contact', (req, res) => {
-        return app.render(req, res, '/contact', req.query);
-      });
-
-      parentApp.get('/error', (req, res) => {
-        return app.render(req, res, '/error', req.query);
-      });
-
-      parentApp.get('*', (req, res) => {
-        return handle(req, res);
-      });
       server.listen(PORT, HOST);
       server.on('listening', () => {
         const address = server.address();
@@ -77,11 +36,6 @@ export default function start() {
         throw err;
       });
     });
-  })
-  .catch((err) => {
-    console.log(err);
-    process.exit(1);
-  });
 }
 
 process.on('SIGINT', () => {
@@ -97,25 +51,3 @@ process.on('uncaughtException', (error) => {
   debug(error.stack);
   process.exit(1);
 });
-
-function renderAndCache(req, res, pagePath, queryParams) {
-  // If we have a page in the cache, let's serve it
-  if (ssrCache.has(req.url)) {
-    console.log(`CACHE HIT: ${req.url}`);
-    res.send(ssrCache.get(req.url));
-    return;
-  }
-
-  // If not let's render the page into HTML
-  app.renderToHTML(req, res, pagePath, queryParams)
-    .then((html) => {
-      // Let's cache this page
-      console.log(`CACHE MISS: ${req.url}`);
-      ssrCache.set(req.url, html);
-
-      res.send(html);
-    })
-    .catch((err) => {
-      app.renderError(err, req, res, pagePath, queryParams);
-    });
-}
