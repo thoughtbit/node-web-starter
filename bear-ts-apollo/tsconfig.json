@@ -38,7 +38,5 @@
     "build",
     "typings",
     "**/*.test.ts"
-  ],
-  "compileOnSave": false,
-  "buildOnSave": false
+  ]
 }

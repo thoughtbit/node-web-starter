@@ -48,6 +48,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/express-session@0.0.32":
+  version "0.0.32"
+  resolved "http://registry.npm.taobao.org/@types/express-session/download/@types/express-session-0.0.32.tgz#82f9e6a028eb6125a412db95f0e61a97d1945ee0"
+  dependencies:
+    "@types/express" "*"
+    "@types/node" "*"
+
 "@types/express@*", "@types/express@^4.0.36":
   version "4.0.36"
   resolved "http://registry.npm.taobao.org/@types/express/download/@types/express-4.0.36.tgz#14eb47de7ecb10319f0a2fb1cf971aa8680758c2"
@@ -2061,14 +2068,6 @@ expect-ct@0.1.0:
   version "0.1.0"
   resolved "http://registry.npm.taobao.org/expect-ct/download/expect-ct-0.1.0.tgz#52735678de18530890d8d7b95f0ac63640958094"
 
-express-promise-router@^2.0.0:
-  version "2.0.0"
-  resolved "http://registry.npm.taobao.org/express-promise-router/download/express-promise-router-2.0.0.tgz#dd8c5894b40c061c8dcc6591d2145690e99e9551"
-  dependencies:
-    is-promise "^2.1.0"
-    lodash "^4.13.1"
-    methods "^1.0.0"
-
 express-session@^1.15.4:
   version "1.15.5"
   resolved "http://registry.npm.taobao.org/express-session/download/express-session-1.15.5.tgz#f49a18227263b316f6f8544da5fee25a540259ec"
@@ -2469,6 +2468,29 @@ got@^3.2.0:
     read-all-stream "^3.0.0"
     timed-out "^2.0.0"
 
+gql-format@^0.0.5:
+  version "0.0.5"
+  resolved "http://registry.npm.taobao.org/gql-format/download/gql-format-0.0.5.tgz#b1ac2240a833ecd7e00f3186dd395b7ed40d8af1"
+  dependencies:
+    commander "^2.9.0"
+    graphql "0.9.2"
+
+gql-merge@^0.0.6:
+  version "0.0.6"
+  resolved "http://registry.npm.taobao.org/gql-merge/download/gql-merge-0.0.6.tgz#5133edc28243a843d4b2e218290e00c1090e3b92"
+  dependencies:
+    commander "^2.9.0"
+    gql-format "^0.0.5"
+    gql-utils "^0.0.2"
+    graphql "0.9.2"
+
+gql-utils@^0.0.2:
+  version "0.0.2"
+  resolved "http://registry.npm.taobao.org/gql-utils/download/gql-utils-0.0.2.tgz#962b3c1b34bf965a45d2564a93d3072921f61e86"
+  dependencies:
+    bluebird "^3.4.6"
+    glob "^7.1.1"
+
 graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   version "4.1.11"
   resolved "http://registry.npm.taobao.org/graceful-fs/download/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
@@ -2506,6 +2528,12 @@ graphql-tools@^1.1.0:
     uuid "^3.0.1"
   optionalDependencies:
     "@types/graphql" "^0.9.0"
+
+graphql@0.9.2:
+  version "0.9.2"
+  resolved "http://registry.npm.taobao.org/graphql/download/graphql-0.9.2.tgz#2cb5c635de13f790a77c5879649cb401b1589386"
+  dependencies:
+    iterall "1.0.3"
 
 graphql@^0.10.0, graphql@^0.10.3, graphql@^0.10.5:
   version "0.10.5"
@@ -2619,6 +2647,10 @@ hmac-drbg@^1.0.0:
 hoek@2.x.x:
   version "2.16.3"
   resolved "http://registry.npm.taobao.org/hoek/download/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
+
+hoek@4.x.x:
+  version "4.2.0"
+  resolved "http://registry.npm.taobao.org/hoek/download/hoek-4.2.0.tgz#72d9d0754f7fe25ca2d01ad8f8f9a9449a89526d"
 
 hoist-non-react-statics@^1.0.0:
   version "1.2.0"
@@ -2874,10 +2906,6 @@ is-primitive@^2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/is-primitive/download/is-primitive-2.0.0.tgz#207bab91638499c07b2adf240a41a87210034575"
 
-is-promise@^2.1.0:
-  version "2.1.0"
-  resolved "http://registry.npm.taobao.org/is-promise/download/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
-
 is-redirect@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/is-redirect/download/is-redirect-1.0.0.tgz#1d03dded53bd8db0f30c26e4f95d36fc7c87dc24"
@@ -2910,6 +2938,10 @@ isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/isarray/download/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
 
+isemail@2.x.x:
+  version "2.2.1"
+  resolved "http://registry.npm.taobao.org/isemail/download/isemail-2.2.1.tgz#0353d3d9a62951080c262c2aa0a42b8ea8e9e2a6"
+
 isexe@^2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/isexe/download/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
@@ -2931,9 +2963,26 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "http://registry.npm.taobao.org/isstream/download/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
+items@2.x.x:
+  version "2.1.1"
+  resolved "http://registry.npm.taobao.org/items/download/items-2.1.1.tgz#8bd16d9c83b19529de5aea321acaada78364a198"
+
+iterall@1.0.3:
+  version "1.0.3"
+  resolved "http://registry.npm.taobao.org/iterall/download/iterall-1.0.3.tgz#e0b31958f835013c323ff0b10943829ac69aa4b7"
+
 iterall@^1.1.0:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/iterall/download/iterall-1.1.1.tgz#f7f0af11e9a04ec6426260f5019d9fcca4d50214"
+
+joi@^10.6.0:
+  version "10.6.0"
+  resolved "http://registry.npm.taobao.org/joi/download/joi-10.6.0.tgz#52587f02d52b8b75cdb0c74f0b164a191a0e1fc2"
+  dependencies:
+    hoek "4.x.x"
+    isemail "2.x.x"
+    items "2.x.x"
+    topo "2.x.x"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
@@ -3199,7 +3248,7 @@ lodash.restparam@^3.0.0:
   version "3.6.1"
   resolved "http://registry.npm.taobao.org/lodash.restparam/download/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
 
-lodash@^4.13.1, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.0, lodash@^4.6.1:
+lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@^4.6.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "http://registry.npm.taobao.org/lodash/download/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -3292,7 +3341,7 @@ merge-descriptors@1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/merge-descriptors/download/merge-descriptors-1.0.1.tgz#b00aaa556dd8b44568150ec9d1b953f3f90cbb61"
 
-methods@1.x, methods@^1.0.0, methods@~1.1.1, methods@~1.1.2:
+methods@1.x, methods@~1.1.1, methods@~1.1.2:
   version "1.1.2"
   resolved "http://registry.npm.taobao.org/methods/download/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
@@ -4943,6 +4992,12 @@ to-arraybuffer@^1.0.0:
 to-fast-properties@^1.0.1, to-fast-properties@^1.0.3:
   version "1.0.3"
   resolved "http://registry.npm.taobao.org/to-fast-properties/download/to-fast-properties-1.0.3.tgz#b83571fa4d8c25b82e231b06e3a3055de4ca1a47"
+
+topo@2.x.x:
+  version "2.0.2"
+  resolved "http://registry.npm.taobao.org/topo/download/topo-2.0.2.tgz#cd5615752539057c0dc0491a621c3bc6fbe1d182"
+  dependencies:
+    hoek "4.x.x"
 
 touch@1.0.0:
   version "1.0.0"

@@ -5,6 +5,7 @@ import * as morgan from 'morgan';
 import * as helmet from 'helmet';
 import * as compression from 'compression';
 import * as cookieParser from 'cookie-parser';
+import * as session from 'express-session';
 import * as uuid from 'uuid';
 
 import config from '../config';
@@ -50,6 +51,43 @@ export default (server) => {
 
   // Parse the cookies on the request.
   server.use(cookieParser());
+
+  // 使用session模块
+  // 这里不没有使用数据库储存session;使用内存储存session
+  server.use(session({
+    resave: false, // 每次请求都重新设置session cookie
+    saveUninitialized: true, // 无论有没有session cookie，每次请求都设置个session cookie
+    secret: 'keyboard cat',
+    name: 'mycookie', // 这里的name值得是cookie的name，默认cookie的name是：connect.sid
+    cookie: { secure: true, maxAge: 30 * 60 * 1000 } // 设置maxAge是30分钟，即30分钟后session和相应的cookie失效过期
+    // store: new MongoStore({
+    //   url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
+    //   autoReconnect: true
+    // })
+  }));
+
+  // 接口请求之后，更新session的时间
+  // server.use((req, res, next) => {
+  //   req.session._garbage = Date();
+  //   req.session.touch();
+  //   next();
+  // });
+
+  // 处理跨域请求，如果不涉及跨域，请忽略
+  // server.all('*', (req, res, next) => {
+  //   res.header('Access-Control-Allow-Origin', req.headers.origin);
+  //   res.header('Access-Control-Allow-Credentials', true);
+  //   res.header('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-with, X_Requested_With');
+  //   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
+  //   res.header('X-Powered-By', '3.2.1');
+  //   res.header('Content-Type', 'application/json; charset=utf-8');
+
+  //   if (req.method === 'OPTIONS') {
+  //     res.end('options ok');
+  //   } else {
+  //     next();
+  //   }
+  // });
 
   server.use(bodyParser.json({ type: 'application/json' }));
 

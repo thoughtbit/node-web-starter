@@ -24,13 +24,13 @@ export function setupParentApp(): express.Express {
   // ==============================================================================
   // GRAPHIQL
   // ==============================================================================
-  server.use('/graphql', bodyParser.json(), graphqlExpress({
-    schema
-  }));
+  // server.use('/graphql', bodyParser.json(), graphqlExpress({
+  //   schema
+  // }));
 
-  server.use('/graphiql', graphiqlExpress({
-    endpointURL: '/graphql'
-  }));
+  // server.use('/graphiql', graphiqlExpress({
+  //   endpointURL: '/graphql'
+  // }));
 
   // ==============================================================================
   // ROUTES

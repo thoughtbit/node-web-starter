@@ -1,12 +1,9 @@
-// TODO: Adjust `RootQuery.asset(id: ID, url: String)` to instead be
-// `RootQuery.asset(id: ID, url: String!)` because we'll always need the url, if
-// this change is done now everything will likely break on the front end.
+import { readFileSync } from 'fs';
+import { join } from 'path';
+import { mergeStrings } from 'gql-merge';
+import * as _debug from 'debug';
 
-const fs = require('fs');
-const path = require('path');
-const {mergeStrings} = require('gql-merge');
-const debug = require('debug')('bear:graph:typeDefs');
-const plugins = require('../services/plugins');
+const debug = _debug('bear:graph:typeDefs');
 
 /**
  * Plugin support requires us to merge the type definitions from the loaded
@@ -15,8 +12,7 @@ const plugins = require('../services/plugins');
  */
 const typeDefs = mergeStrings([
   // Load the core graph definitions from the filesystem.
-  fs.readFileSync(path.join(__dirname, 'typeDefs.graphql'), 'utf8'),
-
+  readFileSync(join(__dirname, 'typeDefs.graphql'), 'utf8')
 ]);
 
-module.exports = typeDefs;
+export default typeDefs;

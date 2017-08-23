@@ -1,14 +1,12 @@
 import { makeExecutableSchema } from 'graphql-tools';
 import { maskErrors } from 'graphql-errors';
-import { decorateWithHooks } from './hooks';
 
-const plugins = require('../services/plugins');
-import resolvers from './rooRresolver';
+import resolvers from './resolvers';
 import typeDefs from './typeDefs';
 
 const RootSchema = makeExecutableSchema({
   typeDefs,
-  resolver
+  resolvers
 });
 
 // If we are in production mode, don't show server errors to the front end.

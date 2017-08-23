@@ -1,0 +1,1084 @@
+################################################################################
+## Custom Scalar Types
+################################################################################
+
+# Date represented as an ISO8601 string.
+scalar Date
+
+################################################################################
+## Reliability
+################################################################################
+
+# Reliability defines how a given user should be considered reliable for their
+# comment or flag activity.
+type Reliability {
+
+  # flagger will be `true` when the flagger is reliable, `false` if not, or
+  # `null` if the reliability cannot be determined.
+  flagger: Boolean
+
+  # commenter will be `true` when the commenter is reliable, `false` if not, or
+  # `null` if the reliability cannot be determined.
+  commenter: Boolean
+}
+
+################################################################################
+## Users
+################################################################################
+
+# Roles that a user can have, these can be combined.
+enum USER_ROLES {
+
+  # an administrator of the site
+  ADMIN
+
+  # a moderator of the site
+  MODERATOR
+}
+
+# Token is a personal access token associated with a given user.
+type Token {
+
+  # ID is the unique identifier for the token.
+  id: ID!
+
+  # Name is the description for the token.
+  name: String!
+
+  # Active determines if the token is available to hit the API.
+  active: Boolean!
+
+  # JWT is the actual token to use for authentication, this is only available
+  # on token creation, otherwise it will be null.
+  jwt: String
+}
+
+type UserProfile {
+  # the id is an identifier for the user profile (email, facebook id, etc)
+  id: String!
+
+  # name of the provider attached to the authentication mode
+  provider: String!
+}
+
+type SuspensionInfo {
+  until: Date
+}
+
+# Any person who can author comments, create actions, and view comments on a
+# stream.
+type User {
+
+  # The ID of the User.
+  id: ID!
+
+  # Username of a user.
+  username: String!
+
+  # creation date of user
+  created_at: String!
+
+  # Action summaries against the user.
+  action_summaries: [ActionSummary!]!
+
+  # Actions completed on the parent.
+  actions: [Action!]
+
+  # the current roles of the user.
+  roles: [USER_ROLES!]
+
+  # the current profiles of the user.
+  profiles: [UserProfile]
+
+  # the tags on the user
+  tags: [TagLink!]
+
+  # determines whether the user can edit their username
+  canEditName: Boolean
+
+  # ignored users.
+  ignoredUsers: [User!]
+
+  # Tokens are the personal access tokens for a given user.
+  tokens: [Token!]
+
+  # returns all comments based on a query.
+  comments(query: CommentsQuery): CommentConnection!
+
+  # reliable is the reference to a given user's Reliability. If the requesting
+  # user does not have permission to access the reliability, null will be
+  # returned.
+  reliable: Reliability
+
+  # returns user status
+  status: USER_STATUS
+
+  # returns suspension info. Only available to Admins and Moderators
+  # or on own logged in User.
+  suspension: SuspensionInfo
+}
+
+# UsersQuery allows the ability to query users by a specific fields.
+input UsersQuery {
+  action_type: ACTION_TYPE
+
+  # Limit the number of results to be returned.
+  limit: Int = 10
+
+  # Skip results from the last created_at timestamp.
+  cursor: Date
+
+  # Sort the results by created_at.
+  sort: SORT_ORDER = REVERSE_CHRONOLOGICAL
+}
+
+# AssetsQuery allows teh ability to query assets by specific fields
+input AssetsQuery {
+
+  # a search string to match against titles, authors, urls, etc.
+  value: String = ""
+
+  # Limit the number of results to be returned
+  limit: Int = 10
+}
+################################################################################
+## Tags
+################################################################################
+
+# Used to represent the item type for a tag.
+enum TAGGABLE_ITEM_TYPE {
+
+  # The action references a entity of type Asset.
+  ASSETS
+
+  # The action references a entity of type Comment.
+  COMMENTS
+
+  # The action references a entity of type User.
+  USERS
+}
+
+# Tag represents the underlying Tag that can be either stored in a global list
+# or added uniquely to the entity.
+type Tag {
+
+  # The actual name of the tag entry.
+  name: String!
+
+  # The time that this Tag was created.
+  created_at: Date!
+}
+
+# TagLink is used to associate a given Tag with a Model via a TagLink.
+type TagLink {
+
+  # The underlying Tag that is either duplicated from the global list or created
+  # uniquely for this specific model.
+  tag: Tag!
+
+  # The user that assigned the tag. This TagLink could have been created by the
+  # system, in which case this will be null. It could also be null if the
+  # current user is not an Admin/Moderator.
+  assigned_by: User
+
+  # The date that the TagLink was created.
+  created_at: Date!
+}
+
+################################################################################
+## Comments
+################################################################################
+
+# The statuses that a comment may have.
+enum COMMENT_STATUS {
+
+  # The comment is not PREMOD, but was not applied a moderation status by a
+  # moderator.
+  NONE
+
+  # The comment has been accepted by a moderator.
+  ACCEPTED
+
+  # The comment has been rejected by a moderator.
+  REJECTED
+
+  # The comment was created while the asset's premoderation option was on, and
+  # new comments that haven't been moderated yet are referred to as
+  # "premoderated" or "premod" comments.
+  PREMOD
+}
+
+# The types of action there are as enum's.
+enum ACTION_TYPE {
+
+  # Represents a FlagAction.
+  FLAG
+
+  # Represents a don't agree action
+  DONTAGREE
+}
+
+# CommentsQuery allows the ability to query comments by a specific methods.
+input CommentsQuery {
+
+  # Author of the comments
+  author_id: ID
+
+  # Current status of a comment. Requires the `ADMIN` role.
+  statuses: [COMMENT_STATUS!]
+
+  # Asset that a comment is on.
+  asset_id: ID
+
+  # The parent of the comment that we want to retrieve.
+  parent_id: ID
+
+  # Comments returned will only be ones which have at least one action of this
+  # type. Requires the `ADMIN` role.
+  action_type: ACTION_TYPE
+
+  # Limit the number of results to be returned.
+  limit: Int = 10
+
+  # Skip results from the last created_at timestamp.
+  cursor: Date
+
+  # Sort the results by created_at.
+  sort: SORT_ORDER = REVERSE_CHRONOLOGICAL
+
+  # Filter by a specific tag name.
+  tags: [String!]
+
+  # Exclude comments ignored by the requesting user
+  excludeIgnored: Boolean
+}
+
+# CommentCountQuery allows the ability to query comment counts by specific
+# methods.
+input CommentCountQuery {
+
+  # Current status of a comment. Requires the `ADMIN` role.
+  statuses: [COMMENT_STATUS!]
+
+  # Asset that a comment is on.
+  asset_id: ID
+
+  # The URL that the asset is located on.
+  asset_url: String
+
+  # the parent of the comment that we want to retrieve.
+  parent_id: ID
+
+  # comments returned will only be ones which have at least one action of this
+  # type.
+  action_type: ACTION_TYPE
+
+  # author_id allows the querying of comment counts based on the author of the
+  # comments.
+  author_id: ID
+
+  # Filter by a specific tag name.
+  tags: [String!]
+}
+
+type EditInfo {
+  edited: Boolean!
+  editableUntil: Date
+}
+
+type CommentStatusHistory {
+  type: COMMENT_STATUS!
+  created_at: Date!
+  assigned_by: User
+}
+
+# Comment is the base representation of user interaction in Talk.
+type Comment {
+
+  # The parent of the comment (if there is one).
+  parent: Comment
+
+  # The ID of the comment.
+  id: ID!
+
+  # The actual comment data.
+  body: String!
+
+  # the tags on the comment
+  tags: [TagLink!]
+
+  # the user who authored the comment.
+  user: User
+
+  # the recent replies made against this comment.
+  recentReplies: [Comment!]
+
+  # the replies that were made to the comment.
+  replies(sort: SORT_ORDER = CHRONOLOGICAL, limit: Int = 3, excludeIgnored: Boolean): CommentConnection!
+
+  # The count of replies on a comment.
+  replyCount(excludeIgnored: Boolean): Int
+
+  # Actions completed on the parent. Requires the `ADMIN` role.
+  actions: [Action]
+
+  # Action summaries against a comment.
+  action_summaries: [ActionSummary]!
+
+  # The asset that a comment was made on.
+  asset: Asset
+
+  # The current status of a comment.
+  status: COMMENT_STATUS!
+
+  # The status history of the comment. Requires the `ADMIN` or `MODERATOR` role.
+  status_history: [CommentStatusHistory!]
+
+  # The time when the comment was created
+  created_at: Date!
+
+  # describes how the comment can be edited
+  editing: EditInfo
+}
+
+# CommentConnection represents a paginable subset of a comment list.
+type CommentConnection {
+
+  # Indicates that there are more comments after this subset.
+  hasNextPage: Boolean!
+
+  # Cursor of first comment in subset.
+  startCursor: Date
+
+  # Cursor of last comment in subset.
+  endCursor: Date
+
+  # Subset of comments.
+  nodes: [Comment!]!
+}
+
+################################################################################
+## Actions
+################################################################################
+
+# An action rendered against a parent entity item.
+interface Action {
+
+  # The ID of the action.
+  id: ID!
+
+  # The author of the action.
+  user: User
+
+  # The time when the Action was updated.
+  updated_at: Date
+
+  # The time when the Action was created.
+  created_at: Date
+}
+
+# DefaultAction is the Action provided for undefined types.
+type DefaultAction implements Action {
+
+  # The ID of the action.
+  id: ID!
+
+  # The author of the action.
+  user: User
+
+  # The time when the Action was updated.
+  updated_at: Date
+
+  # The time when the Action was created.
+  created_at: Date
+}
+
+# A summary of actions based on the specific grouping of the group_id.
+interface ActionSummary {
+
+  # The count of actions with this group.
+  count: Int
+
+  # The current user's action.
+  current_user: Action
+}
+
+# DefaultActionSummary is the ActionSummary provided for undefined types.
+type DefaultActionSummary implements ActionSummary {
+
+  # The count of actions with this group.
+  count: Int
+
+  # The current user's action.
+  current_user: Action
+}
+
+# A summary of actions for a specific action type on an Asset.
+interface AssetActionSummary {
+
+  # Number of actions associated with actionable types on this this Asset.
+  actionCount: Int
+
+  # Number of unique actionable types that are referenced by the actions.
+  actionableItemCount: Int
+}
+
+# DefaultAssetActionSummary is the AssetActionSummary provided for undefined types.
+type DefaultAssetActionSummary implements AssetActionSummary {
+
+  # Number of actions associated with actionable types on this this Asset.
+  actionCount: Int
+
+  # Number of unique actionable types that are referenced by the actions.
+  actionableItemCount: Int
+}
+
+# A summary of counts related to all the Flags on an Asset.
+type FlagAssetActionSummary implements AssetActionSummary {
+
+  # Number of flags associated with actionable types on this this Asset.
+  actionCount: Int
+
+  # Number of unique actionable types that are referenced by the flags.
+  actionableItemCount: Int
+}
+
+# A FLAG action that contains flag metadata.
+type FlagAction implements Action {
+
+  # The ID of the Flag Action.
+  id: ID!
+
+  # The reason for which the Flag Action was created.
+  reason: String
+
+  # An optional message sent with the flagging action by the user.
+  message: String
+
+  # The user who created the action.
+  user: User
+
+  # The time when the Flag Action was updated.
+  updated_at: Date
+
+  # The time when the Flag Action was created.
+  created_at: Date
+}
+
+# A DONTAGREE action that contains do not agree metadata.
+type DontAgreeAction implements Action {
+
+  # The ID of the DontAgree Action.
+  id: ID!
+
+  # The reason for which the DontAgree Action was created.
+  reason: String
+
+  # An optional message sent with the flagging action by the user.
+  message: String
+
+  # The user who created the action.
+  user: User
+
+  # The time when the DontAgree Action was updated.
+  updated_at: Date
+
+  # The time when the DontAgree Action was created.
+  created_at: Date
+}
+
+# Summary for Flag Action with a a unique reason.
+type FlagActionSummary implements ActionSummary {
+
+  # The total count of flags with this reason.
+  count: Int!
+
+  # The reason for which the Flag Action was created.
+  reason: String
+
+  # The flag by the current user against the parent entity with this reason.
+  current_user: FlagAction
+}
+
+# Summary for Don't Agree Action with a a unique reason.
+type DontAgreeActionSummary implements ActionSummary {
+
+  # The total count of flags with this reason.
+  count: Int!
+
+  # The reason for which the Flag Action was created.
+  reason: String
+
+  # The don't agree action by the current user against the parent entity with this reason.
+  current_user: DontAgreeAction
+}
+
+################################################################################
+## Settings
+################################################################################
+
+# The moderation mode of the site.
+enum MODERATION_MODE {
+
+  # Comments posted while in `PRE` mode will be labeled with a `PREMOD`
+  # status and will require a moderator decision before being visible.
+  PRE
+
+  # Comments posted while in `POST` will be visible immediately.
+  POST
+}
+
+# Site wide global settings.
+type Settings {
+
+  # Moderation mode for the site.
+  moderation: MODERATION_MODE!
+
+  # Enables a requirement for email confirmation before a user can login.
+  requireEmailConfirmation: Boolean
+
+  infoBoxEnable: Boolean
+  infoBoxContent: String
+  premodLinksEnable: Boolean
+  questionBoxEnable: Boolean
+  questionBoxContent: String
+  closeTimeout: Int
+  closedMessage: String
+  charCountEnable: Boolean
+  charCount: Int
+
+  organizationName: String
+}
+
+################################################################################
+## Assets
+################################################################################
+
+# Where comments are made on.
+type Asset {
+
+  # The current ID of the asset.
+  id: ID!
+
+  # The scraped title of the asset.
+  title: String
+
+  # The URL that the asset is located on.
+  url: String
+
+  # Returns recent comments
+  recentComments: [Comment!]
+
+  # The comments that are attached to the asset.
+  # If `deep` is true, it will return comments of all depths,
+  # otherwise only top-level comments are returned.
+  comments(
+    sort: SORT_ORDER = REVERSE_CHRONOLOGICAL,
+    limit: Int = 10,
+    excludeIgnored: Boolean,
+    tags: [String!]
+    deep: Boolean,
+  ): CommentConnection!
+
+  # A Comment from the Asset by comment's ID
+  comment(id: ID!): Comment
+
+  # The count of top level comments on the asset.
+  commentCount(excludeIgnored: Boolean, tags: [String!]): Int
+
+  # The total count of all comments made on the asset.
+  totalCommentCount(excludeIgnored: Boolean, tags: [String!]): Int
+
+  # The settings (rectified with the global settings) that should be applied to
+  # this asset.
+  settings: Settings!
+
+  # The date that the asset was closed at.
+  closedAt: Date
+
+  # True if asset is closed.
+  isClosed: Boolean!
+
+  # Summary of all Actions against all entities associated with the Asset.
+  # (likes, flags, etc.). Requires the `ADMIN` role.
+  action_summaries: [AssetActionSummary!]
+
+  # The date that the asset was created.
+  created_at: Date
+
+  # the tags on the asset
+  tags: [TagLink!]
+
+  # The author(s) of the asset.
+  author: String
+}
+
+################################################################################
+## Errors
+################################################################################
+
+# Any error rendered due to the user's input.
+interface UserError {
+
+  # Translation key relating to a translatable string containing details to be
+  # displayed to the end user.
+  translation_key: String!
+}
+
+# A generic error not related to validation reasons.
+type GenericUserError implements UserError {
+
+  # Translation key relating to a translatable string containing details to be
+  # displayed to the end user.
+  translation_key: String!
+}
+
+# A validation error that affects the input.
+type ValidationUserError implements UserError {
+
+  # Translation key relating to a translatable string containing details to be
+  # displayed to the end user.
+  translation_key: String!
+
+  # The field in question that caused the error.
+  field_name: String!
+}
+
+################################################################################
+## Queries
+################################################################################
+
+# Establishes the ordering of the content by their created_at time stamp.
+enum SORT_ORDER {
+
+  # newest to oldest order.
+  REVERSE_CHRONOLOGICAL
+
+  # oldest to newer order.
+  CHRONOLOGICAL
+}
+
+# All queries that can be executed.
+enum USER_STATUS {
+  ACTIVE
+  BANNED
+  PENDING
+  APPROVED
+}
+
+# Metrics for the assets.
+enum ASSET_METRICS_SORT {
+
+  # Represents a FlagAction.
+  FLAG
+
+  # Represents a don't agree action.
+  DONTAGREE
+
+  # Represents activity.
+  ACTIVITY
+}
+
+type RootQuery {
+
+  # Site wide settings and defaults.
+  settings: Settings
+
+  # Finds a specific comment based on it's id.
+  comment(id: ID!): Comment
+
+  # All assets. Requires the `ADMIN` role.
+  assets(query: AssetsQuery): [Asset]
+
+  # Find or create an asset by url, or just find with the ID.
+  asset(id: ID, url: String): Asset
+
+  # Comments returned based on a query.
+  comments(query: CommentsQuery!): CommentConnection
+
+  # Return the count of comments satisfied by the query. Note that this edge is
+  # expensive as it is not batched. Requires the `ADMIN` role.
+  commentCount(query: CommentCountQuery!): Int
+
+  # The currently logged in user based on the request. Requires any logged in
+  # role.
+  me: User
+
+  # Users returned based on a query.
+  users(query: UsersQuery): [User]
+
+  # a single User by id
+  user(id: ID!): User
+
+  # Asset metrics related to user actions are saturated into the assets
+  # returned. Parameters `from` and `to` are related to the action created_at field.
+  assetMetrics(from: Date!, to: Date!, sort: ASSET_METRICS_SORT!, limit: Int = 10): [Asset!]
+
+  # Comment metrics related to user actions are saturated into the comments
+  # returned. Parameters `from` and `to` are related to the action created_at field.
+  commentMetrics(from: Date!, to: Date!, sort: ACTION_TYPE!, limit: Int = 10): [Comment!]
+}
+
+################################################################################
+## Mutations
+################################################################################
+
+# Response defines what can be expected from any response to a mutation action.
+interface Response {
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+# CreateCommentResponse is returned with the comment that was created and any
+# errors that may have occurred in the attempt to create it.
+type CreateCommentResponse implements Response {
+
+  # The comment that was created.
+  comment: Comment
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+# Used to represent the item type for an action.
+enum ACTION_ITEM_TYPE {
+
+  # The action references a entity of type Asset.
+  ASSETS
+
+  # The action references a entity of type Comment.
+  COMMENTS
+
+  # The action references a entity of type User.
+  USERS
+}
+
+input CreateLikeInput {
+
+  # The item's id for which we are to create a like.
+  item_id: ID!
+
+  # The type of the item for which we are to create the like.
+  item_type: ACTION_ITEM_TYPE!
+}
+
+# CreateCommentInput is the input content used to create a new comment.
+input CreateCommentInput {
+
+  # The asset id
+  asset_id: ID!
+
+  # The id of the parent comment
+  parent_id: ID
+
+  # The body of the comment
+  body: String!
+
+  # Tags
+  tags: [String]
+
+}
+
+input CreateFlagInput {
+
+  # The item's id for which we are to create a flag.
+  item_id: ID!
+
+  # The type of the item for which we are to create the flag.
+  item_type: ACTION_ITEM_TYPE!
+
+  # The reason for flagging the item.
+  reason: String!
+
+  # An optional message sent with the flagging action by the user.
+  message: String
+}
+
+# CreateFlagResponse is the response returned with possibly some errors
+# relating to the creating the flag action attempt and possibly the flag that
+# was created.
+type CreateFlagResponse implements Response {
+
+  # The flag that was created.
+  flag: FlagAction
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+
+# CreateDontAgreeResponse is the response returned with possibly some errors
+# relating to the creating the don't agree action attempt and possibly the don't agree that
+# was created.
+type CreateDontAgreeResponse implements Response {
+
+  # The don't agree that was created.
+  dontagree: DontAgreeAction
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+input CreateDontAgreeInput {
+
+  # The item's id for which we are to create a don't agree.
+  item_id: ID!
+
+  # The type of the item for which we are to create the don't agree.
+  item_type: ACTION_ITEM_TYPE!
+
+  # The reason for not agreeing with the item.
+  reason: String
+
+  # An optional message sent with the don't agree action by the user.
+  message: String
+}
+
+# Input for suspendUser mutation.
+input SuspendUserInput {
+
+  # id of target user.
+  id: ID!
+
+  # message to be sent to the user.
+  message: String!
+
+  # target user will be suspended until this date.
+  until: Date!
+}
+
+# Input for rejectUsername mutation.
+input RejectUsernameInput {
+
+  # id of target user.
+  id: ID!
+
+  # message to be sent to the user.
+  message: String!
+}
+
+# DeleteActionResponse is the response returned with possibly some errors
+# relating to the delete action attempt.
+type DeleteActionResponse implements Response {
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+# SetUserStatusResponse is the response returned with possibly some errors
+# relating to the delete action attempt.
+type SetUserStatusResponse implements Response {
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+# SuspendUserResponse is the response returned with possibly some errors
+# relating to the suspend action attempt.
+type SuspendUserResponse implements Response {
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+# RejectUsernameResponse is the response returned with possibly some errors
+# relating to the reject username action attempt.
+type RejectUsernameResponse implements Response {
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+# SetCommentStatusResponse is the response returned with possibly some errors
+# relating to the delete action attempt.
+type SetCommentStatusResponse implements Response {
+
+  # An array of errors relating to the mutation that occurred.
+  errors: [UserError!]
+}
+
+# ModifyTagInput is the input used to modify a tag.
+input ModifyTagInput {
+
+  # name is the actual tag to add to the model.
+  name: String!
+
+  # id is the ID of the model in question that we are modifying the tag of.
+  id: ID!
+
+  # item_type is the type of item that we are modifying the tag if.
+  item_type: TAGGABLE_ITEM_TYPE!
+
+  # asset_id is used when the item_type is `COMMENTS`, the is needed to rectify
+  # the settings to get the asset specific tags/settings.
+  asset_id: ID
+}
+
+# Response to the addTag or removeTag mutations.
+type ModifyTagResponse implements Response {
+
+  # An array of errors relating to the mutation that occured.
+  errors: [UserError!]
+}
+
+# Response to ignoreUser mutation
+type IgnoreUserResponse implements Response {
+  # An array of errors relating to the mutation that occured.
+  errors: [UserError!]
+}
+
+# Response to stopIgnoringUser mutation
+type StopIgnoringUserResponse implements Response {
+  # An array of errors relating to the mutation that occured.
+  errors: [UserError!]
+}
+
+# Input to editComment mutation.
+input EditCommentInput {
+
+  # Update body of the comment
+  body: String!
+}
+
+# EditCommentResponse contains the updated comment and any errors that occured.
+type EditCommentResponse implements Response {
+
+  # The edited comment.
+  comment: Comment
+
+  # An array of errors relating to the mutation that occured.
+  errors: [UserError!]
+}
+
+# CreateTokenInput contains the input to create the token.
+input CreateTokenInput {
+
+  # Name is the description for the token.
+  name: String!
+}
+
+# CreateTokenResponse contains the errors related to creating a token.
+type CreateTokenResponse implements Response {
+
+  # Token is the Token that was created, or null if it failed.
+  token: Token
+
+  # An array of errors relating to the mutation that occured.
+  errors: [UserError!]
+}
+
+# RevokeTokenInput contains the input to revoke the token.
+input RevokeTokenInput {
+
+  # ID is the JTI for the token.
+  id: ID!
+}
+
+# RevokeTokenResponse contains the errors related to revoking a token.
+type RevokeTokenResponse implements Response {
+
+  # An array of errors relating to the mutation that occured.
+  errors: [UserError!]
+}
+
+# All mutations for the application are defined on this object.
+type RootMutation {
+
+  # Creates a comment on the asset.
+  createComment(comment: CreateCommentInput!): CreateCommentResponse
+
+  # Creates a flag on an entity.
+  createFlag(flag: CreateFlagInput!): CreateFlagResponse
+
+  # Creates a don't agree action on an entity.
+  createDontAgree(dontagree: CreateDontAgreeInput!): CreateDontAgreeResponse
+
+  # Delete an action based on the action id.
+  deleteAction(id: ID!): DeleteActionResponse
+
+  # Edit a comment
+  editComment(id: ID!, asset_id: ID!, edit: EditCommentInput): EditCommentResponse
+
+  # Sets User status. Requires the `ADMIN` role.
+  setUserStatus(id: ID!, status: USER_STATUS!): SetUserStatusResponse
+
+  # Suspends a user. Requires the `ADMIN` role.
+  suspendUser(input: SuspendUserInput!): SuspendUserResponse
+
+  # Reject a username. Requires the `ADMIN` role.
+  rejectUsername(input: RejectUsernameInput!): RejectUsernameResponse
+
+  # Sets Comment status. Requires the `ADMIN` role.
+  setCommentStatus(id: ID!, status: COMMENT_STATUS!): SetCommentStatusResponse
+
+  # Add a tag.
+  addTag(tag: ModifyTagInput!): ModifyTagResponse!
+
+  # Removes a tag.
+  removeTag(tag: ModifyTagInput!): ModifyTagResponse!
+
+  # Ignore comments by another user
+  ignoreUser(id: ID!): IgnoreUserResponse
+
+  # CreateToken will create a token that is attached to the current user.
+  createToken(input: CreateTokenInput!): CreateTokenResponse!
+
+  # RevokeToken will revoke an existing token.
+  revokeToken(input: RevokeTokenInput!): RevokeTokenResponse!
+
+  # Stop Ignoring comments by another user
+  stopIgnoringUser(id: ID!): StopIgnoringUserResponse
+}
+
+################################################################################
+## Subscriptions
+################################################################################
+
+type Subscription {
+
+  # Get an update whenever a comment was added.
+  # `asset_id` is required except for users with the `ADMIN` or `MODERATOR` role.
+  commentAdded(asset_id: ID): Comment
+
+  # Get an update whenever a comment was edited.
+  # `asset_id` is required except for users with the `ADMIN` or `MODERATOR` role.
+  commentEdited(asset_id: ID): Comment
+
+  # Get an update whenever a comment was flagged.
+  # Requires the `ADMIN` or `MODERATOR` role.
+  commentFlagged(asset_id: ID): Comment
+
+  # Get an update whenever a comment has been accepted.
+  # Requires the `ADMIN` or `MODERATOR` role.
+  commentAccepted(asset_id: ID): Comment
+
+  # Get an update whenever a comment has been rejected.
+  # Requires the `ADMIN` or `MODERATOR` role.
+  commentRejected(asset_id: ID): Comment
+
+  # Get an update whenever a user has been suspended.
+  # `user_id` must match id of current user except for
+  # users with the `ADMIN` or `MODERATOR` role.
+  userSuspended(user_id: ID): User
+
+  # Get an update whenever a user has been banned.
+  # `user_id` must match id of current user except for
+  # users with the `ADMIN` or `MODERATOR` role.
+  userBanned(user_id: ID): User
+
+  # Get an update whenever a username has been rejected.
+  # `user_id` must match id of current user except for
+  # users with the `ADMIN` or `MODERATOR` role.
+  usernameRejected(user_id: ID): User
+}
+
+################################################################################
+## Schema
+################################################################################
+
+schema {
+  query: RootQuery
+  mutation: RootMutation
+  subscription: Subscription
+}
