@@ -5,6 +5,8 @@ import * as _debug from 'debug';
 
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 
+import schema from './graphql/schema';
+
 import config from './config';
 import routes from './routes';
 import { expressMiddleware } from './middleware';
@@ -24,13 +26,15 @@ export function setupParentApp(): express.Express {
   // ==============================================================================
   // GRAPHIQL
   // ==============================================================================
-  // server.use('/graphql', bodyParser.json(), graphqlExpress({
-  //   schema
-  // }));
+  server.use('/graphql', bodyParser.json(), graphqlExpress((req) => {
+    return {
+      schema
+    };
+  }));
 
-  // server.use('/graphiql', graphiqlExpress({
-  //   endpointURL: '/graphql'
-  // }));
+  server.use('/graphiql', graphiqlExpress({
+    endpointURL: '/graphql'
+  }));
 
   // ==============================================================================
   // ROUTES

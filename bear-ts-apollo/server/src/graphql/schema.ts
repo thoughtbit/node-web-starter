@@ -1,12 +1,15 @@
+import { GraphQLSchema } from 'graphql';
 import { makeExecutableSchema } from 'graphql-tools';
 import { maskErrors } from 'graphql-errors';
 
 import resolvers from './resolvers';
 import typeDefs from './typeDefs';
 
-const RootSchema = makeExecutableSchema({
+const RootSchema: GraphQLSchema = makeExecutableSchema({
   typeDefs,
-  resolvers
+  resolvers,
+  resolverValidationOptions: { requireResolversForNonScalar: false },
+  logger: console
 });
 
 // If we are in production mode, don't show server errors to the front end.
