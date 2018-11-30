@@ -1,0 +1,55 @@
+{
+  "name": "egg-boilerplate",
+  "version": "1.0.0",
+  "description": "Egg.js Boilerplate",
+  "dependencies": {
+    "egg": "2.14.1",
+    "egg-sequelize": "^4.2.0",
+    "egg-scripts": "^2.10.0",
+    "socket.io": "^2.1.1",
+    "xutil": "^1.0.11",
+    "mysql2": "^1.6.4"
+  },
+  "devDependencies": {
+    "autod": "^3.0.1",
+    "autod-egg": "^1.1.0",
+    "egg-bin": "^4.9.0",
+    "egg-mock": "^3.20.1",
+    "eslint": "^5.9.0",
+    "eslint-config-egg": "^7.1.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "eslint-config-prettier": "^3.3.0",
+    "prettier": "^1.15.2",
+    "factory-girl": "^5.0.4",
+    "sequelize-cli": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "scripts": {
+    "start": "egg-scripts start --daemon --title=egg-server-app",
+    "stop": "egg-scripts stop --title=egg-server-app",
+    "restart": "npm run stop && npm run start",
+    "dev": "egg-bin dev",
+    "debug": "egg-bin debug",
+    "test": "egg-bin test",
+    "autod": "autod",
+    "lint": "eslint .",
+    "cov": "egg-bin cov",
+    "ci": "npm run lint && NODE_ENV=test npx sequelize db:migrate && npm run cov"
+  },
+  "ci": {
+    "version": "8"
+  },
+  "eslintIgnore": [ "coverage", "dist" ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "files": [
+    "lib",
+    "index.js"
+  ],
+  "author": "moocss@gmail.com",
+  "private": true
+}

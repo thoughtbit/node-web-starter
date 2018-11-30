@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "eslint-config-egg",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": [
+      "error", 
+      {
+        "singleQuote": true
+      }
+    ],
+    "space-before-function-paren": "off",
+    "comma-dangle": "off",
+    "arrow-parens": "off",
+    "no-debugger": "off"
+  }
+}
