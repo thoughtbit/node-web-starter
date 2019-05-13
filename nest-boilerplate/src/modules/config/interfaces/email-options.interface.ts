@@ -1,3 +1,9 @@
+enum MailerType {
+  NodeMailer = 0,
+  SendGrid,
+  Extend,
+}
+
 export class EmailModelOptions {
   enabled: boolean;
   transport: {
@@ -14,5 +20,5 @@ export class EmailModelOptions {
     from: string;
   };
   templateDir?: string;
-  mailerType: number;
+  mailerType: MailerType;
 }

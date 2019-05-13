@@ -4,7 +4,7 @@ const nodeExternals = require('webpack-node-externals');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const env = process.env.NODE_ENV;
-const isProduction = typeof env !== 'undefined' && Object.is(env, 'prod');
+const isProduction = typeof env !== 'undefined' && env === 'production';
 const mode = isProduction ? 'production' : 'development';
 const dist = join(__dirname, 'dist');
 

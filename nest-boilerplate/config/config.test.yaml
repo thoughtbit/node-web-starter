@@ -1,7 +1,6 @@
 env: 
-  NODE_ENV: 'dev'
+  NODE_ENV: 'test'
   LOG_LEVEL: 'debug'
-  NODE_TLS_REJECT_UNAUTHORIZED: 0
 core: 
   host: '0.0.0.0'
   port: 3000
@@ -16,15 +15,11 @@ core:
   crossDomain: 
     allowedOrigins: ['https://test.com', 'https://cdn.test.com', 'https://admin.test.com', 'https://api.test.com']
     allowedReferer: 'test.com'
-  auth:
-    enable: true
-    expiresIn: 3600
-    jwtTokenSecret: ''
 
 db:
   dialect: 'mysql'
   host: 'localhost'
-  prot: 3306
+  port: 3306
   database: 'db_name'
   username: 'root'
   password: 'root'
@@ -33,16 +28,14 @@ db:
 mail:
   enabled: true                    # 是否开启邮箱发送功能
   transport:
-    host: <smtp_host>
-    port: <smtp_port_number>
+    host: 'smtp.exmail.163.com'
+    port: 465
     secure: false
     auth:
-      user: <email>
-      pass: <pass>
+      user: 'moocss@163.com'
+      pass: 'pass'
   defaults:
-    from: <email>
-  sendGrid:
-    apiKey: <api_key>
+    from: 'moocss@126.com'
   templateDir: './src/email-templates'
   mailerType: 0 # 0: default mailer, 1: sendgrid mailer, 2: extend mailer
     
@@ -51,5 +44,5 @@ cache:
     client:
       host: '127.0.0.1'
       port: 6379
-      password: ''
+      password: 'pass'
       db: '0'

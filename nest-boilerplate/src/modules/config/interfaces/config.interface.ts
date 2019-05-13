@@ -1,7 +1,7 @@
-import { EmailModelOptions } from "./email-options.interface";
-import { RedisModelOptions } from "./redis-options.interface";
-import { DbModelOptions } from "./db-options.interface";
-import { CoreModelOptions } from "./core-options.interface";
+import { EmailModelOptions } from './email-options.interface';
+import { RedisModelOptions } from './redis-options.interface';
+import { DbModelOptions } from './db-options.interface';
+import { CoreModelOptions } from './core-options.interface';
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -18,5 +18,5 @@ export interface IConfig {
   email: EmailModelOptions;
   cache: {
     redis: RedisModelOptions;
-  }
-};
+  };
+}
