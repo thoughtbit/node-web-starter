@@ -11,7 +11,7 @@ export interface Env {
   [key: string]: string;
 }
 
-export interface IConfig {
+export interface Config {
   env?: Env;
   core: CoreModelOptions;
   db: DbModelOptions;

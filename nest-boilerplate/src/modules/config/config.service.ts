@@ -1,20 +1,20 @@
 import * as Joi from 'joi';
-import { IConfig } from './interfaces/config.interface';
-import { nodeEnv, packageJson, loadYamlConfigure } from '../../utils';
+import { Config } from './interfaces/config.interface';
+import { packageJson, loadYamlConfigure } from '../../utils';
 
 export class ConfigService {
-  private _config: IConfig;
+  private _config: Config;
 
   constructor(configPath: string) {
     const conf = loadYamlConfigure(configPath);
     this.config = this.validateInput(conf);
   }
 
-  set config(value: IConfig) {
+  set config(value: Config) {
     this._config = value;
   }
 
-  get config(): IConfig {
+  get config(): Config {
     return this._config;
   }
 
@@ -23,7 +23,7 @@ export class ConfigService {
   //   this.config = this.validateInput(conf);
   // }
 
-  private validateInput(config): IConfig {
+  private validateInput(config): Config {
     const configVarsSchema: Joi.ObjectSchema = Joi.object(
       this.getValidateDefinition(),
     );

@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
 import { AppModule } from './modules/main/app.module';
 import { ConfigService } from './modules/config/config.service';
 import { setupSwagger } from './swagger';
@@ -21,6 +22,7 @@ global.console = Object.assign(console, {
 });
 
 async function bootstrap() {
+  const logger = new Logger('ApiServer');
   const app = await NestFactory.create(AppModule);
   const appConfig: ConfigService = app.get(ConfigService);
   // 启动Swagger
@@ -29,8 +31,8 @@ async function bootstrap() {
   // Starts listening to shutdown hooks
   app.enableShutdownHooks();
 
-  await app.listen(appConfig.config.core.port);
+  await app.listen(appConfig.config.core.port, appConfig.config.core.host, () => {
+    logger.log(`Start to listening the incoming requests on http address: ${appConfig.config.core.baseUrl}`);
+  });
 }
-bootstrap().then(_ => {
-  console.info('接口服务启动了~');
-});
+bootstrap();
