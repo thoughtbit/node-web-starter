@@ -17,13 +17,14 @@ core:
     allowedReferer: 'test.com'
 
 db:
-  dialect: 'mysql'
+  type: 'postgres'
   host: 'localhost'
-  port: 3306
-  database: 'db_name'
-  username: 'root'
-  password: 'root'
-  logMode: true
+  port: 5432
+  database: 'nestjs'
+  username: 'postgres'
+  password: ''
+  synchronize: true
+  logging: true
   
 mail:
   enabled: true                    # 是否开启邮箱发送功能

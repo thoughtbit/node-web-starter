@@ -1,3 +1,4 @@
+import { Injectable } from '@nestjs/common';
 import * as Joi from 'joi';
 import { Config } from './interfaces/config.interface';
 import { packageJson, loadYamlConfigure } from '../../utils';
@@ -65,13 +66,14 @@ export class ConfigService {
         },
       },
       db: {
-        dialect: Joi.string().default('mysql'),
-        host: Joi.string().default('0.0.0.0'),
-        port: Joi.number().default(3000),
+        type: Joi.string().default('mysql'),
+        host: Joi.string().default('localhost'),
+        port: Joi.number().default(3306),
         database: Joi.string(),
         username: Joi.string(),
-        password: Joi.string(),
-        logMode: Joi.boolean(),
+        password: Joi.string().empty(''),
+        synchronize: Joi.boolean(),
+        logging: Joi.boolean(),
       },
       mail: {
         enabled: Joi.boolean(),
