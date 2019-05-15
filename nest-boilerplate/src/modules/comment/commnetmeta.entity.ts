@@ -11,6 +11,6 @@ export class CommentMetaEntity {
   @Column()
   meta_key: string;
 
-  @Column('longtext', { nullable: true })
+  @Column('text', { nullable: true })
   meta_value: string;
 }

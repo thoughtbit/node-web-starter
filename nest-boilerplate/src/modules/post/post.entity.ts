@@ -15,7 +15,7 @@ export class PostEntity {
   @Column({default: ''})
   description: string;
 
-  @Column('longtext', { nullable: true })
+  @Column('text', { nullable: true })
   body: string;
 
   @CreateDateColumn()

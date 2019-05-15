@@ -8,7 +8,7 @@ export class OptionEntity {
   @Column()
   option_name: string;
 
-  @Column('longtext', { nullable: true })
+  @Column('text', { nullable: true })
   option_value: string;
 
   @Column()

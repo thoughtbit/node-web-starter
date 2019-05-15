@@ -23,7 +23,7 @@ export class UserEntity {
   @Column({ nullable: true })
   user_image: string;
 
-  @Column('longtext', { nullable: true })
+  @Column('text', { nullable: true })
   user_bio: string;
 
   @CreateDateColumn()
@@ -35,7 +35,7 @@ export class UserEntity {
   @Column({ default: 0 })
   user_status: number;
 
-  @OneToMany(type => PostEntity, post => post.author)
+  @OneToMany(type => PostEntity, post => post.user)
   posts: PostEntity[]
 
   @ManyToMany(type => PostEntity, post => post.liked)
