@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
 import * as Joi from 'joi';
 import { Config } from './interfaces/config.interface';
 import { packageJson, loadYamlConfigure } from '../../utils';
@@ -50,15 +49,9 @@ export class ConfigService {
         host: Joi.string().default('0.0.0.0'),
         port: Joi.number().default(3000),
         baseUrl: Joi.string().default('http://localhost:300'),
-        passport: {
-          local: {
-            usernameField: Joi.string(),
-            passwordField: Joi.string(),
-          },
-          github: {
-            key: Joi.string(),
-            secret: Joi.string(),
-          },
+        auth: {
+          JWT_SECRET_KEY: Joi.string().default('apiSecretKey'),
+          JWT_EXPIRATION_TIME: Joi.string().default('0.5h'),
         },
         crossDomain: {
           allowedOrigins: Joi.array(),

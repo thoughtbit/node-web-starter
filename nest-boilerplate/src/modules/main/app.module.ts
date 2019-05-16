@@ -1,10 +1,12 @@
-import { PostModule } from './../post/post.module';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/config.service';
+import { ConfigModule } from '../config/config.module';
+import { AuthModule } from '../auth/auth.module';
+import { PostModule } from '../post/post.module';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { ConfigService } from '../config/config.service';
       inject: [ConfigService],
     }),
     ConfigModule,
+    AuthModule,
     PostModule
   ],
   controllers: [AppController],

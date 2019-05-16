@@ -6,12 +6,12 @@ export const setupSwagger = (app: INestApplication) => {
     .setTitle('API 接口文档')
     .setDescription('NestJS Boilerplate API 接口文档')
     .setVersion('1.0')
-    .setBasePath('/api')
+    // .setBasePath('api')
     .addBearerAuth('Authorization', 'header')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/api/docs', app, document, {
-    swaggerUrl: `localhost:3000/api/docs-json`,
+    // swaggerUrl: `localhost:3000/api/docs-json`,
     explorer: true,
     swaggerOptions: {
       docExpansion: 'list',
