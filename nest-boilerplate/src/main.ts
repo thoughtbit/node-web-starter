@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './modules/main/app.module';
 import { ConfigService } from './modules/config/config.service';
 import { setupSwagger } from './swagger';
@@ -27,7 +27,8 @@ async function bootstrap() {
   const appConfig: ConfigService = app.get(ConfigService);
   // 启动Swagger
   setupSwagger(app);
-
+  
+  app.useGlobalPipes(new ValidationPipe());
   // Starts listening to shutdown hooks
   app.enableShutdownHooks();
 

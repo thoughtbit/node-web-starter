@@ -1,6 +1,7 @@
-import { Injectable, NotAcceptableException, HttpException, HttpStatus } from "@nestjs/common";
+import { Injectable, HttpException, HttpStatus } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from 'typeorm';
+import * as crypto from 'crypto';
 import { UserEntity } from './user.entity';
 import { CreateUserDto } from "./dto/create-user.dto";
 
@@ -26,9 +27,10 @@ export class UserService {
   }
 
   async getUserByName (username: string) {
-    const user = await this.userRepository.findOne({
-      where: { user_name: username } 
-    });
+    const user = await this.userRepository.createQueryBuilder('user')
+    .where('user.user_name = :username', { username })
+    .getOne();
+
     if (!user) {
       throw new HttpException('没找到用户.', HttpStatus.BAD_REQUEST);
     }
@@ -36,20 +38,34 @@ export class UserService {
   }
 
   async getUserByEmail(email: string) {
-    const user  = await this.userRepository.findOne({
-      where: { user_email: email  }
-    })
+    const user  = await this.userRepository.createQueryBuilder('user')
+    .where('user.user_email = :email', { email })
+    .getOne();
+
     if (!user) {
       throw new HttpException('没找到邮箱.', HttpStatus.BAD_REQUEST)
     }
     return user;
   }
 
+  async getUserByEmailAndPass(email: string, password: string) {
+    const passHash = crypto.createHmac('sha256', password).digest('hex');
+    return await this.userRepository.createQueryBuilder('users')
+      .where('user.user_email = :email AND user.user_pass = :password')
+      // .setParameter('email', email)
+      // .setParameter('password', passHash)
+      .setParameters({
+        email,
+        password: passHash
+      })
+      .getOne();
+  }
+
   async create(payload: CreateUserDto) {
     const { user_name } = payload;
-    const user = await this.userRepository.findOne({
-      where: { user_name: user_name } 
-    });
+    const user = await this.userRepository.createQueryBuilder('user')
+    .where('user.user_name = :username', { username: user_name })
+    .getOne();
 
     if (user) {
       throw new HttpException('用户已经存在了.', HttpStatus.BAD_REQUEST)

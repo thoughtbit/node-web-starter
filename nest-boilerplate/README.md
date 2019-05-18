@@ -26,6 +26,12 @@
 │   └── ...                 
 └── README.md 
 ```
+
+##
+```
+npx ts-node src/generate-typings.ts
+```
+
 ## JWT_SECRET_KEY 生成
 ```bash
 $ openssl rand -base64 64

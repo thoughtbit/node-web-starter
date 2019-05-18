@@ -20,6 +20,7 @@ export class RegisterPayload {
   @ApiModelProperty({
     required: true,
   })
+  @IsNotEmpty()
   @IsEmail()
   @IsString()
   user_email: string;

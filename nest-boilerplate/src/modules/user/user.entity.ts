@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import * as bcrypt from 'bcrypt';
 import { PostEntity } from '../post/post.entity';
 import { CommentEntity } from '../comment/comment.entity';
+import { UserRo } from './interfaces/user.interface';
 
 @Entity('user')
 export class UserEntity {
@@ -54,4 +55,47 @@ export class UserEntity {
   async comparePassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.user_pass);
   }
+
+  sendResult(showToken: boolean = true): UserRo {
+    const {
+      id,
+      user_name,
+      user_email,
+      user_url,
+      user_image,
+      user_bio,
+      user_status
+    } = this;
+    
+    const responseObject: UserRo = {
+      id,
+      user: {
+        user_name,
+        user_email,
+        user_url,
+        user_image,
+        user_bio,
+        user_status,
+      },
+    };
+  
+    if (this.posts) {
+      responseObject.posts = this.posts;
+    }
+  
+    if (this.comments) {
+      responseObject.comments = this.comments;
+    }
+
+    if (this.voted) {
+      responseObject.voted = this.voted;
+    }
+  
+    if (showToken) {
+      responseObject.token = '';
+    }
+  
+    return responseObject;
+  }
 }
+

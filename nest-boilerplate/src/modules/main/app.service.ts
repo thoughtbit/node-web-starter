@@ -10,4 +10,8 @@ export class AppService {
   root(): string {
     return this.config.getVersion();
   }
+
+  async sayHello(name: string) {
+    return `Hello ${name}!`;
+  }
 }

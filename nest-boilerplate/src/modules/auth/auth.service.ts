@@ -1,5 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import { Injectable, UnauthorizedException, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { LoginPayload } from './payload/login.payload';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 import { UserService } from '../user/user.service';
@@ -42,7 +42,6 @@ export class AuthService {
   }
   
   async validateUser(payload: JwtPayload): Promise<any> {
-    console.log('validateUser -> payload:', payload);
     const { user_name } = payload;
     return await this.userService.getUserByName(user_name);
   }
