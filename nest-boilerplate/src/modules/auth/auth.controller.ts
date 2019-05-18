@@ -15,20 +15,20 @@ export class AuthController {
   ) { }
 
   @Post('login')
-  @ApiResponse({ status: 201, description: 'Successful Login' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 201, description: '登录成功' })
+  @ApiResponse({ status: 400, description: '登录失败' })
+  @ApiResponse({ status: 401, description: '用户没有权限登录' })
   async login(@Body() payload: LoginPayload): Promise<any> {
-    const user = await this.authService.validateUser(payload);
-    return await this.authService.createToken(user);
+    return await this.authService.login(payload);
   }
 
   @Post('register')
-  @ApiResponse({ status: 201, description: 'Successful Registration' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 201, description: '注册成功' })
+  @ApiResponse({ status: 400, description: '注册失败' })
+  @ApiResponse({ status: 401, description: '用户没有权限注册' })
   async register(@Body() payload: RegisterPayload): Promise<any> {
-    const user = await this.userService.create(payload);
-    return await this.authService.createToken(user);
+    const { id, user_name } = await this.userService.create(payload);
+    const data = { id, user_name };
+    return await this.authService.createToken(data);
   }
 }

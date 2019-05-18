@@ -17,7 +17,7 @@ export class UserEntity {
   @Column({ length: 100 })
   user_email: string;
 
-  @Column()
+  @Column({ nullable: true })
   user_url: string;
 
   @Column({ nullable: true })
@@ -51,7 +51,7 @@ export class UserEntity {
     this.user_pass = await bcrypt.hash(this.user_pass, 12);
   }
 
-  async comparePassword(password: string) {
+  async comparePassword(password: string): Promise<boolean> {
     return await bcrypt.compare(password, this.user_pass);
   }
 }

@@ -1,12 +1,13 @@
-
-import { TypeOrmModule } from '@nestjs/typeorm';
+import {  APP_FILTER } from '@nestjs/core';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigService } from '../config/config.service';
 import { ConfigModule } from '../config/config.module';
 import { AuthModule } from '../auth/auth.module';
 import { PostModule } from '../post/post.module';
+import { ErrorFilter } from '../../common/errors.filter';
 
 @Module({
   imports: [
@@ -30,6 +31,16 @@ import { PostModule } from '../post/post.module';
     PostModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: ErrorFilter,
+    },
+    // { 
+    //   provide: APP_INTERCEPTOR,
+    //   useClass: ErrorsInterceptor,
+    // },
+    AppService
+  ],
 })
 export class AppModule {}

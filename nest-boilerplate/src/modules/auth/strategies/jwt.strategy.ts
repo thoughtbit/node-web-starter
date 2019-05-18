@@ -18,11 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const user = await this.authService.validateUser(payload);
-    if (!user) {
-      throw new UnauthorizedException('没找到用户。');
-    }
-
-    return user;
+    return await this.authService.validateUser(payload);
   }
 }

@@ -26,7 +26,35 @@
 │   └── ...                 
 └── README.md 
 ```
+## JWT_SECRET_KEY 生成
+```bash
+$ openssl rand -base64 64
+```
 
+## 用户证书的生成
+生成私钥（.key）–> 生成证书请求（.csr）–> 用CA根证书签名得到证书（.crt）
+
+服务器端用户证书
+```bash
+openssl genrsa -des3 -out server.key 1024 
+openssl req -new -key server.key -out server.csr
+openssl ca -in server.csr -out server.crt -cert ca.crt -keyfile ca.key
+```
+
+客户端用户证书
+```bash
+openssl genrsa -des3 -out client.key 1024 
+openssl req -new -key client.key -out client.csr
+openssl ca -in client.csr -out client.crt -cert ca.crt -keyfile ca.key
+```
+
+生成pem格式证书
+有时需要用到pem格式的证书，可以用以下方式合并证书文件（crt）和私钥文件（key）来生成
+
+```bash
+cat client.crt client.key > client.pem 
+cat server.crt server.key > server.pem
+```
 
 ## Installation
 

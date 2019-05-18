@@ -6,7 +6,7 @@ core:
   port: 3000
   baseUrl: 'http://localhost:3000'
   auth:
-    JWT_SECRET_KEY: 'qHqPHVPasjfHDCrcX7Ao7x5O5W098RU3i6lloVgWZFY='
+    JWT_SECRET_KEY: 'rwnEBlTPIFyPlJrpsjK2BBQM/ZVAZQwzm5jsv5Jy0CMC8U8eIX+vuJsGn4GPhzE8NhbEhCrlvfwKvPUbNhN86Q=='
     JWT_EXPIRATION_TIME: '12h'
   crossDomain: 
     allowedOrigins: ['https://test.com', 'https://cdn.test.com', 'https://admin.test.com', 'https://api.test.com']
