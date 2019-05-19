@@ -11,6 +11,7 @@ import { PostModule } from '../post/post.module';
 import { ErrorFilter } from '../../common/errors.filter';
 import { CatModule } from '../cats/cats.module';
 import { PubSubFactory } from './../../pub-sub.provider';
+import { AppResolver } from './app.resolver';
 // import { ErrorsInterceptor } from '../../common/errors.interceptor';
 
 @Module({
@@ -50,6 +51,7 @@ import { PubSubFactory } from './../../pub-sub.provider';
     //   useClass: ErrorsInterceptor,
     // },
     AppService,
+    AppResolver,
     PubSubFactory,
   ],
 })
