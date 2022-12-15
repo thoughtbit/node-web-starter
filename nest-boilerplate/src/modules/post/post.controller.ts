@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, UseInterceptors, ClassSerializerInterceptor } from "@nestjs/common";
 import { PostService } from './post.service';
 
 @Controller('posts')
